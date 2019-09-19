@@ -162,17 +162,32 @@ H = \sum_i \frac{p_i^2}{2m} + V(\{q_i\})
 <p><span class="math display">\[
 \int f d \Gamma = 1
 \]</span></p>
-<p>さて、分布関数<span class="math inline">\(f\)</span>により、この系における物理量の期待値<span class="math inline">\(\left&lt;A\right&gt;\)</span>を以下のように定義する。</p>
-<p><span class="math display">\[
-\left&lt;A \right&gt; \equiv \int A f d \Gamma
-\]</span></p>
-<p>例えば、ハミルトニアンの期待値が内部エネルギー<span class="math inline">\(U\)</span>である。</p>
-<p><span class="math display">\[
-U \equiv \left&lt; H \right&gt; = \int Hf d \Gamma
-\]</span></p>
-<p>さて、天下りだが、この分布関数の対数をとったものの平均に<span class="math inline">\(- k_\mathrm{B}\)</span>をかけた量を考え、<span class="math inline">\(S\)</span>と名前をつけよう。</p>
+<p>次に、天下りだが、この分布関数の対数をとったものの平均に<span class="math inline">\(- k_\mathrm{B}\)</span>をかけた量を考え、<span class="math inline">\(S\)</span>と名前をつけよう。</p>
 <p><span class="math display">\[
 S = -k_\mathrm{B} \int f \ln f  d \Gamma
+\]</span></p>
+<p>もちろんこの量はエントロピーであるが、それがどういう量かはよくわからない。さて、なぜだかわからないが、あなたははこの<span class="math inline">\(S\)</span>という量を最大化したくなった。いま、系のエネルギーが<span class="math inline">\(E\)</span>であるとしよう。この条件で<span class="math inline">\(S\)</span>を最大化するには、規格化条件をラグランジュの未定乗数法で扱って、</p>
+<p><span class="math display">\[
+I = \alpha \int f d \Gamma + \int f \ln f d \Gamma
+\]</span></p>
+<p>の変分をとればよい。計算の便利のために、ラグランジュの未定乗数<span class="math inline">\(\alpha\)</span>にボルツマン定数を含めている。変分条件<span class="math inline">\(\delta I = 0\)</span>よりただちに、</p>
+<p><span class="math display">\[
+f = \frac{1}{\Omega}
+\]</span></p>
+<p>が導かれる。ただし、<span class="math inline">\(\Omega\)</span>は規格化条件から決まる以下の量である。</p>
+<p><span class="math display">\[
+\Omega = \int \delta(H-E) d \Gamma
+\]</span></p>
+<p>これは等エネルギー面の面積に他ならない。エネルギー一定条件のもとで<span class="math inline">\(S\)</span>分布関数が一定になることが導かれた</p>
+<p>ミクロカノニカル分布であり、ミクロカノニカルであれば分布関数は一定である、ということに対応している。</p>
+<p>ミクロカノニカルでは、エネルギー一定条件を考えたが、これを少し緩めて、エネルギーの期待値一定の条件にしてみよう。</p>
+<p>分布関数<span class="math inline">\(f\)</span>により、この系における物理量の期待値<span class="math inline">\(\left&lt;A\right&gt;\)</span>を以下のように定義する。</p>
+<p><span class="math display">\[
+\left&lt; A \right&gt; \equiv \int A f d \Gamma
+\]</span></p>
+<p>ハミルトニアン<span class="math inline">\(H\)</span>の期待値が内部エネルギー<span class="math inline">\(U\)</span>である。</p>
+<p><span class="math display">\[
+U \equiv \left&lt; H \right&gt; = \int Hf d \Gamma
 \]</span></p>
 <p>分布関数<span class="math inline">\(f\)</span>が規格化条件を満たし、内部エネルギー<span class="math inline">\(U\)</span>が一定である、という条件で<span class="math inline">\(S\)</span>を最大化することを考える。すると、ラグランジュの未定定数<span class="math inline">\(\alpha, \beta\)</span>を用いて、</p>
 <p><span class="math display">\[
@@ -180,7 +195,7 @@ I = \alpha \int f d \Gamma
 + \beta \int H f d \Gamma
 + \int f \ln f d \Gamma
 \]</span></p>
-<p>の変分を取ればよい。ここで、後の便利のために<span class="math inline">\(\alpha, \beta\)</span>にボルツマン定数を吸収させ、かつ<span class="math inline">\(S\)</span>に関する条件式に負符号をつけていることに注意(これが自由エネルギー<span class="math inline">\(F = U - TS\)</span>になるように、<span class="math inline">\(S\)</span>の定義の負符号と変分の負符号がキャンセルするように選んでいる)。変分条件<span class="math inline">\(\delta I = 0\)</span>より、</p>
+<p>の変分を取ればよい。先ほどと同様、後の便利のために<span class="math inline">\(\alpha, \beta\)</span>にボルツマン定数を吸収させ、かつ<span class="math inline">\(S\)</span>に関する条件式に負符号をつけていることに注意(これが自由エネルギー<span class="math inline">\(F = U - TS\)</span>になるように、<span class="math inline">\(S\)</span>の定義の負符号と変分の負符号がキャンセルするように選んでいる)。変分条件<span class="math inline">\(\delta I = 0\)</span>より、</p>
 <p><span class="math display">\[
 \alpha + \beta H + 1 + \ln f = 0
 \]</span></p>
@@ -235,8 +250,49 @@ p_i \frac{\partial H}{\partial p_i} = \frac{p_i}{m}
 \left&lt;q_i \frac{\partial H}{\partial q_i}  \right&gt; = \frac{1}{\beta}
 \]</span></p>
 <p>運動量のビリアルから定まる温度を <strong>運動温度 (Kinetic Temperature)</strong> 、<strong>座標から決まる温度を状態温度(Configuration Temperature)</strong> と呼んで区別することがある。この二つの温度は、系がカノニカル分布に従う場合、すなわち平衡状態にある場合は一致するが、一般に非平衡状態においては一致しない。</p>
-<p>TODO: 一般化ビリアル</p>
-<h2 id="圧力とは">圧力とは</h2>
+<p>ここまでの議論において、ビリアルの期待値から温度が出てくるのは、要するに分布関数が<span class="math inline">\(\exp(-\beta H)\)</span>という形をしていることと部分積分を使っているだけなので、さらに一般化することができる。位相空間<span class="math inline">\(\{p_i, q_i\}\)</span>をまとめて<span class="math inline">\(\{z_i\}\)</span>と表記しよう。これは運動量と座標をまとめて連番を振ったもの、つまり、</p>
+<p><span class="math display">\[
+\{z_i\} = \{p_1, p_2, \cdots, q_1, q_2, \cdots \}
+\]</span></p>
+<p>である。何か適当な量<span class="math inline">\(B_i\)</span>と、<span class="math inline">\(\partial_{z_i} H\)</span>との積<span class="math inline">\(B_i \partial_{z_i} H\)</span>を考える。部分積分により、</p>
+<p><span class="math display">\[
+\left&lt;B_i \frac{\partial H}{\partial z_i} \right&gt;
+= \frac{1}{\beta}
+\left&lt;\frac{\partial B_i}{\partial z_i} \right&gt;
+\]</span></p>
+<p>さて、いま位相空間<span class="math inline">\(\Gamma = \{z_i\}\)</span>中に、ベクトル場<span class="math inline">\(\vec{B}\)</span>が定義されているとしよう。先ほどの式はそれぞれの座標成分<span class="math inline">\(z_i\)</span>ごとに成り立つので、全ての成分について和をとると、以下のようにベクトルの形で書くことができる。</p>
+<p><span class="math display">\[
+\left&lt;\vec{B} \cdot \nabla H \right&gt;
+= \frac{1}{\beta}
+\left&lt;\nabla \cdot \vec{B} \right&gt;
+\]</span></p>
+<p>この式の左辺を一般化ビリアルと呼ぶ。<span class="math inline">\(\vec{B}\)</span>が運動量成分しか含まない場合、すなわち</p>
+<p><span class="math display">\[
+\vec{B} = (p_1, p_2, \cdots, p_N, 0, \cdots, 0)
+\]</span></p>
+<p>の場合に導かれる温度は運動温度となり、いわゆるエネルギー等分配則を表す。逆に、<span class="math inline">\(\vec{B}\)</span>が座標成分しか含まない場合は、状態温度を導く。</p>
+<h3 id="温度の幾何学的定義">温度の幾何学的定義</h3>
+<p>先ほど、エントロピー最大化条件からカノニカル分布を導き、そこからビリアルによって温度を定義した。しかし、分子動力学法において、ハミルトンの運動方程式に従う時間発展を考えるとエネルギーが一定に保たれるのであるから、結果として得られる分布は(系がエルゴード的であれば)ミクロカノニカル分布となる。もちろん、系の自由度が大きくなれば分布がデルタ関数的になり、ミクロカノニカルとカノニカルの区別はほとんどなくなるのだが、ハミルトンの運動方程式が厳密にエネルギーを保存する以上、まずミクロカノニカルで温度を定義し、それが<span class="math inline">\(N \rightarrow \infty\)</span>の極限でカノニカル分布における温度と一致することを確認したくなる。</p>
+<p>以下では、「温度の幾何学的定義」により、ミクロカノニカル分布における温度を定義してみよう。</p>
+<p>TODO: 温度の幾何学的定義の説明</p>
+<h2 id="分子動力学法と圧力">分子動力学法と圧力</h2>
+<h3 id="圧力とは">圧力とは</h3>
+<p>TODO: Irving–Kirkwood公式の導出</p>
+<h3 id="圧力制御">圧力制御</h3>
+<p>TODO: Andersenの方法</p>
+<h2 id="温度制御">温度制御</h2>
+<p>熱力学における自然な変数には、内部エネルギーや圧力、体積、温度やエントロピーなどがある。これらの変数は示量性の量と示強性の量にわけることができる。さて、「お互いにかけてエネルギーになる示量性の量と示強性の量の組」は共役な量と呼ばれる。</p>
+<p>例えば体積<span class="math inline">\(V\)</span>と圧力<span class="math inline">\(P\)</span>、エントロピー<span class="math inline">\(S\)</span>と温度<span class="math inline">\(T\)</span>、粒子数<span class="math inline">\(N\)</span>と化学ポテンシャル<span class="math inline">\(\mu\)</span>が互いに共役であり、それぞれ前者が示量性、後者が示強性の量である。</p>
+<p>さて、世の中の量は「a priori」に認める量と、その量から導かれる量の二種類があるのであった。我々は一般に示量性の量をa prioriに認めることが多い。例えば「長さ」は知っているものとするから、体積<span class="math inline">\(V\)</span>はa prioriに認め、共役な量である圧力<span class="math inline">\(P\)</span>はそこから導かれる量とする。個数<span class="math inline">\(N\)</span>も基本的な量として、相方である化学ポテンシャル<span class="math inline">\(\mu\)</span>はそこから定義される量である。</p>
+<p>分子動力学法では、示強性の量を制御したい場合がある。先ほど、圧力<span class="math inline">\(P\)</span>を制御するのに、共役な量の相方である体積<span class="math inline">\(V\)</span>をコントロールした。これはわかりやすい。</p>
+<p>では、温度<span class="math inline">\(T\)</span>を制御するにはどうすればよいだろうか？圧力制御からの類推では、エントロピーをコントロールすることになるが、エントロピーとはどうやってコントロールすればよいのだろうか。そもそもエントロピーと温度、どちらが基本的な量であり、どちらを従属的な量であろうか？</p>
+<p>この問いへの回答は筆者の能力を超える。ここでは「両方の立場があり得る」とだけコメントしておく。例えば田崎さんの熱力学の教科書は温度を基本的な量に取ってエントロピーを導く形式であり、清水さんの教科書はエントロピーを基本的な量に取って温度を導く形式である。</p>
+<p>TODO: 能勢のハミルトニアン</p>
+<p>TODO: 時間の制御？</p>
+<p>TODO: Nose-Hoover法</p>
+<p>TODO: Nose-Hooverの一般化、Nose-Hoover-Family</p>
+<p>TODO: Nose-Hooverの保存量とは</p>
+<p>TODO: Nose-Hooverと調和振動子とエルゴード性</p>
 </article>
 </body>
 </html>
