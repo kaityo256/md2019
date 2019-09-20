@@ -274,15 +274,8 @@ $$
 
 TODO: 温度の幾何学的定義の説明
 
-## 分子動力学法と圧力
+## [分子動力学法と圧力](pressure/README.md)
 
-### 圧力とは
-
-TODO: Irving–Kirkwood公式の導出
-
-### 圧力制御
-
-TODO: Andersenの方法
 
 ## 温度制御
 

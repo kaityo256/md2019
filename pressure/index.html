@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="圧力">圧力</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<h2 id="局所量定義の難しさ">局所量定義の難しさ</h2>
+<p>MDシミュレーションをしていると、温度や圧力といった物理量の時間変化を見たくなる。さらに、系全体のマクロな量だけでなく、「系のこの部分の温度」「系のこの部分の圧力」といった局所的な量も知りたくなる。しかし、分子動力学法の支配方程式はハミルトンの運動方程式であるから、我々が使える「材料」は運動量、座標、そして全エネルギーだけである。これらの材料から欲しい物理量すべてを「調理」しなければならない。系全体の物理量はともかく、局所的な物理量定義は難しい。以下、その難しさを見てみよう。</p>
+<h3 id="一体関数の局所物理量">一体関数の局所物理量</h3>
+<p>3次元<span class="math inline">\(N\)</span>粒子系、二体相互作用系を考えよう。簡単のため、質量はすべて等しいとすると、ハミルトニアンは以下のように書ける。</p>
+<p><span class="math display">\[
+H = \sum_i \frac{\vec{p}_i^2}{2m} + \sum_{i &lt; j} V(q_{ij})
+\]</span></p>
+<p>ただし、<span class="math inline">\(q_ij \equiv |\vec{q}_i - \vec{q}_j|\)</span>である。</p>
+<p>局所的な物理量とは、「系の部分的な空間を指定し、その部分空間で定義される量」である。一番簡単な量は局所数密度であろう。部分空間の中に含まれる粒子の数を数えて、空間の体積で割ればよい。これをちゃんと定義するために、数密度分布関数<span class="math inline">\(\rho(\vec{r})\)</span>を作ろう。</p>
+<p><span class="math display">\[
+\rho(\vec{r}) = \sum_i \delta(\vec{r} - \vec{q}_i)
+\]</span></p>
+<p>ある部分空間<span class="math inline">\(\Omega\)</span>における数密度<span class="math inline">\(\rho_\Omega\)</span>は、上記の量を積分すれば得られる。</p>
+<p><span class="math display">\[
+\rho_\Omega = \frac{1}{|\Omega|}\int_\Omega \rho(\vec{r}) d \vec{r}
+\]</span></p>
+<p>先程の「<span class="math inline">\(\Omega\)</span>の中の粒子数を数えて空間体積<span class="math inline">\(|\Omega|\)</span>で割る」という文章を数式で書いただけであり、全空間にわたって積分すれば</p>
+<p><span class="math display">\[
+\rho = \frac{N}{V}
+\]</span></p>
+<p>になる。</p>
+<p>同様に、局所的な運動温度<span class="math inline">\(T_\Omega\)</span>を定義してみよう。</p>
+<p><span class="math display">\[
+\left&lt; \frac{\vec{p}_i^2}{2m}\right&gt; = \frac{3}{2}k_B T
+\]</span></p>
+<p>であったから、</p>
+<p><span class="math display">\[
+\frac{3}{2} k_B T_\Omega = \frac{|\Omega|}{\rho_\Omega} \int_\Omega \sum_i \frac{\vec{p}_i^2}{2m} \delta(\vec{r} - \vec{q}_i) d \vec{r}
+\]</span></p>
+<p>と定義するのが自然であろう。やはり全空間にわたって積分すれば</p>
+<p><span class="math display">\[
+\frac{3}{2} k_B T = \frac{1}{N} \sum_i \frac{\vec{p}_i^2}{2m}
+\]</span></p>
+<p>と、運動エネルギーの平均を計算しているだけであることがわかる。</p>
+<h3 id="二体関数の局所物理量の例局所エネルギーとエネルギーカレント">二体関数の局所物理量の例：局所エネルギーとエネルギーカレント</h3>
+<p>一体関数で定義できる局所物理量は「その部分空間に含まれる粒子の平均」を取るだけで良いので簡単であった。しかし、粒子系の相互作用が効いてくるような二体以上の関数が関わってくると話がややこしくなる。そんな、二体関数が関係する物理量の例がエネルギーである。ハミルトニアンが</p>
+<p><span class="math display">\[
+H = \sum_i \frac{\vec{p}_i^2}{2m} + \sum_{i &lt; j} V(q_{ij})
+\]</span></p>
+<p>と、一体の運動エネルギーと二体のポテンシャルエネルギーの和で書かれているため、エネルギーの計算には二体関数が関わってくる。このエネルギーの局所定義はどのようにすればよいだろうか？</p>
+<p>最も単純には、エネルギーをなんらかの形で一体関数で表現してしまうことが考えられる。つまり、ハミルトニアン<span class="math inline">\(H\)</span>を、各粒子に分配した<span class="math inline">\(H_i\)</span>の和、</p>
+<p><span class="math display">\[
+H = \sum_i H_i
+\]</span></p>
+<p>として表現する。一体関数になってしまえば後は数密度関数などと「領域に含まれる範囲で数え上げる」手法が使えるので簡単である。さて、運動エネルギーはもともと一体関数であったが、ポテンシャルエネルギーは二体関数なのでなんとかしなければならない。ここでは単純に、相互作用する粒子に半分ずつ分けることにしよう。以下、簡単のため一次元かつ<span class="math inline">\(m=1\)</span>とすると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+H&amp;= \sum_i \frac{p_i^2}{2} +\sum_{i&lt;j} V(q_{ij}) \\
+&amp;=  \sum_i \frac{p_i^2}{2} +\frac{1}{2}\sum_{i}\sum_{j \neq i} V(q_{ij}) \\
+&amp;= \sum_i \underbrace{\left( \frac{p_i^2}{2}   + \frac{1}{2} \sum_{j \neq i} V(q_{ij})\right)}_{\equiv H_i}  \\
+&amp;= \sum_i H_i
+\end{aligned}
+\]</span></p>
+<p>とする。<span class="math inline">\(H_i\)</span>を粒子<span class="math inline">\(i\)</span>が持つエネルギーと解釈すれば、局所エネルギー密度関数を定義できる。</p>
+<p>さて、このようにエネルギーの粒子への分配を定義すると、粒子間のエネルギー流を考えることができる。例えば粒子<span class="math inline">\(i\)</span>に<span class="math inline">\(j\)</span>から流れるエネルギーは、<span class="math inline">\(i\)</span>粒子のエネルギーの変化分を<span class="math inline">\(j\)</span>粒子からの寄与に分解するものであるから、 以下のように定義したい。</p>
+<p><span class="math display">\[
+\frac{d H_i}{dt} = \sum_{j \neq i} J_{i \leftarrow j}
+\]</span></p>
+<p>実際に<span class="math inline">\(d H_i/dt\)</span>を計算してみる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d H_i}{dt} &amp;= p_i \dot{p}_i + \frac{1}{2} \sum_{j \neq i} V&#39;(q_{ij})\dot{q}_{ij} \\
+&amp;=  p_i \sum_{j \neq i} F_{i \leftarrow j} - \frac{1}{2} \sum_{j \neq i} F_{i \leftarrow j} (p_i - p_j) \\
+&amp;=\sum_{j \neq i}  \underbrace{\frac{1}{2}  F_{i \leftarrow j} (p_i + p_j)}_{\equiv J_{i \leftarrow j}}
+\end{aligned}
+\]</span></p>
+<p>ただし、運動量<span class="math inline">\(p_i\)</span>の時間変化は、<span class="math inline">\(i\)</span>にかかる力に比例し、その力は粒子<span class="math inline">\(j\)</span>から粒子<span class="math inline">\(i\)</span>にかかる力<span class="math inline">\(F_{i \leftarrow j}\)</span>の総和であるから</p>
+<p><span class="math display">\[
+\dot{p}_i = - \frac{\partial H}{\partial q_i} \equiv \sum_{j \neq i} F_{i \leftarrow j}
+\]</span></p>
+<p>と表した。</p>
+<p>ここから、</p>
+<p><span class="math display">\[
+\begin{aligned}
+J_{i \leftarrow j} &amp;\equiv \frac{1}{2}  F_{i \leftarrow j} (p_i + p_j) \\
+&amp;=  \frac{1}{2} (p_i F_{i \leftarrow j} - p_j F_{j \leftarrow i})
+\end{aligned}
+\]</span></p>
+<p>と定義するのが自然であることがわかる。これは、右辺第一項が<span class="math inline">\(j\)</span>から<span class="math inline">\(i\)</span>に流れるエネルギー流、第二項が<span class="math inline">\(i\)</span>から<span class="math inline">\(j\)</span>に流れるエネルギー流で、その収支を表していると解釈できる。</p>
+<p>さて、ここまでの定義には何も問題がないように見えるが、実はこのエネルギー流の定義はガリレイ不変ではない。いま、静止している二つの粒子<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>があり、引力相互作用が働いているとしよう。これらの粒子は引力によって動き始めるが、それぞれが得る運動エネルギーの増加分は、それぞれが持っていたポテンシャルエネルギーの減少分と相殺し、両者にエネルギーのやりとりはない。</p>
+<p>さて、全く同様な条件で、二つの粒子に同じ方向に初速<span class="math inline">\(v_0\)</span>を与えよう。しばらくして粒子<span class="math inline">\(A\)</span>の速度が<span class="math inline">\(v_0 + v\)</span>、粒子<span class="math inline">\(B\)</span>の速度が<span class="math inline">\(v_0 - v\)</span>となり、両者に力<span class="math inline">\(f\)</span>がかかっているとすると、粒子AB間には、BからAにカレント<span class="math inline">\(J_{A \leftarrow B} = 2 f v_0\)</span>が流れていることになる。</p>
+<div class="figure">
+<img src="energyflow.png" alt="エネルギー流と重心速度" />
+<p class="caption">エネルギー流と重心速度</p>
+</div>
+<p>二つの粒子に同じ向きに初速<span class="math inline">\(v_0\)</span>を与えるのも、速度<span class="math inline">\(-v_0\)</span>で通り過ぎる観測者から見るのも同じことであるから、粒子間のエネルギー流は、重心速度や観測者との相対速度に依存する、ということを意味する。</p>
+<p>これがどれくらい問題であるかは、何をやりたいかによる。大きな分子が相対距離を保ちながら並進運動をしている時に、「運動方向と逆向きに分子内にエネルギーが流れている」と解釈すべきかどうかは筆者にはわからないが、「奇妙だな」とは思うであろう。このように、物理量の局所定義は、数式的には自然でも、その解釈には「奇妙だな」と思う点がよく出てくる。</p>
+<h2 id="圧力定義">圧力定義</h2>
+<p>さて、二体関数がかかわる物理量の例として圧力を考えてみよう。</p>
+<p>TODO: 圧力定義</p>
+<p>TODO: Irving-Kirkwood</p>
+</article>
+</body>
+</html>
