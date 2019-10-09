@@ -131,8 +131,122 @@ $$
 
 ## 圧力定義
 
-さて、二体関数がかかわる物理量の例として圧力を考えてみよう。
+さて、二体関数がかかわる物理量の例として圧力を考えてみよう。粒子系の圧力はビリアル定理から求めることが多いのだが、ここでは「分子動力学法の世界にはハミルトニアンしか存在しない」という立場から、分配関数経由で導出する。
 
-TODO: 圧力定義
+まず、熱力学関係式
 
-TODO: Irving-Kirkwood
+$$
+P = - \left(\frac{\partial F}{\partial V} \right)_T
+$$
+
+から出発しよう。$P$は圧力、$T$が温度、$F$はヘルムホルツ自由エネルギーである。
+
+ヘルムホルツ自由エネルギーは分配関数$Z$を用いて
+
+$$
+F = - k_B T \ln Z
+$$
+
+と書けるので、
+
+$$
+\begin{aligned}
+P &= - \left(\frac{\partial F}{\partial V} \right)_T\\
+&= k_B T \frac{\partial\ln Z }{\partial V}
+= k_B T \frac{1}{Z} \frac{\partial Z}{\partial V}
+\end{aligned}
+$$
+
+となる。さて、分配関数はハミルトニアン$H$を用いて
+
+$$
+Z = \int d \Gamma \mathrm{e}^{-\beta H}
+$$
+
+であったから、
+
+$$
+\frac{\partial Z}{\partial V} = \int d \Gamma \left(-\beta \frac{\partial H}{\partial V} \right) \mathrm{e}^{-\beta H}
+$$
+
+である。これを先程の式に代入して整理すると、
+
+$$
+\begin{aligned}
+P &= - Z^{-1} \int d \Gamma \left(\frac{\partial H}{\partial V} \right) \mathrm{e}^{-\beta H} \\
+&= -\left< \frac{\partial H}{\partial V} \right>
+\end{aligned}
+$$
+
+すなわち、圧力を求めるにはハミルトニアンの体積微分のアンサンブル平均を取れば良い。
+もちろんこの式は、熱力学関係式
+
+$$
+P = - \left(\frac{\partial U}{\partial V} \right)_S
+$$
+
+に対応している。
+
+さて、ハミルトニアンの体積微分を取るために、系のサイズを変化させることを考えよう。一辺$L$の立方体の系を考えると、$V=L^3$である。この系の長さを一様に$L \rightarrow \alpha L$と拡大することを考える。
+
+拡大された世界のハミルトニアンは
+
+$$
+H(\alpha) = \sum_i \frac{\alpha^2 \vec{p}_i^2}{2m} + \sum_{i < j} \Phi(\alpha r_{ij})
+$$
+
+となる。
+
+やや紛らわしいが、$\alpha = 1$の時の体積を$V$とすると、$V \rightarrow \alpha^3 V$となるから
+
+$$
+dV = 3 \alpha^2 V d \alpha
+$$
+
+となる(微分する変数としての$V$と基準体積$V$で同じ記号を使っていることに注意)。これにより、
+
+$$
+\frac{\partial H}{\partial V} = \lim_{\alpha \rightarrow 1} \frac{\partial H}{\partial \alpha} \frac{d \alpha}{dV}
+$$
+$V$による微分を$\alpha$による微分に置き換えることができる。以下、$\partial H/\partial \alpha$を計算しよう。
+
+まず、運動エネルギー部分は簡単で、
+
+$$
+\lim_{\alpha \rightarrow 1}\frac{\partial K(\alpha)}{\partial \alpha} =
+\lim_{\alpha \rightarrow 1} \sum_i \frac{2 \alpha \vec{p}_i^2}{2m} = 2K
+$$
+
+つまり、運動エネルギーの二倍である。
+
+次にポテンシャル部分の計算であるが、
+
+$$
+r_{ij} = |\vec{r}_i - \vec{r}_j|
+$$
+
+$$
+\vec{F}_{ij} = - \Psi'(r_{ij}) \frac{\vec{r}_i - \vec{r}_j}{|\vec{r}_i - \vec{r}_j|}
+$$
+
+であることに注意すると、
+
+$$
+\begin{aligned}
+\lim_{\alpha \rightarrow 1} \frac{\partial \Psi(\alpha r_{ij})}{\partial \alpha} &= r_{ij} \Psi'(r_{ij}) \\
+&= \sum_{i < j} \vec{F}_{ij} \cdot (\vec{r}_i - \vec{r}_j)\\
+&= \sum_i \vec{F}_i \cdot \vec{r}_i
+\end{aligned}
+$$
+
+ただし、途中で作用反作用の法則を用いた。
+
+以上から、
+
+$$
+P = \frac{1}{3V} \left(2 K + \sum_i \vec{F}_i \cdot \vec{r}_i \right)
+$$
+
+いわゆるビリアル定理が導かれた。導出を見れば、分母の$3V$は$d\alpha /d V$から、運動エネルギーの2倍のファクターは$\alpha^2 \vec{p}_i^2$の$\alpha$微分から出てくることがわかるであろう。
+
+TODO: まだところどころ符号が怪しい。
