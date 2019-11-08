@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="分子動力学法における観測量">分子動力学法における観測量</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<h2 id="変数と観測量">変数と観測量</h2>
+<p>数値計算は、支配方程式を数値的に解く方法論だ。ここで重要となるのは、変数と観測量の区別である。変数(Variable)とは「我々がa prioriに認める量」であり、観測量(Observable)は、「変数から導かれる量」だ。何が変数で何が観測量かは支配方程式によって異なる。</p>
+<p>例えば、一次元熱伝導方程式を考えよう。</p>
+<p><span class="math display">\[
+\frac{\partial T}{\partial t} = \kappa \frac{\partial^2 T}{\partial x^2}
+\]</span></p>
+<p>この方程式では、温度<span class="math inline">\(T\)</span>は変数である。つまり、「この世界には温度という量がある」ということを無条件に認めている。</p>
+<p>また、ナビエ・ストークス方程式を考えてみよう。粘性率一定、非圧縮を仮定し、外場を<span class="math inline">\(\vec{F}\)</span>とすると以下のようになるだろう。</p>
+<p><span class="math display">\[
+\frac{\partial \vec{v}}{\partial t}
++ \left(\vec{v}\cdot \nabla \right)
+= -\frac{1}{\rho} \nabla p + \nu \Delta \vec{v} + \vec{F}
+\]</span></p>
+<p>この方程式では、速度場<span class="math inline">\(v\)</span>に加えて、圧力場<span class="math inline">\(p\)</span>も変数である。</p>
+<p>さて、MDではどうだろうか？支配方程式としてハミルトンの運動方程式を採用するとこんな方程式となる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p_i} &amp;= -\frac{\partial H}{\partial q_i} \\
+\dot{q_i} &amp;= \frac{\partial H}{\partial p_i} 
+\end{aligned}
+\]</span></p>
+<p>変数は座標<span class="math inline">\(q_i\)</span>と運動量<span class="math inline">\(p_i\)</span>であり、ここには温度や圧力は表れない。したがって、温度や圧力は<span class="math inline">\(q_i\)</span>や<span class="math inline">\(p_i\)</span>から定義される観測量となる。熱伝導方程式においては、温度を変数にとっているから「温度とは何か」という問いは意味をもたない。しかし、分子動力学法においては温度は定義するものであるので、「私はこの量を温度と呼ぶ」と宣言することになる。そこには様々な温度の定義があり得る。もちろん平衡状態では熱力学と整合するように選ばれるべきだが、後で見るように、異なる温度の定義は非平衡状態では一致しない。MDにおいては「温度とは何か」という問いは本質的な問いとなる。同様にMDにおいては圧力も定義するものであり、その定義には複数の立場があり得る。特に界面がある系における圧力定義は微妙な問題となるので、後でそれにも触れる。</p>
+<h2 id="温度とは">温度とは</h2>
+<h3 id="マクスウェル分布と温度">マクスウェル分布と温度</h3>
+<p>温度とは何であろうか？我々は日常的に「熱い/冷たい」「暑い/寒い」と、温度を感じており、温度という量が自然に存在することに疑問を抱かない。しかし、以前に述べたように分子動力学法における変数は運動量<span class="math inline">\(p_i\)</span>と座標<span class="math inline">\(q_i\)</span>のみであるから、この変数の組<span class="math inline">\(\{p_i, q_i\}\)</span>で温度を定義しなければならない。</p>
+<p>広く受け入れられているのは「温度は運動エネルギーに比例する」という事実を利用した定義だ。三次元<span class="math inline">\(N\)</span>粒子系を考えると、分子動力学法における温度<span class="math inline">\(T\)</span>は運動エネルギーを<span class="math inline">\(K\)</span>として</p>
+<p><span class="math display">\[
+T = \frac{2K}{3N k_\mathrm{B}}
+\]</span></p>
+<p>という量の時間平均で定義される。ただし、<span class="math inline">\(k_\mathrm{B}\)</span>はボルツマン定数である。簡単のため、全ての粒子の質量<span class="math inline">\(m\)</span>が等しいとすると、運動エネルギー<span class="math inline">\(K\)</span>の定義は</p>
+<p><span class="math display">\[
+K = \sum_i \frac{p_i^2}{2m}
+\]</span></p>
+<p>で与えられる。この量が温度と結びつくのは、運動量がマクスウェル分布に従うことから説明される。すなわち、温度<span class="math inline">\(T\)</span>の粒子系における運動量分布は、</p>
+<p><span class="math display">\[
+f(\{p_i \}) \propto \exp\left( \frac{\sum_i p_i^2}{2m k_\mathrm{B} T} \right)
+\]</span></p>
+<p>に従うことが知られており、ここからいわゆるエネルギー当分配則</p>
+<p><span class="math display">\[
+\left&lt; \frac{p_i^2}{2m}\right&gt; = \frac{1}{2} k_\mathrm{B} T
+\]</span></p>
+<p>が導かれる。これを認めれば運動エネルギーと温度が結びつく、というストーリーである。</p>
+<h3 id="カノニカル分布と温度">カノニカル分布と温度</h3>
+<p>さて、マクスウェル分布は観測事実であるが、これを別の基本原理から「導く」ことを考えてみよう。</p>
+<p>まず、ハミルトニアンを議論の出発点としよう。三次元<span class="math inline">\(N\)</span>粒子系で、全ての粒子の質量が等しい場合は、以下のようなハミルトニアンになるだろう。</p>
+<p><span class="math display">\[
+H = \sum_i \frac{p_i^2}{2m} + V(\{q_i\})
+\]</span></p>
+<p>ここで、<span class="math inline">\(V(\{q_i\})\)</span>は座標にのみ依存するポテンシャル関数とする。さて、<span class="math inline">\(p_i\)</span>と、<span class="math inline">\(q_i\)</span>が張る位相空間を<span class="math inline">\(\Gamma\)</span>としよう。この<span class="math inline">\(\Gamma\)</span>上に、分布関数<span class="math inline">\(f(\{p_i, q_i\})\)</span>を定める。これは、位相空間上の点<span class="math inline">\(\{p_i, q_i\}\)</span>における系の存在確率をあらわす。したがって、分布関数<span class="math inline">\(f\)</span>は規格化されていなければならない。</p>
+<p><span class="math display">\[
+\int f d \Gamma = 1
+\]</span></p>
+<p>次に、天下りだが、この分布関数の対数をとったものの平均に<span class="math inline">\(- k_\mathrm{B}\)</span>をかけた量を考え、<span class="math inline">\(S\)</span>と名前をつけよう。</p>
+<p><span class="math display">\[
+S = -k_\mathrm{B} \int f \ln f  d \Gamma
+\]</span></p>
+<p>もちろんこの量はエントロピーであるが、それがどういう量かはよくわからない。さて、なぜだかわからないが、あなたははこの<span class="math inline">\(S\)</span>という量を最大化したくなった。いま、系のエネルギーが<span class="math inline">\(E\)</span>であるとしよう。この条件で<span class="math inline">\(S\)</span>を最大化するには、規格化条件をラグランジュの未定乗数法で扱って、</p>
+<p><span class="math display">\[
+I = \alpha \int f d \Gamma + \int f \ln f d \Gamma
+\]</span></p>
+<p>の変分をとればよい。計算の便利のために、ラグランジュの未定乗数<span class="math inline">\(\alpha\)</span>にボルツマン定数を含めている。変分条件<span class="math inline">\(\delta I = 0\)</span>よりただちに、</p>
+<p><span class="math display">\[
+f = \frac{1}{\Omega}
+\]</span></p>
+<p>が導かれる。ただし、<span class="math inline">\(\Omega\)</span>は規格化条件から決まる以下の量である。</p>
+<p><span class="math display">\[
+\Omega = \int \delta(H-E) d \Gamma
+\]</span></p>
+<p>これは等エネルギー面の面積に他ならない。エネルギー一定条件のもとで<span class="math inline">\(S\)</span>分布関数が一定になることが導かれた</p>
+<p>ミクロカノニカル分布であり、ミクロカノニカルであれば分布関数は一定である、ということに対応している。</p>
+<p>ミクロカノニカルでは、エネルギー一定条件を考えたが、これを少し緩めて、エネルギーの期待値一定の条件にしてみよう。</p>
+<p>分布関数<span class="math inline">\(f\)</span>により、この系における物理量の期待値<span class="math inline">\(\left&lt;A\right&gt;\)</span>を以下のように定義する。</p>
+<p><span class="math display">\[
+\left&lt; A \right&gt; \equiv \int A f d \Gamma
+\]</span></p>
+<p>ハミルトニアン<span class="math inline">\(H\)</span>の期待値が内部エネルギー<span class="math inline">\(U\)</span>である。</p>
+<p><span class="math display">\[
+U \equiv \left&lt; H \right&gt; = \int Hf d \Gamma
+\]</span></p>
+<p>分布関数<span class="math inline">\(f\)</span>が規格化条件を満たし、内部エネルギー<span class="math inline">\(U\)</span>が一定である、という条件で<span class="math inline">\(S\)</span>を最大化することを考える。すると、ラグランジュの未定定数<span class="math inline">\(\alpha, \beta\)</span>を用いて、</p>
+<p><span class="math display">\[
+I = \alpha \int f d \Gamma
++ \beta \int H f d \Gamma
++ \int f \ln f d \Gamma
+\]</span></p>
+<p>の変分を取ればよい。先ほどと同様、後の便利のために<span class="math inline">\(\alpha, \beta\)</span>にボルツマン定数を吸収させ、かつ<span class="math inline">\(S\)</span>に関する条件式に負符号をつけていることに注意(これが自由エネルギー<span class="math inline">\(F = U - TS\)</span>になるように、<span class="math inline">\(S\)</span>の定義の負符号と変分の負符号がキャンセルするように選んでいる)。変分条件<span class="math inline">\(\delta I = 0\)</span>より、</p>
+<p><span class="math display">\[
+\alpha + \beta H + 1 + \ln f = 0
+\]</span></p>
+<p>ここからただちに分布関数が</p>
+<p><span class="math display">\[
+f = \mathrm{e}^{-(\alpha + 1)} \mathrm{e}^{-\beta H} d \Gamma
+\]</span></p>
+<p>となる。規格化条件から</p>
+<p><span class="math display">\[
+\mathrm{e}^{\alpha + 1} = \int  \mathrm{e}^{-\beta H} d \Gamma \equiv Z
+\]</span></p>
+<p>と<span class="math inline">\(\alpha\)</span>が求まるため、最終的に分布関数は</p>
+<p><span class="math display">\[
+f = Z^{-1} \mathrm{e}^{-\beta H}
+\]</span></p>
+<p>となる。これはボルツマン重みに従う分布、すなわちカノニカル分布に他ならない。</p>
+<p>さて、ここで<span class="math inline">\(S\)</span>をエントロピーだと思うことにしよう。<span class="math inline">\(S\)</span>と<span class="math inline">\(U\)</span>の間に熱力学関係式</p>
+<p><span class="math display">\[
+dS = \frac{dU}{T}
+\]</span></p>
+<p>が成り立つことを要請すると、残るラグランジュの未定定数<span class="math inline">\(\beta\)</span>は</p>
+<p><span class="math display">\[
+\beta = \frac{1}{k_\mathrm{B} T}
+\]</span></p>
+<p>と、温度と結びつく。このストーリーでは、「まず世の中にはエネルギー<span class="math inline">\(U\)</span>とエントロピー<span class="math inline">\(S\)</span>というものが存在し、<span class="math inline">\(U\)</span>一定の条件で<span class="math inline">\(S\)</span>を最大化しようとするとカノニカル分布が導かれ、エネルギーとエントロピーの熱力学関係式を要請すると、ラグランジュの未定定数<span class="math inline">\(\beta\)</span>が逆温度であることがわかる」という流れになっている。</p>
+<h3 id="一般化ビリアル">一般化ビリアル</h3>
+<p>さて、先程のような温度の導入をすると、運動エネルギー以外にも温度の定義ができることがわかる。</p>
+<p>カノニカル分布を持つ系において、ビリアルと呼ばれる量<span class="math inline">\(p_i \partial_{p_i} H\)</span>を考えてみよう。このビリアルについて、以下の関係が成り立つ。</p>
+<p><span class="math display">\[
+\left&lt;p_i \frac{\partial H}{\partial p_i} \right&gt; = \frac{1}{\beta}
+\]</span></p>
+<p>これは部分積分を使うだけで容易に証明できる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\left&lt;p_i \frac{\partial H}{\partial p_i} \right&gt; &amp;= Z^{-1} \int p_i \frac{\partial H}{\partial p_i} \exp(-\beta H) d \Gamma \\
+&amp;=  Z^{-1} \int \frac{p_i}{(-\beta)} \frac{\partial}{\partial  p_i} \left(\exp(-\beta H)\right)  d\Gamma\\
+&amp;= \frac{Z^{-1}}{\beta} \int \frac{\partial p_i}{\partial p_i}  \exp(-\beta H)  d \Gamma\\
+&amp;= \frac{1}{\beta}
+\end{aligned}
+\]</span></p>
+<p>ここで、ハミルトニアンの定義から</p>
+<p><span class="math display">\[
+p_i \frac{\partial H}{\partial p_i} = \frac{p_i}{m}
+\]</span></p>
+<p>であるから、等分配則</p>
+<p><span class="math display">\[
+\left&lt;  \frac{p_i}{2m} \right&gt; = \frac{1}{2 \beta}
+\]</span></p>
+<p>が導かれた。</p>
+<p>さて、導出を見ると、<span class="math inline">\(p_i\)</span>を<span class="math inline">\(q_i\)</span>に変えても全く同様なことができる。</p>
+<p><span class="math display">\[
+\left&lt;q_i \frac{\partial H}{\partial q_i}  \right&gt; = \frac{1}{\beta}
+\]</span></p>
+<p>運動量のビリアルから定まる温度を <strong>運動温度 (Kinetic Temperature)</strong> 、<strong>座標から決まる温度を状態温度(Configuration Temperature)</strong> と呼んで区別することがある。この二つの温度は、系がカノニカル分布に従う場合、すなわち平衡状態にある場合は一致するが、一般に非平衡状態においては一致しない。</p>
+<p>ここまでの議論において、ビリアルの期待値から温度が出てくるのは、要するに分布関数が<span class="math inline">\(\exp(-\beta H)\)</span>という形をしていることと部分積分を使っているだけなので、さらに一般化することができる。位相空間<span class="math inline">\(\{p_i, q_i\}\)</span>をまとめて<span class="math inline">\(\{z_i\}\)</span>と表記しよう。これは運動量と座標をまとめて連番を振ったもの、つまり、</p>
+<p><span class="math display">\[
+\{z_i\} = \{p_1, p_2, \cdots, q_1, q_2, \cdots \}
+\]</span></p>
+<p>である。何か適当な量<span class="math inline">\(B_i\)</span>と、<span class="math inline">\(\partial_{z_i} H\)</span>との積<span class="math inline">\(B_i \partial_{z_i} H\)</span>を考える。部分積分により、</p>
+<p><span class="math display">\[
+\left&lt;B_i \frac{\partial H}{\partial z_i} \right&gt;
+= \frac{1}{\beta}
+\left&lt;\frac{\partial B_i}{\partial z_i} \right&gt;
+\]</span></p>
+<p>さて、いま位相空間<span class="math inline">\(\Gamma = \{z_i\}\)</span>中に、ベクトル場<span class="math inline">\(\vec{B}\)</span>が定義されているとしよう。先ほどの式はそれぞれの座標成分<span class="math inline">\(z_i\)</span>ごとに成り立つので、全ての成分について和をとると、以下のようにベクトルの形で書くことができる。</p>
+<p><span class="math display">\[
+\left&lt;\vec{B} \cdot \nabla H \right&gt;
+= \frac{1}{\beta}
+\left&lt;\nabla \cdot \vec{B} \right&gt;
+\]</span></p>
+<p>この式の左辺を一般化ビリアルと呼ぶ。<span class="math inline">\(\vec{B}\)</span>が運動量成分しか含まない場合、すなわち</p>
+<p><span class="math display">\[
+\vec{B} = (p_1, p_2, \cdots, p_N, 0, \cdots, 0)
+\]</span></p>
+<p>の場合に導かれる温度は運動温度となり、いわゆるエネルギー等分配則を表す。逆に、<span class="math inline">\(\vec{B}\)</span>が座標成分しか含まない場合は、状態温度を導く。</p>
+<h3 id="温度の幾何学的定義">温度の幾何学的定義</h3>
+<p>先ほど、エントロピー最大化条件からカノニカル分布を導き、そこからビリアルによって温度を定義した。しかし、分子動力学法において、ハミルトンの運動方程式に従う時間発展を考えるとエネルギーが一定に保たれるのであるから、結果として得られる分布は(系がエルゴード的であれば)ミクロカノニカル分布となる。もちろん、系の自由度が大きくなれば分布がデルタ関数的になり、ミクロカノニカルとカノニカルの区別はほとんどなくなるのだが、ハミルトンの運動方程式が厳密にエネルギーを保存する以上、まずミクロカノニカルで温度を定義し、それが<span class="math inline">\(N \rightarrow \infty\)</span>の極限でカノニカル分布における温度と一致することを確認したくなる。</p>
+<p>以下では、「温度の幾何学的定義」により、ミクロカノニカル分布における温度を定義してみよう。</p>
+<p>TODO: 温度の幾何学的定義の説明</p>
+</article>
+</body>
+</html>

@@ -178,9 +178,86 @@ J_{i \leftarrow j} &amp;\equiv \frac{1}{2}  F_{i \leftarrow j} (p_i + p_j) \\
 <p>二つの粒子に同じ向きに初速<span class="math inline">\(v_0\)</span>を与えるのも、速度<span class="math inline">\(-v_0\)</span>で通り過ぎる観測者から見るのも同じことであるから、粒子間のエネルギー流は、重心速度や観測者との相対速度に依存する、ということを意味する。</p>
 <p>これがどれくらい問題であるかは、何をやりたいかによる。大きな分子が相対距離を保ちながら並進運動をしている時に、「運動方向と逆向きに分子内にエネルギーが流れている」と解釈すべきかどうかは筆者にはわからないが、「奇妙だな」とは思うであろう。このように、物理量の局所定義は、数式的には自然でも、その解釈には「奇妙だな」と思う点がよく出てくる。</p>
 <h2 id="圧力定義">圧力定義</h2>
-<p>さて、二体関数がかかわる物理量の例として圧力を考えてみよう。</p>
-<p>TODO: 圧力定義</p>
-<p>TODO: Irving-Kirkwood</p>
+<p>さて、二体関数がかかわる物理量の例として圧力を考えてみよう。粒子系の圧力はビリアル定理から求めることが多いのだが、ここでは「分子動力学法の世界にはハミルトニアンしか存在しない」という立場から、分配関数経由で導出する。</p>
+<p>まず、熱力学関係式</p>
+<p><span class="math display">\[
+P = - \left(\frac{\partial F}{\partial V} \right)_T
+\]</span></p>
+<p>から出発しよう。<span class="math inline">\(P\)</span>は圧力、<span class="math inline">\(T\)</span>が温度、<span class="math inline">\(F\)</span>はヘルムホルツ自由エネルギーである。</p>
+<p>ヘルムホルツ自由エネルギーは分配関数<span class="math inline">\(Z\)</span>を用いて</p>
+<p><span class="math display">\[
+F = - k_B T \ln Z
+\]</span></p>
+<p>と書けるので、</p>
+<p><span class="math display">\[
+\begin{aligned}
+P &amp;= - \left(\frac{\partial F}{\partial V} \right)_T\\
+&amp;= k_B T \frac{\partial\ln Z }{\partial V}
+= k_B T \frac{1}{Z} \frac{\partial Z}{\partial V}
+\end{aligned}
+\]</span></p>
+<p>となる。さて、分配関数はハミルトニアン<span class="math inline">\(H\)</span>を用いて</p>
+<p><span class="math display">\[
+Z = \int d \Gamma \mathrm{e}^{-\beta H}
+\]</span></p>
+<p>であったから、</p>
+<p><span class="math display">\[
+\frac{\partial Z}{\partial V} = \int d \Gamma \left(-\beta \frac{\partial H}{\partial V} \right) \mathrm{e}^{-\beta H}
+\]</span></p>
+<p>である。これを先程の式に代入して整理すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+P &amp;= - Z^{-1} \int d \Gamma \left(\frac{\partial H}{\partial V} \right) \mathrm{e}^{-\beta H} \\
+&amp;= -\left&lt; \frac{\partial H}{\partial V} \right&gt;
+\end{aligned}
+\]</span></p>
+<p>すなわち、圧力を求めるにはハミルトニアンの体積微分のアンサンブル平均を取れば良い。 もちろんこの式は、熱力学関係式</p>
+<p><span class="math display">\[
+P = - \left(\frac{\partial U}{\partial V} \right)_S
+\]</span></p>
+<p>に対応している。</p>
+<p>さて、ハミルトニアンの体積微分を取るために、系のサイズを変化させることを考えよう。一辺<span class="math inline">\(L\)</span>の立方体の系を考えると、<span class="math inline">\(V=L^3\)</span>である。この系の長さを一様に<span class="math inline">\(L \rightarrow \alpha L\)</span>と拡大することを考える。</p>
+<p>拡大された世界のハミルトニアンは</p>
+<p><span class="math display">\[
+H(\alpha) = \sum_i \frac{\alpha^2 \vec{p}_i^2}{2m} + \sum_{i &lt; j} \Phi(\alpha r_{ij})
+\]</span></p>
+<p>となる。</p>
+<p>やや紛らわしいが、<span class="math inline">\(\alpha = 1\)</span>の時の体積を<span class="math inline">\(V\)</span>とすると、<span class="math inline">\(V \rightarrow \alpha^3 V\)</span>となるから</p>
+<p><span class="math display">\[
+dV = 3 \alpha^2 V d \alpha
+\]</span></p>
+<p>となる(微分する変数としての<span class="math inline">\(V\)</span>と基準体積<span class="math inline">\(V\)</span>で同じ記号を使っていることに注意)。これにより、</p>
+<p><span class="math display">\[
+\frac{\partial H}{\partial V} = \lim_{\alpha \rightarrow 1} \frac{\partial H}{\partial \alpha} \frac{d \alpha}{dV}
+\]</span> <span class="math inline">\(V\)</span>による微分を<span class="math inline">\(\alpha\)</span>による微分に置き換えることができる。以下、<span class="math inline">\(\partial H/\partial \alpha\)</span>を計算しよう。</p>
+<p>まず、運動エネルギー部分は簡単で、</p>
+<p><span class="math display">\[
+\lim_{\alpha \rightarrow 1}\frac{\partial K(\alpha)}{\partial \alpha} =
+\lim_{\alpha \rightarrow 1} \sum_i \frac{2 \alpha \vec{p}_i^2}{2m} = 2K
+\]</span></p>
+<p>つまり、運動エネルギーの二倍である。</p>
+<p>次にポテンシャル部分の計算であるが、</p>
+<p><span class="math display">\[
+r_{ij} = |\vec{r}_i - \vec{r}_j|
+\]</span></p>
+<p><span class="math display">\[
+\vec{F}_{ij} = - \Psi&#39;(r_{ij}) \frac{\vec{r}_i - \vec{r}_j}{|\vec{r}_i - \vec{r}_j|}
+\]</span></p>
+<p>であることに注意すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\lim_{\alpha \rightarrow 1} \frac{\partial \Psi(\alpha r_{ij})}{\partial \alpha} &amp;= r_{ij} \Psi&#39;(r_{ij}) \\
+&amp;= \sum_{i &lt; j} \vec{F}_{ij} \cdot (\vec{r}_i - \vec{r}_j)\\
+&amp;= \sum_i \vec{F}_i \cdot \vec{r}_i
+\end{aligned}
+\]</span></p>
+<p>ただし、途中で作用反作用の法則を用いた。</p>
+<p>以上から、</p>
+<p><span class="math display">\[
+P = \frac{1}{3V} \left(2 K + \sum_i \vec{F}_i \cdot \vec{r}_i \right)
+\]</span></p>
+<p>いわゆるビリアル定理が導かれた。導出を見れば、分母の<span class="math inline">\(3V\)</span>は<span class="math inline">\(d\alpha /d V\)</span>から、運動エネルギーの2倍のファクターは<span class="math inline">\(\alpha^2 \vec{p}_i^2\)</span>の<span class="math inline">\(\alpha\)</span>微分から出てくることがわかるであろう。</p>
+<p>TODO: まだところどころ符号が怪しい。</p>
 </article>
 </body>
 </html>

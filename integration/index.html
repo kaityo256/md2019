@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h2 id="時間積分とは何か">時間積分とは何か</h2>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<h1 id="分子動力学法における時間積分">分子動力学法における時間積分</h1>
+<p>何か物理系が、変数の組<span class="math inline">\(\vec{x} = (x_1, x_2, \cdots)\)</span>で記述されているとしよう。この変数が時間に依存しており、その時間微分<span class="math inline">\(\dot{\vec{x}}\)</span>が、<span class="math inline">\(\vec{x}\)</span>の関数として書かれている時、この系を <em>力学系(Dynamical System)</em> と呼ぶ。特に、外力がなく、系を記述する変数だけで方程式が閉じている時、この系を <em>自励的(autonomous)</em> と言う。以下、自励的な系のみを扱う。</p>
+<p>我々は、時刻<span class="math inline">\(t=0\)</span>における系の状態<span class="math inline">\(\vec{x}(0)\)</span>を指定した時、任意の時刻<span class="math inline">\(t\)</span>の系の状態<span class="math inline">\(\vec{x}(t)\)</span>を知りたい。このような問題設定を初期値問題と呼び、数値計算における基本課題となっている。以下、簡単のために一次元系で考えよう。方程式は以下のように表現されている。</p>
+<p><span class="math display">\[
+\frac{dx }{dt} = f(x)
+\]</span></p>
+<p>これを形式的に積分すると、任意の時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(x\)</span>の値は以下のように求めることができる。</p>
+<p><span class="math display">\[
+x(t) = x(0) + \int_0^t f(x) dt
+\]</span></p>
+<p>さて、右辺の積分は一般には厳密に求積することはできない。そこでなんらかの近似を行うことにしよう。最も簡単な近似は、短い時間<span class="math inline">\(h\)</span>の間であれば<span class="math inline">\(f(t)\)</span>はあまり変化しないと思って、定数として扱ってしまうことであろう。</p>
+<p><span class="math display">\[
+x(t+h) = x(t) + \int_t^{t+h} f(x) dt \sim x(t) + f(x)h
+\]</span></p>
+<p>こうして、<span class="math inline">\(x(t)\)</span>から<span class="math inline">\(x(t+h)\)</span>が求まるので、<span class="math inline">\(t=0\)</span>から<span class="math inline">\(h\)</span>刻みで次々と状態を更新していけば、任意の時刻の<span class="math inline">\(x(t)\)</span>を求めることができる。このような方法を数値積分と呼び、特に今回の積分方法はオイラー法と呼ばれる。</p>
+<p>このオイラー法の精度を調べてみよう。<span class="math inline">\(x(t+h)\)</span>を<span class="math inline">\(t\)</span>のまわりでテイラー展開してみよう。</p>
+<p><span class="math display">\[
+x(t + h) = x(t) + \dot{x}(t) h + O(h^2)
+\]</span></p>
+<p>ここで、<span class="math inline">\(\dot{x} = f(x)\)</span>であったから、</p>
+<p><span class="math display">\[
+x(t + h) = x(t) + f(x) h + O(h^2)
+\]</span></p>
+<p>オイラー法は、<span class="math inline">\(h\)</span>に関して一次まで正しい。これを一次精度であると呼ぶ。さて、オイラー法は非常に精度が悪く、数値解が指数関数的に厳密解から離れていくことが知られている。</p>
+<p>さて、オイラー法は、本来は時刻<span class="math inline">\(t\)</span>から<span class="math inline">\(t+h\)</span>まで時々刻々と変化する微分係数<span class="math inline">\(f(x)\)</span>を、時刻<span class="math inline">\(t\)</span>での値で代表させたのだが、さすがにこれは乱暴に過ぎた。そこで、時間刻み<span class="math inline">\(h\)</span>ではなく、その中点<span class="math inline">\(h/2\)</span>での時間微分を使うことにしよう。</p>
+<p>まず、系を一次のオイラー法で<span class="math inline">\(h/2\)</span>だけ時刻を進める。すると、その場所<span class="math inline">\(x_m\)</span>は</p>
+<p><span class="math display">\[
+x_m = x(t) + \frac{f(x)h}{2}
+\]</span></p>
+<p>となる。この地点での微分係数<span class="math inline">\(f(x_m)\)</span>を使って、あらためて現在地点<span class="math inline">\(x(t)\)</span>から<span class="math inline">\(x(t+h)\)</span>の位置を推定すると、</p>
+<p><span class="math display">\[
+x(t+h) = x(t) + f(x_m) h
+\]</span></p>
+<p>となる。これは中点法と呼ばれ、二次精度となる。念の為に確認しておこう。<span class="math inline">\(x(t+h)\)</span>を二次までテイラー展開しよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\ddot{x} &amp;= \frac{df}{dt} \\
+&amp;=\frac{df}{dx} \frac{dx}{dt}  \\
+&amp;= f&#39;(x) f(x)
+\end{aligned}
+\]</span></p>
+<p>であることに注意すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+x(t+h) &amp;= x(t) + \dot{x}(t) h + \frac{\ddot{x}h^2}{2} +O(h^3)\\
+&amp;= x(t) + f(x) h + \frac{f&#39;(x)f(x)h^2}{2} +O(h^3)
+\end{aligned}
+\]</span></p>
+<p>となる。また、中点法は、</p>
+<p><span class="math display">\[
+\begin{aligned}
+x(t+h) &amp;= x(t) + f(x_m) h \\
+&amp;= x(t) + f\left( x(t) + \frac{f(x)h}{2} \right)h \\
+&amp;= x(t) + f(x)h + \frac{f&#39;(x) f(x)h^2}{2} + O(h^3)
+\end{aligned}
+\]</span> となり、<span class="math inline">\(x(t+h)\)</span>のテイラー展開と<span class="math inline">\(h\)</span>の二次まで一致する。ここでは中点を一つだけとったが、これを4点とるのが古典的なRunge-Kutta法であり、比較的実装が容易で4次精度と精度が高いために広く使われている。</p>
+<p>その他、これまでの軌跡を覚えておいて、そこから線形補完して場所を予測し、予測点を使って改めて将来の点を修正する、予測子-修正子法も広く使われている。</p>
+<h2 id="運動方程式の時間積分">運動方程式の時間積分</h2>
+<h3 id="オイラー法">オイラー法</h3>
+<p>さて、分子動力学法の運動方程式を考えよう。簡単のために一次元系を考える。ハミルトニアン<span class="math inline">\(H(p,q)\)</span>に支配されている系の運動方程式は以下のように書けるのだった。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= - \frac{\partial H}{\partial q} \\
+\dot{q} &amp;= \frac{\partial H}{\partial p} \\
+\end{aligned}
+\]</span></p>
+<p>この系は<span class="math inline">\((p,q)\)</span>の変数の組で記述されており、ハミルトニアン<span class="math inline">\(H\)</span>は<span class="math inline">\(p,q\)</span>の関数であるから、変数の時間微分が自身の関数として表現されている。つまり、ハミルトンの運動方程式も力学系である。力学系であるから、通常の常微分方程式の数値積分法を使うことができる。</p>
+<p>いま、系として調和振動子を考えよう。ハミルトニアンは<span class="math inline">\(H=p^2/2 + q^2/2\)</span>であり、運動方程式は以下のように書ける。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= - q \\
+\dot{q} &amp;= p \\
+\end{aligned}
+\]</span></p>
+<p>さて、運動方程式における初期値問題とは、ある時刻<span class="math inline">\(t=0\)</span>における初期値<span class="math inline">\((p(0),q(0))\)</span>から、任意の時刻<span class="math inline">\(t\)</span>における値<span class="math inline">\((p(t),q(t))\)</span>を求めることである。まず、オイラー法を適用してみよう。時刻<span class="math inline">\(t\)</span>の時の微分係数を使って<span class="math inline">\(t+h\)</span>の座標を予測するのであるから、</p>
+<p><span class="math display">\[
+\begin{aligned}
+p(t+h) &amp;= p - q h \\
+q(t+h) &amp;= q + p h \\
+\end{aligned}
+\]</span></p>
+<p>と求めることができる。なお、煩雑なので<span class="math inline">\(p(t)\)</span>や<span class="math inline">\(q(t)\)</span>は<span class="math inline">\(p\)</span>、<span class="math inline">\(q\)</span>と記述した。さて、時間非依存なハミルトンの運動方程式は、</p>
+<p><span class="math display">\[
+\dot{H} = \frac{\partial H}{\partial p} \dot{p} + \frac{\partial H}{\partial q} \dot{q} = 0
+\]</span></p>
+<p>であるから、ハミルトニアンが保存量となる。調和振動子系なら、<span class="math inline">\(p^2/2+q^2/2\)</span>が保存されなければならない。計算してみよう。</p>
+<p><span class="math display">\[
+p(t+h)^2 + q(t+h)^2 = (p-qh)^2 + (q + ph)^2 = (1+h^2)(p^2+q^2)
+\]</span></p>
+<p>つまり、時刻<span class="math inline">\(t\)</span>においてエネルギーが<span class="math inline">\(p^2+q^2\)</span>であった系は、1ステップ後に<span class="math inline">\((1+h^2)\)</span>倍に、<span class="math inline">\(n\)</span>ステップ進むと<span class="math inline">\((1+h^2)^n\)</span>倍になる。「オイラー法が厳密解から指数関数的にずれる」という意味がわかるであろう。</p>
+<h3 id="velocity-verlet法">Velocity Verlet法</h3>
+<p>さて、調和振動子の運動方程式をオイラー法で数値積分するとエネルギーがあっという間に発散することがわかった。そこで、Runge-Kuttaや予測子-修正子法のような高次の数値積分法を使っても良いのだが、より簡便で、かつ非常に安定な数値積分法が発見された。velocity Verlet (VV)法である。以下の運動方程式を考えよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= f \\
+\dot{q} &amp;= p \\
+\end{aligned}
+\]</span></p>
+<p>簡単のために一次元系で、質量を1としている。<span class="math inline">\(f(q)\)</span>は力であり、ポテンシャル<span class="math inline">\(V(q)\)</span>によるものなら<span class="math inline">\(f(q) = -V&#39;(q)\)</span>である。この運動方程式に対して、VV法は、以下のように構成される。</p>
+<p>まず、位置については、二次までテイラー展開する。</p>
+<p><span class="math display">\[
+\begin{aligned}
+q(t+h) &amp;= q(t) + \dot{q}(t) h + \frac{\ddot{q}(t)h^2}{2} \\
+&amp;= q + p h + \frac{f h^2}{2}
+\end{aligned}
+\]</span></p>
+<p>ここで、運動方程式では位置の時間微分は速度、速度(運動量)の時間微分は力であるから、それぞれ既知なのがミソである。</p>
+<p>速度も二次まで展開したいが、速度の微分は力であり、力の微分まで計算するのは面倒だ。そこで、差分を工夫する。先程、すでに時刻<span class="math inline">\(t+h\)</span>における位置<span class="math inline">\(q(t+h)\)</span>がわかっているので、その場所における力<span class="math inline">\(f(t+h)\)</span>を使うことができる。すると、</p>
+<p><span class="math display">\[
+p(t+h) = p + \frac{f(t+h)+ f(t)}{2}h
+\]</span></p>
+<p>と表すことができる。これが二次まで正しいテイラー展開になっていることは容易に確認できるであろう。</p>
+<p>さて、このようにして構築されたVV法は、位置に関しても運動量に関しても二次まで正しい展開になっているため、二次精度の数値積分法になっていることが予想される。事実、VV法は二次精度なのだが、この時間発展を行うと <strong>エネルギーが厳密に保存する</strong>。</p>
+<p>実際に調和振動子系で確認してみよう。VV法を適用すると</p>
+<p><span class="math display">\[
+\begin{aligned}
+q(t+h) &amp;= q + p h - \frac{q h^2}{2} \\
+&amp;= h p + \left( 1 - \frac{h^2}{2}\right)q \\
+p(t+h) &amp;= p - \frac{q(t+h) + q(t)}{2} h\\
+&amp;= \left(1 - \frac{h}{2}\right)p + \left(-h + \frac{h^3}{4} \right)q \end{aligned}
+\]</span></p>
+<p>エネルギーの保存を確認すると、</p>
+<p><span class="math display">\[
+p(t+h)^2 + q(t+h)^2 = p^2 + q^2
+\]</span></p>
+<p>となっており、VV法はステップが進んでもエネルギーが厳密に保存される。実はVV法は、シンプレクティック積分と呼ばれる手法の一種になっている。シンプレクティック積分は、軌道は厳密解からずれるものの、エネルギーが厳密に保存するために長時間の安定した計算を可能とするため、分子動力学法で広く使われている。</p>
+<p>以下ではシンプレクティック積分について紹介する。</p>
+<p>TODO:調和振動子の行列表示</p>
+<p>TODO:リュービル演算子と指数分解公式</p>
+<p>TODO:VV法がシンプレクティック積分になっていることの証明</p>
+</article>
+</body>
+</html>
