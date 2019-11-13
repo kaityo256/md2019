@@ -203,7 +203,7 @@ $$
 P \\
 Q
 \end{pmatrix}
-= 
+=
 U(h)
 \begin{pmatrix}
 p \\
@@ -236,8 +236,8 @@ $$
 U(h)
 = 
 \begin{pmatrix}
-h & 1 - h^2/2 \\
-1 - h^2/2 & -h + h^3/4
+1 - h^2/2 & h \\
+-h + h^3/4 & 1 - h^2/2
 \end{pmatrix}
 $$
 
@@ -245,7 +245,7 @@ $$
 
 ## シンプレクティック積分
 
-### リュービル演算子と指数分解公式
+### リュービル演算子
 
 VV法が調和振動子の場合にエネルギーを保存するのは、時間発展を記述する行列の行列式が1であることに対応していた。一般の系の場合は時間発展を記述するのが演算子ではなく演算子になる。ここでは、VV法がエネルギーを保存するシンプレクティック積分であることを示すための数学的な準備をしよう。以下簡単のため一自由度系を考える。ハミルトニアン$H(p,q)$で記述される系の運動を考えよう。運動方程式は以下のように記述される。
 
@@ -264,6 +264,271 @@ $$
 A(t+h) = U(h) A(t)
 $$
 
+ここで、$A(t+h)$を$t$のまわりでテイラー展開しよう。
 
-### VV法のシンプレクティック性
+$$
+\begin{aligned}
+A(t+h) &= A(t) + h \frac{dA}{dt} + \frac{h^2}{2} \frac{d^2A}{dt^2} + \cdots \\
+&= \sum_{k=0} \frac{h^k}{k!} \frac{d^k}{dt^k} A\\
+&= \underbrace{\exp\left(h \frac{d}{dt}\right)}_{U(h)} A \\
+&= U(h) A(t)
+\end{aligned}
+$$
 
+ここから、時間発展演算子$U(h)$は以下のように書けることがわかった。
+
+$$
+U(h) = \exp\left(h \frac{d}{dt}\right)
+$$
+
+さて、$A$は$p,q$にのみ依存する関数であったから、
+
+$$
+\begin{aligned}
+\frac{dA}{dt} &= 
+\frac{\partial A}{\partial q}\dot{q}
++\frac{\partial A}{\partial q}\dot{q} \\
+&= 
+\underbrace{
+\left(
+\dot{q} \frac{\partial}{\partial q} +
+\dot{p} \frac{\partial}{\partial p}
+\right)
+}_{i\mathcal{L}}
+A \\
+&= i\mathcal{L}A
+\end{aligned}
+$$
+
+ここに表れた$\mathcal{L}$をリュービル演算子と呼ぶ。虚数単位$i$をつけるのは、リュービル演算子をエルミートにするためである(後述)。
+
+先程の式を見ると、形式的に
+
+$$
+\frac{d}{dt} = i\mathcal{L}
+$$
+
+となっているので、リュービル演算子は時間微分を与える演算子となっている。先程のテイラー展開の式に代入すると、
+
+$$
+A(t+h) = \exp(i h\mathcal{L}) A(t)
+$$
+
+以上から、時間発展演算子$U$は、時間微分演算子$i\mathcal{L}$を指数の肩に乗せたものであることがわかった。
+
+リュービル演算子についてもう少し見てみよう。リュービル演算子は
+
+$$
+i \mathcal{L} = \dot{q} \frac{\partial}{\partial q} +
+\dot{p} \frac{\partial}{\partial p}
+$$
+
+と書けた。$p,q$はハミルトンの運動方程式に従うため、$\dot{p}, \dot{q}$をハミルトニアンを用いて書き直すと、
+
+$$
+i \mathcal{L} = \frac{\partial H}{\partial p} \frac{\partial}{\partial q} - \frac{\partial H}{\partial q} \frac{\partial}{\partial p}
+$$
+
+と書ける。リュービル演算子を用いると、$p,q$で記述される任意の量の時間微分を表現できる。もちろん$p,q$自身の時間微分も表現できるので、運動方程式は以下のように記述できる。
+
+$$
+\frac{d}{dt}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+=
+i \mathcal{L}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+$$
+
+両辺を形式的に積分してみよう。リュービル演算子が時間に依存しない場合は、
+
+$$
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+=
+\exp\left(i h \mathcal{L}\right)
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+$$
+
+これは、先程得られた「時間発展演算子はリュービル演算子を指数関数の肩に乗せたもの」
+
+$$
+U(h) = \exp\left(i h \mathcal{L}\right)
+$$
+
+という結果と同じである。
+
+### 指数分解公式
+
+さて、運動方程式が与えられればリュービル演算子の表式がわかる。そして、リュービル演算子がわかれば、それを指数の肩に乗せれば時間発展演算子が得られる。この時間発展演算子の表式が厳密に求められれば、その系は「解けた」ことになる。厳密に解ける例として、調和振動子を考えよう。
+
+運動方程式は行列の形で
+
+$$
+\begin{aligned}
+\frac{d}{dt}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+&=
+\underbrace{
+\begin{pmatrix}
+0 & -1 \\
+1 & 0
+\end{pmatrix}
+}_{L}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix} \\
+&=
+L
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\end{aligned}
+$$
+
+と書ける。いま、リュービル演算子が行列$L$で書けているので、これを指数の肩の上に乗せると時間発展行列(演算子)が得られる。
+
+$$
+U(h) = \exp(h L)
+$$
+
+線形代数の講義でやったように、$L$を対角化するなどすれば厳密に計算できて、
+
+$$
+U(h) =
+\begin{pmatrix}
+\cos h & \sin h \\
+-\sin h & \cos h
+\end{pmatrix}
+$$
+
+となる。つまり、調和振動子の時間発展は回転で表すことができる。しかし、一般に時間発展行列(演算子)は厳密に求めることができないので、なんらかの近似をすることになる。
+
+まず、オイラー法は以下のように近似している。
+
+$$
+U_E(h)=
+\begin{pmatrix}
+1 & h \\
+- h & 1
+\end{pmatrix}
+$$
+
+厳密解と見比べてみて、1次まで正しい近似になっていることがわかるであろう。
+
+さて、VV法はこうなっていた。
+
+$$
+U(h)
+= 
+\begin{pmatrix}
+1 - h^2/2 & h \\
+-h + h^3/4 & 1 - h^2/2
+\end{pmatrix}
+$$
+
+VV法による近似は、テイラー展開の二次まで正しい。ただし、三次の項をうまく付け加えることで、この行列の行列式を1にしているのがポイントである。
+
+さて、今回はある行列$L$を指数の肩に乗せた$\exp(hL)$の表式が厳密に求められたが、そのためには$L$を対角化する必要があり、もし対角化できたら問題は解けたと同義である。そこで、$\exp(hL)$を近似することを考えよう。
+
+いま、行列$L$が、$L = A + B$と二つの行列の和で書けるとしよう。一般に$A$と$B$は非可換であるので、
+
+$$
+\mathrm{e}^{A+B} \neq \mathrm{e}^{A} \mathrm{e}^{B}
+$$
+
+である。しかし、以下の等式が成り立つことが知られている。
+
+$$
+\mathrm{e}^{A+B} = \lim_{n \rightarrow}
+\left(
+\mathrm{e}^{A/n} \mathrm{e}^{B/n}
+\right)^n
+$$
+
+これをリー・トロッター公式と言う。この式は$n$を無限に飛ばすと厳密だが、それを有限で止めることで、以下のように近似できる。
+
+$$
+\begin{aligned}
+\exp(h L) &= \exp(h A) \exp(h B) + O(h^2) \\
+\exp(h L) &= \exp(h/2 B) \exp(h A) \exp(h/2 B)+ O(h^3) \\
+\end{aligned}
+$$
+
+これを指数分解公式と呼ぶ。
+
+さて、ここで
+
+$$
+A^2 = 0, B^2=0
+$$
+
+という性質があったとしよう。すると、これらを指数の肩に乗せても二次以降が消えてしまうので、
+
+$$
+\begin{aligned}
+\exp(h A) &= hA \\
+\exp(h B) &= hB \\
+\end{aligned}
+$$
+
+と、厳密に和が取れてしまう。このような分解を利用して数値積分を構成するのがシンプレクティック積分である。
+
+調和振動子のリュービル演算子は
+
+$$
+L =
+\begin{pmatrix}
+0 & -1 \\
+1 & 0
+\end{pmatrix}
+$$
+
+であった。これを
+
+$$
+\begin{aligned}
+L &=
+\begin{pmatrix}
+0 & -1 \\
+1 & 0
+\end{pmatrix} \\
+&=
+\underbrace{
+\begin{pmatrix}
+0 & -1 \\
+0 & 0
+\end{pmatrix}}_A
++
+\underbrace{
+\begin{pmatrix}
+0 & 0 \\
+1 & 0
+\end{pmatrix}}_B \\
+& =
+A+B
+\end{aligned}
+$$
+
+と分解しよう。明らかに$A^2 = B^2 = 0$である。
+
+TODO: 一次と二次のシンプレクティック積分を書いて、二次がVVと等価であることを示す
+
+TODO: 微分演算子の場合のシンプレクティック積分を導出する
+
+TODO: ヤコビアンの話をここでするか考えること
