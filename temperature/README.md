@@ -18,6 +18,83 @@ TODO: 時間の制御？
 
 TODO: Nose-Hoover法
 
+## Nose-Hoover法の導出
+
+先程は能勢のハミルトニアンから導出された運動方程式を、変数変換することでNose-Hoover法が導出された。以下では逆に、「定常状態として指定の温度のカノニカル分布が実現するとしたら、運動方程式はどのような形でなければならないか」を考えてみよう。以下、簡単のために一自由度系を考える。
+
+今、カノニカル分布を実現したいハミルトニアン$H_0(p,q)$があるとする。実現したい分布は
+
+$$
+f(p,q) \sim \exp(-\beta H)
+$$
+
+である。ただし、$\beta = 1/kT$は逆温度である。この位相空間は$(p,q)$で張られている。
+
+さて、この分布を直接実現するのは難しそうなので、自由度$\zeta$を追加し、拡大された位相空間$(p,q,\zeta)$を考える。この空間で、$\zeta$も含めたカノニカル分布
+
+$$
+f_\mathrm{ex}(p,q,\zeta) \sim \exp(-\beta H)\exp\left(-\beta \frac{\zeta^2}{2Q}\right)
+$$
+
+を考えよう。$Q$の意味は後述する。もしこの分布が実現されたなら、$\zeta$に関して積分してしまうことで、所望の分布$f$を得ることができる。
+
+$$
+f_0 = \int_{-\infty}^{\infty} f_\mathrm{ex} d \zeta \sim \exp(-\beta H) 
+$$
+
+さて、拡大された位相空間$(p,q,\zeta)$に、先程の分布関数$f$を定常状態に持つような運動方程式を導入したい。ハミルトンの運動方程式の場合には「作用を最小化する」という変分原理から運動方程式が導けたが、温度制御された系にはそのような変分原理は存在しないので、適当に決めることになる。
+
+とりあえずハミルトニアンの運動方程式をなるべく修正しない方向で検討しよう。温度制御のため、運動量$p$と追加自由度$\zeta$の相互作用は必要であろう。そこで、以下のような運動方程式を考えてみる。
+
+$$
+\begin{aligned}
+\dot{p} &= -\frac{\partial H}{\partial q} - \phi_p(p,\zeta) \\
+\dot{q} &= \frac{\partial H}{\partial p} \\
+\dot{\zeta} &= \phi_\zeta(p,q,\zeta)
+\end{aligned}
+$$
+
+我々の目標は、このダイナミクスが拡張された空間でのカノニカル分布$f_\mathrm{ex}$を定常状態に保つように$\phi_p$や$\phi_\zeta$を決めることである。
+
+いま、位相空間が$\Gamma = (p,q,\zeta)$で張られており、そこに速度場$\dot{\Gamma} = (\dot{p},\dot{q},\dot{\zeta})$が定義されているとしよう。この空間の分布関数$f_\mathrm{ex}$を考えると、分布関数と速度場の積$\dot{\Gamma} f_\mathrm{ex}$が流れ場$J$となる。
+
+は以下の連続の式を満たす。
+
+$$
+\frac{\partial f_\mathrm{ex}}{\partial t} = 
+- \mathrm{div} \left( \dot{\Gamma} f_\mathrm{ex}\right)
+$$
+
+もし$f_\mathrm{ex}$が定常状態なら時間微分がゼロとなるので、
+
+$$
+\begin{aligned}
+\mathrm{div} \left( \dot{\Gamma} f_\mathrm{ex}\right) &= 
+\left( 
+\frac{\partial}{\partial p}    
++ \frac{\partial}{\partial q}    
++ \frac{\partial}{\partial p}    
+\right)
+\left(
+\dot{p}    
++ \dot{q}
++ \dot{\zeta}
+\right)
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\frac{\partial f_\mathrm{ex}}{\partial p} &= \beta \frac{\partial H}{\partial q} f_\mathrm{ex}\\
+\frac{\partial f_\mathrm{ex}}{\partial q} &= -\beta \frac{\partial H}{\partial p} f_\mathrm{ex}\\
+\frac{\partial f_\mathrm{ex}}{\partial \zeta} &= - \beta \frac{\zeta}{Q}f_\mathrm{ex}\\
+\end{aligned}
+$$
+
+であることに注意して整理すると、
+
+
+
 TODO: Nose-Hooverの一般化、Nose-Hoover-Family
 
 TODO: Nose-Hooverの保存量とは
