@@ -373,22 +373,22 @@ q
 0 &amp; -1 \\
 1 &amp; 0
 \end{pmatrix}
-}_{L}
+}_{iL}
 \begin{pmatrix}
 p \\
 q
 \end{pmatrix} \\
 &amp;=
-L
+iL
 \begin{pmatrix}
 p \\
 q
 \end{pmatrix}
 \end{aligned}
 \]</span></p>
-<p>と書ける。いま、リュービル演算子が行列<span class="math inline">\(L\)</span>で書けているので、これを指数の肩の上に乗せると時間発展行列(演算子)が得られる。</p>
+<p>と書ける。いま、リュービル演算子が行列<span class="math inline">\(iL\)</span>で書けているので、これを指数の肩の上に乗せると時間発展行列(演算子)が得られる。</p>
 <p><span class="math display">\[
-U(h) = \exp(h L)
+U(h) = \exp(ihL)
 \]</span></p>
 <p>線形代数の講義でやったように、<span class="math inline">\(L\)</span>を対角化するなどすれば厳密に計算できて、</p>
 <p><span class="math display">\[
@@ -418,8 +418,13 @@ U(h)
 \end{pmatrix}
 \]</span></p>
 <p>VV法による近似は、テイラー展開の二次まで正しい。ただし、三次の項をうまく付け加えることで、この行列の行列式を1にしているのがポイントである。</p>
-<p>さて、今回はある行列<span class="math inline">\(L\)</span>を指数の肩に乗せた<span class="math inline">\(\exp(hL)\)</span>の表式が厳密に求められたが、そのためには<span class="math inline">\(L\)</span>を対角化する必要があり、もし対角化できたら問題は解けたと同義である。そこで、<span class="math inline">\(\exp(hL)\)</span>を近似することを考えよう。</p>
-<p>いま、行列<span class="math inline">\(L\)</span>が、<span class="math inline">\(L = A + B\)</span>と二つの行列の和で書けるとしよう。一般に<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>は非可換であるので、</p>
+<p>さて、今回はある行列<span class="math inline">\(iL\)</span>を指数の肩に乗せた<span class="math inline">\(\exp(ihL)\)</span>の表式が厳密に求められたが、そのためには<span class="math inline">\(iL\)</span>を対角化する必要があり、もし対角化できたら問題は解けたと同義である。そこで、<span class="math inline">\(\exp(ihL)\)</span>を近似することを考えよう。</p>
+<p>いま、行列<span class="math inline">\(iL\)</span>が、<span class="math inline">\(iL = A + B\)</span>と二つの行列の和で書けるとしよう。</p>
+<blockquote>
+<p>詳しい人向けの注：きちんとやるなら<span class="math inline">\(A\)</span>や<span class="math inline">\(B\)</span>にも虚数単位<span class="math inline">\(i\)</span>をつけて<span class="math inline">\(A\)</span>や<span class="math inline">\(B\)</span>をエルミートにすべきだが、式が煩雑になるので以下では<span class="math inline">\(A\)</span>や<span class="math inline">\(B\)</span>には虚数単位をつけないことにする。そのため、<span class="math inline">\(A,B\)</span>がエルミートではなく歪エルミートになっていることに注意。</p>
+</blockquote>
+<p>TODO: 真面目に虚数単位つけたほうがいいかなぁ。</p>
+<p>一般に<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>は非可換であるので、</p>
 <p><span class="math display">\[
 \mathrm{e}^{A+B} \neq \mathrm{e}^{A} \mathrm{e}^{B}
 \]</span></p>
@@ -437,7 +442,7 @@ U(h)
 \exp(h L) &amp;= \exp(h/2 B) \exp(h A) \exp(h/2 B)+ O(h^3) \\
 \end{aligned}
 \]</span></p>
-<p>これを指数分解公式と呼ぶ。</p>
+<p>これを指数分解公式と呼ぶ。最初の分解が一次、次が二次の公式である。</p>
 <p>さて、ここで</p>
 <p><span class="math display">\[
 A^2 = 0, B^2=0
@@ -445,12 +450,12 @@ A^2 = 0, B^2=0
 <p>という性質があったとしよう。すると、これらを指数の肩に乗せても二次以降が消えてしまうので、</p>
 <p><span class="math display">\[
 \begin{aligned}
-\exp(h A) &amp;= hA \\
-\exp(h B) &amp;= hB \\
+\exp(h A) &amp;= I+ hA \\
+\exp(h B) &amp;= I+ hB \\
 \end{aligned}
 \]</span></p>
-<p>と、厳密に和が取れてしまう。このような分解を利用して数値積分を構成するのがシンプレクティック積分である。</p>
-<p>調和振動子のリュービル演算子は</p>
+<p>と、厳密に値を求めることができる。ただし、<span class="math inline">\(I\)</span>は単位行列である。このような分解を利用して数値積分を構成するのがシンプレクティック積分である。</p>
+<p>調和振動子の時間微分行列(リュービル演算子)は</p>
 <p><span class="math display">\[
 L =
 \begin{pmatrix}
@@ -482,10 +487,314 @@ L &amp;=
 A+B
 \end{aligned}
 \]</span></p>
-<p>と分解しよう。明らかに<span class="math inline">\(A^2 = B^2 = 0\)</span>である。</p>
-<p>TODO: 一次と二次のシンプレクティック積分を書いて、二次がVVと等価であることを示す</p>
-<p>TODO: 微分演算子の場合のシンプレクティック積分を導出する</p>
-<p>TODO: ヤコビアンの話をここでするか考えること</p>
+<p>と分解しよう。明らかに<span class="math inline">\(A^2 = B^2 = 0\)</span>であるから、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\exp(h A) &amp;= I + h A \\
+\exp(h B) &amp;= I + h B \\
+\end{aligned}
+\]</span></p>
+<p>が成り立つ。さて、まずは一次の指数分解公式</p>
+<p><span class="math display">\[
+\mathrm{e}^{h(A+B)} \sim \mathrm{e}^{hA}\mathrm{e}^{hB}
+\]</span></p>
+<p>を考えてみよう。これを時刻<span class="math inline">\(t\)</span>の座標<span class="math inline">\((p,q)\)</span>にかけると時刻<span class="math inline">\(t+h\)</span>の座標<span class="math inline">\((P,Q)\)</span>が得られる。つまり、</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+=
+\mathrm{e}^{hA}\mathrm{e}^{hB}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\]</span></p>
+<p>である。まずは<span class="math inline">\(\mathrm{e}^{h(B)}\)</span>を考えよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\exp(h B) &amp;= I + h B \\
+&amp;= 
+\begin{pmatrix}
+1 &amp; 0 \\
+h &amp; 1
+\end{pmatrix}
+\end{aligned}
+\]</span> であるから、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{e}^{hB}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+&amp;=
+\begin{pmatrix}
+1 &amp; 0 \\
+h &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+p \\
+q + ph
+\end{pmatrix}
+\end{aligned}
+\]</span></p>
+<p>つまり、現在の速度<span class="math inline">\(p\)</span>で位置が等速直線運動をさせたのと同じである。</p>
+<p>次に、<span class="math inline">\(\mathrm{e}^{h(A)}\)</span>をかけよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{e}^{hA}
+\begin{pmatrix}
+p \\
+q+ph
+\end{pmatrix}
+&amp;=
+\begin{pmatrix}
+1 &amp; -h \\
+0 &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+p \\
+q + ph
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+(1-h^2)p - hq \\
+q + ph
+\end{pmatrix}
+\end{aligned}
+\]</span></p>
+<p>行列の形からわかるように、これは運動量しか更新しない。以上の時間発展をまとめると、</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+=
+\underbrace{
+\begin{pmatrix}
+1 - h^2 &amp; -h \\
+h &amp; 1
+\end{pmatrix}
+}_{\tilde{U}_1(h)}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\]</span></p>
+<p>となり、近似された時間発展行列<span class="math inline">\(\tilde{U}_1(h)\)</span>は</p>
+<p><span class="math display">\[
+\tilde{U}_1(h) =
+\begin{pmatrix}
+1 - h^2 &amp; -h \\
+h &amp; 1
+\end{pmatrix}
+\]</span></p>
+<p>となる。<span class="math inline">\(|\tilde{U}_1(h)|= 1\)</span>となっているのがわかるであろう。</p>
+<p>このように</p>
+<ul>
+<li>最初に<span class="math inline">\(q\)</span>だけオイラー法で更新する</li>
+<li>次に <strong>更新した位置を使って</strong> <span class="math inline">\(p\)</span>をオイラー法で更新する</li>
+</ul>
+<p>として時間積分を構築すると、オイラー法を適用したつもりが、一次のシンプレクティック積分になる(個人的に「なんちゃってオイラー法」と呼んでいる)。 正しいオイラー法は</p>
+<ul>
+<li>最初に<span class="math inline">\(q\)</span>だけオイラー法で更新する</li>
+<li>次に <strong>更新する前の位置を使って</strong> <span class="math inline">\(p\)</span>をオイラー法で更新する</li>
+</ul>
+<p>と、更新前の<span class="math inline">\(q\)</span>を覚えておかなければならない。</p>
+<p>さて、指数分解公式がシンプレクティック積分を作る様子を見てみよう。もともと、時間発展行列は、時間微分行列<span class="math inline">\(L\)</span>を指数の肩に乗せたものであり、シンプレクティック性とはその行列式が<span class="math inline">\(1\)</span>となること、つまり</p>
+<p><span class="math display">\[
+|\mathrm{e}^{hL}| = 1
+\]</span></p>
+<p>を満たすことであった。さて、指数分解公式は時間微分行列 <span class="math inline">\(L\)</span> を<span class="math inline">\(A^2 = B^2=0\)</span>を満たすように<span class="math inline">\(L=A+B\)</span>と分解し、それを使って<span class="math inline">\(\exp(hA)\)</span>と<span class="math inline">\(\exp(hB)\)</span>を組み合わせて時間発展行列を作る。ここで、<span class="math inline">\(A^2=0\)</span>であるから、</p>
+<p><span class="math display">\[
+\exp(h A) = I + h A
+\]</span></p>
+<p>さて、行列<span class="math inline">\(A\)</span>は</p>
+<p><span class="math display">\[
+A = 
+\begin{pmatrix}
+0 &amp; -1 \\
+0 &amp; 0
+\end{pmatrix}
+\]</span></p>
+<p>という形であったから、</p>
+<p><span class="math display">\[
+1 + hA = 
+\begin{pmatrix}
+1 &amp; -h \\
+0 &amp; 1
+\end{pmatrix}
+\]</span></p>
+<p>明らかに</p>
+<p><span class="math display">\[
+|\exp(h A)| = |I + h A| = 1
+\]</span></p>
+<p>と、行列式1になることがわかるであろう。</p>
+<p>念の為、一般的に<span class="math inline">\(A^2=0\)</span>なら<span class="math inline">\(|\exp(h A)|=1\)</span>であることを証明しておこう。</p>
+<p>まず、<span class="math inline">\(X^n=0\)</span>と、べき乗してゼロになる行列を冪零行列と言う。冪零行列の固有値は全て0である。なぜなら固有値<span class="math inline">\(\lambda\)</span>と固有ベクトル<span class="math inline">\(v\)</span>には<span class="math inline">\(Xv = \lambda x\)</span>の関係があるが、<span class="math inline">\(X^nv = \lambda^n x\)</span>であり、<span class="math inline">\(X^n = 0\)</span>であるから<span class="math inline">\(\lambda^n=0\)</span>、したがって<span class="math inline">\(\lambda=0\)</span>である。さて、ある行列<span class="math inline">\(X\)</span>の行列式<span class="math inline">\(|X|\)</span>は、固有値の積である。つまり、<span class="math inline">\(X\)</span>の固有値を<span class="math inline">\(\lambda_i\)</span>とすると、</p>
+<p><span class="math display">\[
+|X| = \lambda_1 \lambda_2 \cdots \lambda_N
+\]</span></p>
+<p>また、行列指数関数<span class="math inline">\(\mathrm{e}^X\)</span>の固有値は、固有値を指数の肩に乗せたものだ。したがって</p>
+<p><span class="math display">\[
+|\mathrm{e}^X| = \mathrm{e}^{\lambda_1}\mathrm{e}^{\lambda_2} \cdots \mathrm{e}^{\lambda_N}
+\]</span></p>
+<p><span class="math inline">\(A^2=0\)</span>であるから<span class="math inline">\(A\)</span>は冪零行列であり、冪零行列の固有値は全てゼロであるから、</p>
+<p><span class="math display">\[
+|\exp(h A)| = |\exp(A)|^h = 1^h = 1
+\]</span></p>
+<p>以上で<span class="math inline">\(A^2=0\)</span>なら<span class="math inline">\(|\exp(h A)|=1\)</span>が証明された。<span class="math inline">\(B\)</span>も同様である。</p>
+<p>行列の積の行列式は、行列式の積になるから、<span class="math inline">\(\mathrm{e}^A\)</span>と<span class="math inline">\(\mathrm{e}^B\)</span>の積で作られる行列はかならず行列式が1となる。つまり、変換の面積要素が保存される。これが指数分解公式がシンプレクティック積分を作る理由となる。</p>
+<p>以上を行列の言葉でまとめておこう。</p>
+<ul>
+<li>ハミルトンの運動方程式に対応する時間微分行列(リュービル演算子)<span class="math inline">\(L\)</span>はエルミート行列となる</li>
+<li>エルミート行列<span class="math inline">\(L\)</span>に虚数単位をつけた<span class="math inline">\(iL\)</span>は歪エルミート行列となる</li>
+<li>時間発展行列<span class="math inline">\(U=\mathrm{e}^{iL}\)</span>は、歪エルミート行列<span class="math inline">\(iL\)</span>を指数関数の肩に乗せたものなので、ユニタリ行列になる</li>
+<li>ユニタリ行列の行列式は1となる。</li>
+<li>行列式が1となる行列による変換は、面積要素を保存する。これによりエネルギーが保存する。</li>
+<li>指数分解公式は、時間微分行列<span class="math inline">\(iL\)</span>を冪零行列の和<span class="math inline">\(A+B\)</span>で表し、時間発展演算子を冪零行列を指数の肩に乗せたもので表現する方法である。</li>
+<li>冪零行列を指数の肩に乗せると行列式が1となるので、<span class="math inline">\(|\exp(h A)|=|\exp(h B)|=1\)</span>である。以上からこの積で作られた行列の行列式が1となり、時間発展がシンプレクティックとなる</li>
+</ul>
+<h2 id="微分演算子による表現">微分演算子による表現</h2>
+<p>調和振動子の場合は、リュービル演算子、時間発展演算子が行列で書けた。しかし、一般に時刻<span class="math inline">\(t\)</span>の座標<span class="math inline">\((p,q)\)</span>から時刻<span class="math inline">\(t+h\)</span>の座標<span class="math inline">\((P,Q)\)</span>への写像は非線形となり、それぞれの演算子が行列では書けない。この場合の指数分解公式と、シンプレクティック性について見てみよう。</p>
+<p>ハミルトンの運動方程式におけるリュービル演算子は以下のように書けるのであった。</p>
+<p><span class="math display">\[
+i \mathcal{L} = \underbrace{\frac{\partial H}{\partial p} \frac{\partial}{\partial q}}_{i\mathcal{L}_K} + \underbrace{ \left(-
+\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)}_{i\mathcal{L}_V}
+\]</span></p>
+<p>これを見て</p>
+<p><span class="math display">\[
+i\mathcal{L} = i \mathcal{L}_K + i \mathcal{L}_V
+\]</span></p>
+<p>という分解を自然に思いつくであろう。さて、いまハミルトニアンが以下の様に、運動量のみに依存する項<span class="math inline">\(K\)</span>と座標のみに依存する項<span class="math inline">\(V\)</span>の和で書けていたとする。</p>
+<p><span class="math display">\[
+H(p,q) = K(p) + V(q)
+\]</span></p>
+<p>ただし、<span class="math inline">\(K(p) = p^2/2m\)</span>である。これを自然ハミルトニアンと呼ぶ。この場合、先程分解した二つの演算子が以下のようになる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+i\mathcal{L}_K = \frac{\partial H}{\partial p} \frac{\partial}{\partial q} = \frac{\partial K}{\partial p} \frac{\partial}{\partial q} \\
+i\mathcal{L}_V = - \frac{\partial H}{\partial q} \frac{\partial}{\partial p} = - \frac{\partial V}{\partial p} \frac{\partial}{\partial p} \\
+\end{aligned}
+\]</span></p>
+<p>ここで、<span class="math inline">\(\partial_q\)</span>の係数が<span class="math inline">\(p\)</span>のみに依存し、<span class="math inline">\(\partial_p\)</span>の係数が<span class="math inline">\(q\)</span>のみに依存することに注意。さて、この演算子を<span class="math inline">\(p\)</span>や<span class="math inline">\(q\)</span>に演算してみよう。</p>
+<p>まず<span class="math inline">\(i\mathrm{L}_K\)</span>を<span class="math inline">\(p\)</span>にかけると、<span class="math inline">\(\partial_q\)</span>で消えるのでゼロである。<span class="math inline">\(q\)</span>にかけると、</p>
+<p><span class="math display">\[
+i\mathcal{L}_K q = \frac{\partial K}{\partial p} \frac{\partial q}{\partial q} = \frac{\partial K}{\partial p} 
+\]</span></p>
+<p><span class="math inline">\(K\)</span>は<span class="math inline">\(p\)</span>のみの関数であるから、さらに<span class="math inline">\(q\)</span>で偏微分するとゼロになる。従って</p>
+<p><span class="math display">\[
+(i\mathcal{L}_K)^2 q = 0 
+\]</span></p>
+<p>全く同様に、</p>
+<p><span class="math display">\[
+(i\mathcal{L}_V)^2 p = 0 
+\]</span></p>
+<p>ここから、この演算子を指数関数の肩に乗せたものを<span class="math inline">\(p\)</span>や<span class="math inline">\(q\)</span>に演算した結果を厳密に計算することができる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{e}^{i h \mathcal{L}_K} p &amp;= 0 \\
+\mathrm{e}^{i h \mathcal{L}_K} q &amp;= q + h \underbrace{\frac{\partial K}{\partial p}}_v \\
+\mathrm{e}^{i h \mathcal{L}_V} q &amp;= 0 \\
+\mathrm{e}^{i h \mathcal{L}_V} q &amp;= p - h \underbrace{\frac{\partial V}{\partial q}}_f \\
+\end{aligned}
+\]</span></p>
+<p>ここで、<span class="math inline">\(\partial_p K = p/m = v\)</span>は速度、<span class="math inline">\(\partial_q V = V&#39;(q) = f\)</span>は力であるから、それぞれ「時間<span class="math inline">\(h\)</span>の間等速直線運動をした時の座標の変化」「時間<span class="math inline">\(h\)</span>の間、力<span class="math inline">\(f\)</span>を受け続けた運動量の変化」を表している。あとは全く同様に指数分解公式を用いることで、数値積分法を構築できる。</p>
+<p>一次のシンプレクティック積分法であれば、</p>
+<p><span class="math display">\[
+\mathrm{e}^{i h \mathcal{L}} \sim  \mathrm{e}^{i h \mathcal{L}_V}\mathrm{e}^{i h \mathcal{L}_K}
+\]</span></p>
+<p>と分解できるので、</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+=
+\mathrm{e}^{i h \mathcal{L}_V}\mathrm{e}^{i h \mathcal{L}_K}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\]</span></p>
+<p>を計算すれば良い。これは、</p>
+<ul>
+<li>最初に現在の速度で時間<span class="math inline">\(h\)</span>だけ等速直線運動をさせて</li>
+<li>次に、更新された座標を使って計算される力が<span class="math inline">\(h\)</span>だけ持続した時の力積により運動量を変化させる</li>
+</ul>
+<p>というアルゴリズムになっている。</p>
+<p>次に、二次の分解公式を考えよう。これは</p>
+<p><span class="math display">\[
+\mathrm{e}^{i h \mathcal{L}} \sim  \mathrm{e}^{i h \mathcal{L}_V/2}\mathrm{e}^{i h \mathcal{L}_K} \mathrm{e}^{i h \mathcal{L}_V/2}
+\]</span></p>
+<p>と分解する方法だ。対応する数値積分アルゴリズムは</p>
+<ol style="list-style-type: decimal">
+<li>最初に現在の力が<span class="math inline">\(h\)</span>だけ持続した時の力積により運動量を変化させ</li>
+<li>次に更新された運動量で時間<span class="math inline">\(h\)</span>だけ等速直線運動をさせ、</li>
+<li>最後に更新された座標における力が<span class="math inline">\(h/2\)</span>だけ持続した場合の力積変化を計算する</li>
+</ol>
+<p>というアルゴリズムになっている。指数分解公式を使うというと難しく感じるが、要するに座標と運動量を更新する際、どちらかが止まっている(定数である)と思って、片方を更新するのを繰り返しているだけである。</p>
+<h2 id="velocity-velret法がシンプレクティックである証明">Velocity Velret法がシンプレクティックである証明</h2>
+<p>では、最後にVV法が二次のシンプレクティック積分になっていることを示そう。自然ハミルトニアン</p>
+<p><span class="math display">\[
+H = p^2 + V(q)
+\]</span></p>
+<p>を考える。簡単のため、質量を<span class="math inline">\(1\)</span>としている。</p>
+<p>二次のシンプレクティック積分のアルゴリズムは</p>
+<ol style="list-style-type: decimal">
+<li>最初に現在の力が<span class="math inline">\(h\)</span>だけ持続した時の力積により運動量を変化させ</li>
+<li>次に更新された運動量で時間<span class="math inline">\(h\)</span>だけ等速直線運動をさせ、</li>
+<li>最後に更新された座標における力が<span class="math inline">\(h/2\)</span>だけ持続した場合の力積変化を計算する</li>
+</ol>
+<p>となっていた。時刻<span class="math inline">\(t\)</span>において、座標が<span class="math inline">\((p, q)\)</span>であったとしよう。このアルゴリズムにより更新された時刻<span class="math inline">\(t+h\)</span>における座標を<span class="math inline">\((P,Q)\)</span>とする。</p>
+<p>まず、現在かかっている力が<span class="math inline">\(h/2\)</span>だけ持続したとして運動量を変化させる</p>
+<p><span class="math display">\[
+p(t+h/2) = p + \frac{f(t)h}{2}
+\]</span></p>
+<p>次に、更新された運動量で時間<span class="math inline">\(h\)</span>だけ等速直線運動をさせる。</p>
+<p><span class="math display">\[
+Q = q + p(t+h/2) h
+\]</span></p>
+<p>最後に、更新された座標<span class="math inline">\(Q\)</span>における力が<span class="math inline">\(h/2\)</span>だけ持続した場合の運動量変化を考える。</p>
+<p><span class="math display">\[
+P = p(t+h/2) + \frac{f(t+h)h}{2}
+\]</span></p>
+<p>以上で、<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((P,Q)\)</span>への写像、すなわち時間積分が完成した。<span class="math inline">\(p(t+h/2)\)</span>を消去すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+Q &amp;= q + p h + \frac{f h^2}{2} \\
+P &amp;= p + \frac{f(t) + f(t+h)}{2} h
+\end{aligned}
+\]</span></p>
+<p>これは、VV法に他ならない。</p>
+<p>先程、二次の指数分解公式として</p>
+<p><span class="math display">\[
+\mathrm{e}^{i h \mathcal{L}} \sim  \mathrm{e}^{i h \mathcal{L}_V/2}\mathrm{e}^{i h \mathcal{L}_K} \mathrm{e}^{i h \mathcal{L}_V/2}
+\]</span></p>
+<p>を考えた。この分解を逆にして、</p>
+<p><span class="math display">\[
+\mathrm{e}^{i h \mathcal{L}} \sim  \mathrm{e}^{i h \mathcal{L}_K/2}\mathrm{e}^{i h \mathcal{L}_V} \mathrm{e}^{i h \mathcal{L}_K/2}
+\]</span></p>
+<p>とすると、数値積分法として</p>
+<ol style="list-style-type: decimal">
+<li>まず<span class="math inline">\(h/2\)</span>だけ等速直線運動をさせる</li>
+<li>現在の力が<span class="math inline">\(h\)</span>だけ持続したとして運動量を変化させる</li>
+<li>最後に更新された運動量で<span class="math inline">\(h/2\)</span>だけ等速直線運動をさせる</li>
+</ol>
+<p>というステップを繰り返すアルゴリズムが構築できる。このステップを繰り返すと、同じ速度で座標を<span class="math inline">\(h/2\)</span>の時間だけ二回更新するのが無駄である。そこで、</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(h\)</span>だけ等速直線運動をさせる</li>
+<li>現在の力が<span class="math inline">\(h\)</span>だけ持続したとして運動量を変化させる</li>
+</ol>
+<p>というステップを繰り返しつつ、もし座標の情報が欲しい場合は時刻を<span class="math inline">\(h/2\)</span>だけずらす、という方法が考えられた。これは座標と運動量が時間<span class="math inline">\(h/2\)</span>だけずれて交互に更新されるように見えることからLeap-frog法と呼ばれる。</p>
+<p>やっている計算は一次のシンプレクティック積分と変わらないのだが、観測のタイミングが異なると二次になるのが面白い点である。</p>
 </article>
 </body>
 </html>
