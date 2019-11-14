@@ -60,6 +60,76 @@ $$
 \left(
 \frac{\partial H}{\partial q} \dot{q}
 + \frac{\partial H}{\partial p} \dot{p}
+\right) \\
+&= \sum_i 
+\left(
+\frac{\partial H}{\partial q} 
+\frac{\partial H}{\partial p} 
+-
+\frac{\partial H}{\partial p} 
+\frac{\partial H}{\partial q} 
 \right)
+= 0
 \end{aligned}
 $$
+
+こうして$H$が時間不変量になることがわかる。これはエネルギー保存則に対応している。これはよく知られているであろう。
+
+実は、もう一つ重要な性質がある。それは
+
+$$
+\sum_i 
+\left(
+    \frac{\partial \dot{p}_i}{\partial p_i}
+    + \frac{\partial \dot{q}_i}{\partial q_i}
+    \right) = 0
+$$
+
+が成り立つことだ。以下では、この意味を考えてみたい。
+
+いま、運動量と座標をまとめて$z_i$という$6N$個の座標で表現しよう。先程の式は
+
+$$
+\sum_i 
+    \frac{\partial \dot{z}_i}{\partial z_i}= 0
+$$
+
+となる。運動方程式とは位相空間に速度場を定めるものであった。そこで$\dot{z}_i \equiv v_i$として、これを速度場と呼ぼう。そうして先程の式をもう一度眺めると、速度場の各成分を、座標の各成分で偏微分したものの和であるから、これは速度場の発散(divergence)に他ならない。つまり、
+
+$$
+\begin{aligned}
+\sum_i  \frac{\partial \dot{z}_i}{\partial z_i} &= 
+\sum_i  \frac{\partial v_i}{\partial z_i} \\
+&= \nabla \cdot \vec{v}\\
+&= 0
+\end{aligned}
+$$
+
+これは、ハミルトニアンが作る流れ場は非圧縮流である、ということを意味する。
+
+この事実を詳しく見るために、この位相空間に分布関数$f$を定義しよう。これは流体力学の言葉で言えば流体の密度場にあたる。いま、速度場$\vec{v}$を持つ流れがある時、それに密度場をかけたものが流れ場$\vec{J} = \vec{v}f$である。確率の保存則から、流れ場と密度場は以下の連続の式を満たさなければならない。
+
+$$
+\frac{\partial f}{\partial t} + \nabla \cdot \vec{J} = 0
+$$
+
+これを計算してみよう。
+
+$$
+\begin{aligned}
+\frac{\partial f}{\partial t} + \nabla \cdot \vec{J} &= 
+\frac{\partial f}{\partial t} + \nabla \cdot (\vec{v}f)\\
+&=  \underbrace{\frac{\partial f}{\partial t} + \vec{v} \nabla f}_{\frac{D f}{Dt}} + \underbrace{\nabla \cdot \vec{v}}_{=0} f \\
+&= 0
+\end{aligned}
+$$
+
+つまり、
+
+$$
+\frac{Df}{Dt} = 0
+$$
+
+となった。ここで$D/Dt$はラグランジュ微分であり、流れに沿って見た物理量の変化である。流れに沿って見ると密度が変化しない、と言っているのだから、これは非圧縮流であることを意味する。
+
+TODO: リュービル演算子のエルミート性と非圧縮性の関係

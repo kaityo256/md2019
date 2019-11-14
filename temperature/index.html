@@ -99,6 +99,61 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>TODO: 能勢のハミルトニアン</p>
 <p>TODO: 時間の制御？</p>
 <p>TODO: Nose-Hoover法</p>
+<h2 id="nose-hoover法の導出">Nose-Hoover法の導出</h2>
+<p>先程は能勢のハミルトニアンから導出された運動方程式を、変数変換することでNose-Hoover法が導出された。以下では逆に、「定常状態として指定の温度のカノニカル分布が実現するとしたら、運動方程式はどのような形でなければならないか」を考えてみよう。以下、簡単のために一自由度系を考える。</p>
+<p>今、カノニカル分布を実現したいハミルトニアン<span class="math inline">\(H_0(p,q)\)</span>があるとする。実現したい分布は</p>
+<p><span class="math display">\[
+f(p,q) \sim \exp(-\beta H)
+\]</span></p>
+<p>である。ただし、<span class="math inline">\(\beta = 1/kT\)</span>は逆温度である。この位相空間は<span class="math inline">\((p,q)\)</span>で張られている。</p>
+<p>さて、この分布を直接実現するのは難しそうなので、自由度<span class="math inline">\(\zeta\)</span>を追加し、拡大された位相空間<span class="math inline">\((p,q,\zeta)\)</span>を考える。この空間で、<span class="math inline">\(\zeta\)</span>も含めたカノニカル分布</p>
+<p><span class="math display">\[
+f_\mathrm{ex}(p,q,\zeta) \sim \exp(-\beta H)\exp\left(-\beta \frac{\zeta^2}{2Q}\right)
+\]</span></p>
+<p>を考えよう。<span class="math inline">\(Q\)</span>の意味は後述する。もしこの分布が実現されたなら、<span class="math inline">\(\zeta\)</span>に関して積分してしまうことで、所望の分布<span class="math inline">\(f\)</span>を得ることができる。</p>
+<p><span class="math display">\[
+f_0 = \int_{-\infty}^{\infty} f_\mathrm{ex} d \zeta \sim \exp(-\beta H) 
+\]</span></p>
+<p>さて、拡大された位相空間<span class="math inline">\((p,q,\zeta)\)</span>に、先程の分布関数<span class="math inline">\(f\)</span>を定常状態に持つような運動方程式を導入したい。ハミルトンの運動方程式の場合には「作用を最小化する」という変分原理から運動方程式が導けたが、温度制御された系にはそのような変分原理は存在しないので、適当に決めることになる。</p>
+<p>とりあえずハミルトニアンの運動方程式をなるべく修正しない方向で検討しよう。温度制御のため、運動量<span class="math inline">\(p\)</span>と追加自由度<span class="math inline">\(\zeta\)</span>の相互作用は必要であろう。そこで、以下のような運動方程式を考えてみる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= -\frac{\partial H}{\partial q} - \phi_p(p,\zeta) \\
+\dot{q} &amp;= \frac{\partial H}{\partial p} \\
+\dot{\zeta} &amp;= \phi_\zeta(p,q,\zeta)
+\end{aligned}
+\]</span></p>
+<p>我々の目標は、このダイナミクスが拡張された空間でのカノニカル分布<span class="math inline">\(f_\mathrm{ex}\)</span>を定常状態に保つように<span class="math inline">\(\phi_p\)</span>や<span class="math inline">\(\phi_\zeta\)</span>を決めることである。</p>
+<p>いま、位相空間が<span class="math inline">\(\Gamma = (p,q,\zeta)\)</span>で張られており、そこに速度場<span class="math inline">\(\dot{\Gamma} = (\dot{p},\dot{q},\dot{\zeta})\)</span>が定義されているとしよう。この空間の分布関数<span class="math inline">\(f_\mathrm{ex}\)</span>を考えると、分布関数と速度場の積<span class="math inline">\(\dot{\Gamma} f_\mathrm{ex}\)</span>が流れ場<span class="math inline">\(J\)</span>となる。</p>
+<p>は以下の連続の式を満たす。</p>
+<p><span class="math display">\[
+\frac{\partial f_\mathrm{ex}}{\partial t} = 
+- \mathrm{div} \left( \dot{\Gamma} f_\mathrm{ex}\right)
+\]</span></p>
+<p>もし<span class="math inline">\(f_\mathrm{ex}\)</span>が定常状態なら時間微分がゼロとなるので、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{div} \left( \dot{\Gamma} f_\mathrm{ex}\right) &amp;= 
+\left( 
+\frac{\partial}{\partial p}    
++ \frac{\partial}{\partial q}    
++ \frac{\partial}{\partial p}    
+\right)
+\left(
+\dot{p}    
++ \dot{q}
++ \dot{\zeta}
+\right)
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial f_\mathrm{ex}}{\partial p} &amp;= \beta \frac{\partial H}{\partial q} f_\mathrm{ex}\\
+\frac{\partial f_\mathrm{ex}}{\partial q} &amp;= -\beta \frac{\partial H}{\partial p} f_\mathrm{ex}\\
+\frac{\partial f_\mathrm{ex}}{\partial \zeta} &amp;= - \beta \frac{\zeta}{Q}f_\mathrm{ex}\\
+\end{aligned}
+\]</span></p>
+<p>であることに注意して整理すると、</p>
 <p>TODO: Nose-Hooverの一般化、Nose-Hoover-Family</p>
 <p>TODO: Nose-Hooverの保存量とは</p>
 <p>TODO: Nose-Hooverと調和振動子とエルゴード性</p>

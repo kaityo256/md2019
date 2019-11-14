@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="運動方程式の幾何学的側面">運動方程式の幾何学的側面</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<p>ハミルトンの運動方程式が、位相空間にどのような「流れ」を作り、それがどのような意味を持つかを説明する。</p>
+<h2 id="運動方程式とは何か">運動方程式とは何か</h2>
+<p>簡単のため、一次元系を考えよう。単位質量の物体が位置<span class="math inline">\(x\)</span>にいて、力<span class="math inline">\(f\)</span>が働いている。すると、運動方程式は</p>
+<p><span class="math display">\[
+\ddot{x} = f
+\]</span></p>
+<p>である。これは時間に関する二階微分方程式になっているが、<span class="math inline">\(\dot{x} = v\)</span>を導入し、一階の連立微分方程式にしたほうが後々都合が良いのでそうしよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{x} &amp;= v\\
+\dot{v} &amp;= f
+\end{aligned}
+\]</span></p>
+<p>さて、この式の意味を考えてみよう。一階の連立微分方程式にしたことで、この系の状態は<span class="math inline">\((x,v)\)</span>を指定することで一意に定まる。逆に言えば<span class="math inline">\((x,v)\)</span>がこの系を記述する空間を張っている。この空間を位相空間と呼ぶ。</p>
+<blockquote>
+<p>よく知っている人のための注：ここで張られた空間は、<span class="math inline">\(x\)</span>で張られた状態空間<span class="math inline">\(M\)</span>の接バンドル(Tangent-Bundle)<span class="math inline">\(TM\)</span>になっており、ハミルトニアンを考える余接バンドル<span class="math inline">\(T^*M\)</span>とは違う空間である。しかし、以下ではどちらも位相空間として扱う。</p>
+</blockquote>
+<p>運動方程式は時間に関する常微分方程式であるから、初期条件を与えればその後の時間発展は一意に定まる。それは、位相空間で見れば、どこかにトレーサーを置くと、あとはそのトレーサーがどのように動くか決まる、という意味となる。</p>
+<p>例えば、原点を中心とする調和振動子系を考えよう。力<span class="math inline">\(f\)</span>はポテンシャル力であり、バネ定数を1とすると<span class="math inline">\(f(x) = -x\)</span>となる。すると、運動方程式は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{x} &amp;= v\\
+\dot{v} &amp;= -x
+\end{aligned}
+\]</span></p>
+<p>となる。図に書いてみるとわかるが、これは原点を中心とする、反時計周りのベクトル場を作っている。そういう意味において、運動方程式は位相空間に速度場を作る。</p>
+<p>さて、講義では詳細に触れないが、ラグランジアン<span class="math inline">\(L\)</span>を導入し、その時間積分を作用と呼ぶとき、その作用を最小にせよ、という要請(最小作用の原理)からオイラー・ラグランジュ方程式が導かれるのであった。さらに変数をからルジャンドル変換をすることによりハミルトニアンが導かれ、より対称性の高い運動方程式、ハミルトンの運動方程式が導かれる。以下では、ルジャンドル変換後の一般化座標<span class="math inline">\(q_i\)</span>と一般化運動量<span class="math inline">\(p_i\)</span>が張る位相空間を考える。</p>
+<p>いま、3次元<span class="math inline">\(N\)</span>粒子系を考える。すると座標<span class="math inline">\(q_i\)</span>,運動量<span class="math inline">\(q_i\)</span>がそれぞれ<span class="math inline">\(3N\)</span>個あるため、位相空間<span class="math inline">\(\vec{\Gamma} = (q_1, q_2, \cdots, q_{3N}, p_1, p_2, \cdots, p_{3N})\)</span>は<span class="math inline">\(6N\)</span>次元となる。この空間に 速度場<span class="math inline">\(\vec{\Gamma}\)</span>を定めるには、それぞれの成分<span class="math inline">\(\dot{q}_1, \cdots, \dot{p}_{3N}\)</span>全てを<span class="math inline">\(\{p_i, q_i\}\)</span>の関数として指定しなければならないから、合計<span class="math inline">\(6N\)</span>個の関数が必要になる。しかし、変分原理を使うと、その<span class="math inline">\(6N\)</span>個の関数がたった一つのスカラー関数から決まるのであった。そのスカラー関数をハミルトニアン<span class="math inline">\(H\)</span>と呼び、速度場は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p}_i &amp;= -\frac{\partial H}{\partial q_i}\\
+\dot{q}_i &amp;= \frac{\partial H}{\partial p_i}
+\end{aligned}
+\]</span></p>
+<p>と決まる。これをハミルトンの運動方程式と呼ぶ。繰り返しになるが、位相空間に一つスカラー関数を定めるだけで、全空間に流れ場を定めている。そう考えると不思議な気がしてくる。</p>
+<p>さて、この式を見るとただちにわかることがいくつかある。それは<span class="math inline">\(H\)</span>が時間不変量になることだ(ただし<span class="math inline">\(H\)</span>は時間に陽に依存しないとする)。</p>
+<p><span class="math inline">\(H\)</span>の時間微分を計算してみると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{H} &amp;= \sum_i 
+\left(
+\frac{\partial H}{\partial q} \dot{q}
++ \frac{\partial H}{\partial p} \dot{p}
+\right) \\
+&amp;= \sum_i 
+\left(
+\frac{\partial H}{\partial q} 
+\frac{\partial H}{\partial p} 
+-
+\frac{\partial H}{\partial p} 
+\frac{\partial H}{\partial q} 
+\right)
+= 0
+\end{aligned}
+\]</span></p>
+<p>こうして<span class="math inline">\(H\)</span>が時間不変量になることがわかる。これはエネルギー保存則に対応している。これはよく知られているであろう。</p>
+<p>実は、もう一つ重要な性質がある。それは</p>
+<p><span class="math display">\[
+\sum_i 
+\left(
+    \frac{\partial \dot{p}_i}{\partial p_i}
+    + \frac{\partial \dot{q}_i}{\partial q_i}
+    \right) = 0
+\]</span></p>
+<p>が成り立つことだ。以下では、この意味を考えてみたい。</p>
+<p>いま、運動量と座標をまとめて<span class="math inline">\(z_i\)</span>という<span class="math inline">\(6N\)</span>個の座標で表現しよう。先程の式は</p>
+<p><span class="math display">\[
+\sum_i 
+    \frac{\partial \dot{z}_i}{\partial z_i}= 0
+\]</span></p>
+<p>となる。運動方程式とは位相空間に速度場を定めるものであった。そこで<span class="math inline">\(\dot{z}_i \equiv v_i\)</span>として、これを速度場と呼ぼう。そうして先程の式をもう一度眺めると、速度場の各成分を、座標の各成分で偏微分したものの和であるから、これは速度場の発散(divergence)に他ならない。つまり、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum_i  \frac{\partial \dot{z}_i}{\partial z_i} &amp;= 
+\sum_i  \frac{\partial v_i}{\partial z_i} \\
+&amp;= \nabla \cdot \vec{v}\\
+&amp;= 0
+\end{aligned}
+\]</span></p>
+<p>これは、ハミルトニアンが作る流れ場は非圧縮流である、ということを意味する。</p>
+<p>この事実を詳しく見るために、この位相空間に分布関数<span class="math inline">\(f\)</span>を定義しよう。これは流体力学の言葉で言えば流体の密度場にあたる。いま、速度場<span class="math inline">\(\vec{v}\)</span>を持つ流れがある時、それに密度場をかけたものが流れ場<span class="math inline">\(\vec{J} = \vec{v}f\)</span>である。確率の保存則から、流れ場と密度場は以下の連続の式を満たさなければならない。</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial t} + \nabla \cdot \vec{J} = 0
+\]</span></p>
+<p>これを計算してみよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial f}{\partial t} + \nabla \cdot \vec{J} &amp;= 
+\frac{\partial f}{\partial t} + \nabla \cdot (\vec{v}f)\\
+&amp;=  \underbrace{\frac{\partial f}{\partial t} + \vec{v} \nabla f}_{\frac{D f}{Dt}} + \underbrace{\nabla \cdot \vec{v}}_{=0} f \\
+&amp;= 0
+\end{aligned}
+\]</span></p>
+<p>つまり、</p>
+<p><span class="math display">\[
+\frac{Df}{Dt} = 0
+\]</span></p>
+<p>となった。ここで<span class="math inline">\(D/Dt\)</span>はラグランジュ微分であり、流れに沿って見た物理量の変化である。流れに沿って見ると密度が変化しない、と言っているのだから、これは非圧縮流であることを意味する。</p>
+<p>TODO: リュービル演算子のエルミート性と非圧縮性の関係</p>
+</article>
+</body>
+</html>
