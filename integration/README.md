@@ -470,7 +470,7 @@ $$
 \end{aligned}
 $$
 
-これを指数分解公式と呼ぶ。
+これを指数分解公式と呼ぶ。最初の分解が一次、次が二次の公式である。
 
 さて、ここで
 
@@ -482,12 +482,12 @@ $$
 
 $$
 \begin{aligned}
-\exp(h A) &= hA \\
-\exp(h B) &= hB \\
+\exp(h A) &= I+ hA \\
+\exp(h B) &= I+ hB \\
 \end{aligned}
 $$
 
-と、厳密に和が取れてしまう。このような分解を利用して数値積分を構成するのがシンプレクティック積分である。
+と、厳密に値を求めることができる。ただし、$I$は単位行列である。このような分解を利用して数値積分を構成するのがシンプレクティック積分である。
 
 調和振動子のリュービル演算子は
 
@@ -525,7 +525,212 @@ A+B
 \end{aligned}
 $$
 
-と分解しよう。明らかに$A^2 = B^2 = 0$である。
+と分解しよう。明らかに$A^2 = B^2 = 0$であるから、
+
+$$
+\begin{aligned}
+\exp(h A) &= I + h A \\
+\exp(h B) &= I + h B \\
+\end{aligned}
+$$
+
+が成り立つ。さて、まずは一次の指数分解公式
+
+$$
+\mathrm{e}^{h(A+B)} \sim \mathrm{e}^{hA}\mathrm{e}^{hB}
+$$
+
+を考えてみよう。これを時刻$t$の座標$(p,q)$にかけると時刻$t+h$の座標$(P,Q)$が得られる。つまり、
+
+$$
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+=
+\mathrm{e}^{hA}\mathrm{e}^{hB}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+$$
+
+である。まずは$\mathrm{e}^{h(B)}$を考えよう。
+
+$$
+\begin{aligned}
+\exp(h B) &= I + h B \\
+&= 
+\begin{pmatrix}
+1 & 0 \\
+h & 1
+\end{pmatrix}
+\end{aligned}
+$$
+であるから、
+
+$$
+\begin{aligned}
+\mathrm{e}^{hB}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+&=
+\begin{pmatrix}
+1 & 0 \\
+h & 1
+\end{pmatrix}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}\\
+&= 
+\begin{pmatrix}
+p \\
+q + ph
+\end{pmatrix}
+\end{aligned}
+$$
+
+つまり、現在の速度$p$で位置が等速直線運動をさせたのと同じである。
+
+次に、$\mathrm{e}^{h(A)}$をかけよう。
+
+$$
+\begin{aligned}
+\mathrm{e}^{hA}
+\begin{pmatrix}
+p \\
+q+ph
+\end{pmatrix}
+&=
+\begin{pmatrix}
+1 & -h \\
+0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+p \\
+q + ph
+\end{pmatrix}\\
+&= 
+\begin{pmatrix}
+(1-h^2)p - hq \\
+q + ph
+\end{pmatrix}
+\end{aligned}
+$$
+
+行列の形からわかるように、これは運動量しか更新しない。以上の時間発展をまとめると、
+
+$$
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+=
+\underbrace{
+\begin{pmatrix}
+1 - h^2 & -h \\
+h & 1
+\end{pmatrix}
+}_{\tilde{U}_1(h)}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+$$
+
+となり、近似された時間発展行列$\tilde{U}_1(h)$は
+
+$$
+\tilde{U}_1(h) =
+\begin{pmatrix}
+1 - h^2 & -h \\
+h & 1
+\end{pmatrix}
+$$
+
+となる。$|\tilde{U}_1(h)|= 1$となっているのがわかるであろう。
+
+このように
+
+* 最初に$q$だけオイラー法で更新する
+* 次に **更新した位置を使って** $p$をオイラー法で更新する
+
+として時間積分を構築すると、オイラー法を適用したつもりが、一次のシンプレクティック積分になる。
+正しいオイラー法は
+
+* 最初に$q$だけオイラー法で更新する
+* 次に **更新する前の位置を使って** $p$をオイラー法で更新する
+
+と、更新前の$q$を覚えておかなければならない。
+
+さて、指数分解公式がシンプレクティック積分を作る様子を見てみよう。もともと、時間発展行列は、時間微分行列$L$を指数の肩に乗せたものであり、シンプレクティック性とはその行列式が$1$となること、つまり
+
+$$
+|\mathrm{e}^{hL}| = 1
+$$
+
+を満たすことであった。さて、指数分解公式は時間微分行列 $L$ を$A^2 = B^2=0$を満たすように$L=A+B$と分解し、それを使って$\exp(hA)$と$\exp(hB)$を組み合わせて時間発展行列を作る。ここで、$A^2=0$であるから、
+
+$$
+\exp(h A) = I + h A
+$$
+
+さて、行列$A$は
+
+$$
+A = 
+\begin{pmatrix}
+0 & -1 \\
+0 & 0
+\end{pmatrix}
+$$
+
+という形であったから、
+
+$$
+1 + hA = 
+\begin{pmatrix}
+1 & -h \\
+0 & 1
+\end{pmatrix}
+$$
+
+明らかに
+
+$$
+|\exp(h A)| = |I + h A| = 1
+$$
+
+と、行列式1になることがわかるであろう。
+
+念の為、一般的に$A^2=0$なら$|\exp(h A)|=1$であることを証明しておこう。まず、$A^n=0$と、べき乗してゼロになる行列を冪零行列と言う。冪零行列の固有値は全て0である。さて、ある行列$X$の行列式$|X|$は、固有値の積である。つまり、$X$の固有値を$\lambda_i$とすると、
+
+$$
+|X| = \lambda_1 \lambda_2 \cdots \lambda_N
+$$
+
+また、行列指数関数$\mathrm{e}^X$の固有値は、固有値を指数の肩に乗せたものだ。したがって
+
+$$
+|\mathrm{e}^X| = \mathrm{e}^{\lambda_1}\mathrm{e}^{\lambda_2} \cdots \mathrm{e}^{\lambda_N}
+$$
+
+$A^2=0$であるから$A$は冪零行列であり、冪零行列の固有値は全てゼロであるから、
+
+$$
+|\exp(h A)| = |\exp(A)|^h = 1^h = 1
+$$
+
+以上で$A^2=0$なら|\exp(h A)=1|が証明された。$B$も同様である。
+
+行列の積の行列式は、行列式の積になるから、$\mathrm{e}^A$と$\mathrm{e}^B$の積で作られる行列はかならず行列式が1となる。つまり、変換の面積要素が保存される。これが指数分解公式がシンプレクティック積分を作る理由となる。
+
+## 微分演算子による表現
+
+
 
 TODO: 一次と二次のシンプレクティック積分を書いて、二次がVVと等価であることを示す
 
