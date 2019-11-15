@@ -1,4 +1,4 @@
-# 運動方程式の幾何学的側面
+# 運動方程式とリュービル演算子のエルミート性
 
 ハミルトンの運動方程式が、位相空間にどのような「流れ」を作り、それがどのような意味を持つかを説明する。
 
@@ -132,4 +132,223 @@ $$
 
 となった。ここで$D/Dt$はラグランジュ微分であり、流れに沿って見た物理量の変化である。流れに沿って見ると密度が変化しない、と言っているのだから、これは非圧縮流であることを意味する。
 
-TODO: リュービル演算子のエルミート性と非圧縮性の関係
+## リュービル演算子と時間発展演算子
+
+ハミルトンの運動方程式は位相空間に非圧縮流を作ることがわかった。それが、演算子の言葉ではどう見えるかを見てみよう。そのために、時間発展演算子とリュービル演算子を定義する。
+
+以下簡単のため一自由度系を考える。ハミルトニアン$H(p,q)$で記述される系の運動を考えよう。ここで、ハミルトニアンは時間に陽に依存しないものとする。運動方程式は以下のように記述される。
+
+$$
+\begin{aligned}
+\dot{p} &= -\frac{\partial H}{\partial q} \\
+\dot{q} &= \frac{\partial H}{\partial p}
+\end{aligned}
+$$
+
+この運動方程式に従い、座標$(p,q)$が変化していく。さて、この系に物理量$A(p(t),q(t))$が定義されているとしよう。$A$は$p,q$のみの関数であり、以下$A(p(t),q(t))$を$A(t)$と略記する。系が時間発展するにつれて、物理量$A$も時間変化する。$A$を用いて、この系の時間発展演算子$U(h)$を、以下のように定義する。
+
+$$
+A(t+h) = U(h) A(t)
+$$
+
+ここで、$A(t+h)$を$t$のまわりでテイラー展開しよう。
+
+$$
+\begin{aligned}
+A(t+h) &= A(t) + h \frac{dA}{dt} + \frac{h^2}{2} \frac{d^2A}{dt^2} + \cdots \\
+&= \sum_{k=0} \frac{h^k}{k!} \frac{d^k}{dt^k} A\\
+&= \underbrace{\exp\left(h \frac{d}{dt}\right)}_{U(h)} A \\
+&= U(h) A(t)
+\end{aligned}
+$$
+
+ここから、時間発展演算子$U(h)$は以下のように書けることがわかった。
+
+$$
+U(h) = \exp\left(h \frac{d}{dt}\right)
+$$
+
+さて、$A$は$p,q$にのみ依存する関数であったから、その時間微分は$p$や$q$の偏微分として表現できる。
+
+$$
+\begin{aligned}
+\frac{dA}{dt} &= 
+\frac{\partial A}{\partial q}\dot{q}
++\frac{\partial A}{\partial q}\dot{q} \\
+&= 
+\underbrace{
+\left(
+\dot{q} \frac{\partial}{\partial q} +
+\dot{p} \frac{\partial}{\partial p}
+\right)
+}_{-i\mathcal{L}}
+A \\
+&= -i\mathcal{L}A
+\end{aligned}
+$$
+
+ここに表れた$\mathcal{L}$をリュービル演算子と呼ぶ。$-i$をつけるのは、リュービル演算子をエルミートにするためである。
+
+先程の式は任意の物理量$A$で成り立つから、形式的に
+
+$$
+\frac{d}{dt} = -i\mathcal{L}
+$$
+
+となっている。従って、リュービル演算子は時間微分を与える演算子であることがわかる。先程のテイラー展開の式に代入すると、
+
+$$
+A(t+h) = \exp(-i h\mathcal{L}) A(t)
+$$
+
+以上から、時間発展演算子$U$は、時間微分演算子$i\mathcal{L}$を指数の肩に乗せたものであることがわかった。
+
+リュービル演算子についてもう少し見てみよう。リュービル演算子は
+
+$$
+-i \mathcal{L} = \dot{q} \frac{\partial}{\partial q} +
+\dot{p} \frac{\partial}{\partial p}
+$$
+
+と書けた。$p,q$はハミルトンの運動方程式に従うため、$\dot{p}, \dot{q}$をハミルトニアンを用いて書き直すと、
+
+$$
+-i \mathcal{L} = \frac{\partial H}{\partial p} \frac{\partial}{\partial q} - \frac{\partial H}{\partial q} \frac{\partial}{\partial p}
+$$
+
+と書ける。ここで、ハミルトニアンが時間に陽に依存しないため、リュービル演算子も時間に陽に依存しないことに注意。リュービル演算子を用いると、$p,q$で記述される任意の量の時間微分を表現できる。もちろん$p,q$自身の時間微分も表現できるので、運動方程式は以下のように記述できる。
+
+$$
+\frac{d}{dt}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+=
+-i \mathcal{L}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+$$
+
+両辺を形式的に積分してみよう。$P=p(t+h)$,$Q=q(t+h)$と表記すると、
+
+$$
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+=
+\exp\left(-i h \mathcal{L}\right)
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+$$
+
+これは、先程得られた「時間発展演算子はリュービル演算子を指数関数の肩に乗せたもの」
+
+$$
+U(h) = \exp\left(-i h \mathcal{L}\right)
+$$
+
+という結果と同じである。
+
+## リュービル演算子のエルミート性
+
+さて、やや唐突だが、演算子エルミート性について考えてみよう。何か線形空間があり、その要素$f$と$g$の組に対してスカラー量を定める写像$(f,g)$を、$f$と$g$の内積と呼ぶのであった。この要素に作用する演算子$X$がエルミートであるとは、$(Xf, g) = (f, Xg)$が成り立つことである。以下では、リュービル演算子がエルミートであることを示す。
+
+簡単のため、1自由度系を考える。位相空間は$\vec{\Gamma}=(p,q)$で張られている。この空間に住む関数$f(p,q), g(p,q)$を考え、その内積を以下のように定める。
+
+$$
+(f,g) \equiv \int d \Gamma f^* g 
+$$
+
+ただし$f^*$は複素共役、$d \Gamma = dp dq$である。
+
+さて、リュービル演算子がエルミートであることを示すには、$\mathcal{L}$に対して、$(\mathcal{L}f,g) = (f, \mathcal{L}g)$を示せば良い。
+
+リュービル演算子は
+
+$$
+- i \mathcal{L} = \dot{q} \frac{\partial }{\partial q}
++\dot{p} \frac{\partial }{\partial p}
+$$
+
+であったから、両辺に$i$をかけて、
+
+$$
+\mathcal{L} = i \left(
+\dot{p} \frac{\partial }{\partial p}
++\dot{q} \frac{\partial }{\partial q}
+\right)
+$$
+
+となる。これを$(f, \mathcal{L}g)$に代入すると、
+
+$$
+\begin{aligned}
+(f, \mathcal{L}g) &= \int d\Gamma f^* \mathcal{L}g \\
+&= \int d\Gamma f^*
+i \left(
+\dot{p} \frac{\partial }{\partial p}
++\dot{q} \frac{\partial }{\partial q}
+\right)g
+\end{aligned}
+$$
+
+ここで、部分積分をすることで、$g$にかかっている微分を$f$に移す。
+
+$$
+\begin{aligned}
+(f, \mathcal{L}g) &= \int d\Gamma f^* \mathcal{L}g \\
+&= -\int d\Gamma 
+i
+\left(
+\frac{\partial}{\partial p} \left(f^*  \dot{p} \right)g
++  \frac{\partial}{\partial q} \left(f^* \dot{q} \right)g
+\right) \\
+&= -\int d\Gamma 
+i 
+\left(
+\dot{p} \frac{\partial f^*}{\partial p} + \dot{q}\frac{\partial f^*}{\partial q}
++
+\underbrace{
+f^*\frac{\partial \dot{q}}{\partial q}
++f^*\frac{\partial \dot{p}}{\partial p}
+}_{=0}
+\right)g \\
+&=  \int d\Gamma 
+\left(
+\mathcal{L^*}f^*
+\right) g  \\
+&= (\mathcal{L}f, g)
+\end{aligned}
+$$
+
+ただし、途中で部分積分で出てくるゴミが境界条件でゼロになることを仮定した。以上から、
+
+$$
+(\mathcal{L}f, g) = (f,\mathcal{L}g)
+$$
+
+であるから、リュービル演算子$\mathcal{L}$がエルミートであることが示された。
+
+逆に、リュービル演算子がエルミートであるためには、部分積分で出てくる余計な項がゼロ、つまり
+
+$$
+\frac{\partial \dot{q}}{\partial q} +
+\frac{\partial \dot{p}}{\partial p} =0
+$$
+
+でなければならないことがわかる。つまり、リュービル演算子がエルミートであると、そのリュービル演算子が作る位相空間での流れは非圧縮になり、位相空間の流れが非圧縮であれば、対応するリュービル演算子がエルミートであることがわかる。
+
+流れが非圧縮であれば、密度場は定数である。密度場に対応するのは分布関数であり、これは流れにともなって確率密度が変化しない、すなわち「ミクロカノニカル分布」を与えることがわかる。
+
+以上をまとめると、以下のようになる。
+
+* ハミルトンの運動方程式に対応するリュービル演算子はエルミート演算子になる
+* エルミートであるリュービル演算子が作る流れは非圧縮流となる
+* 流れが非圧縮であるから密度場は変化しない
+* これはミクロカノニカル分布$f=\mathrm{const.}$を意味する
