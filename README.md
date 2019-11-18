@@ -39,3 +39,8 @@
 ## [分子動力学法における時間積分](integration/README.md)
 
 ## [分子動力学法における温度制御](temperature/README.md)
+
+## 参考文献
+
+* 大学演習「熱学・統計力学」 久保亮五編 裳華房
+* [Tuckerman教授(NYU)の講義ノート](http://www.nyu.edu/classes/tuckerman/stat.mechII/lectures.html)
