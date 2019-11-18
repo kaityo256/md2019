@@ -221,34 +221,31 @@ $$
 となる(微分する変数としての$V$と基準体積$V$で同じ記号を使っていることに注意)。これにより、
 
 $$
-\frac{\partial H}{\partial V} = \lim_{\alpha \rightarrow 1} \frac{\partial H}{\partial \alpha} \frac{d \alpha}{dV}
-$$
-$V$による微分を$\alpha$による微分に置き換えることができる。
-
-ここで、
-
-$$
-\lim_{\alpha \rightarrow 1} \frac{d \alpha}{d V} = \frac{1}{3V}
+\frac{\partial H}{\partial V} = \lim_{\alpha \rightarrow 1} \frac{\partial H}{\partial \alpha} \frac{d \alpha}{dV} = \lim_{\alpha \rightarrow 1} \frac{\partial H}{\partial \alpha} \frac{1}{3 \alpha^2 V}
 $$
 
-である。
+と、$V$による微分を$\alpha$による微分に置き換えることができる。
 
 以下、$\partial H/\partial \alpha$を計算しよう。
 
-まず、運動エネルギー部分は簡単で、
+まず、運動エネルギー部分を考える。空間を一辺$\alpha$倍にすると、$\vec{q}_i \rightarrow \alpha \vec{q}_i$となる。ここで、
 
 $$
-\lim_{\alpha \rightarrow 1}\frac{\partial K(\alpha)}{\partial \alpha} =
-\lim_{\alpha \rightarrow 1} \sum_i \frac{2 \alpha \vec{p}_i^2}{2m} = 2K
+\vec{p}_i = \frac{\partial L}{\partial \dot{\vec{q}}_i}
 $$
 
-つまり、運動エネルギーの二倍である。等分配則を用いれば、
+であったから、$\vec{p}_i \rightarrow \vec{p}_i / \alpha$となることに注意すると、
 
 $$
-2K = 3 N k_B T
+\begin{aligned}
+\lim_{\alpha \rightarrow 1}\frac{\partial K(\alpha)}{\partial \alpha} &=
+\lim_{\alpha \rightarrow 1} \sum_i \frac{\partial}{\partial \alpha } \frac{\vec{p}_i^2}{2m \alpha^2} \\
+&= -2K \\
+&= -3 N k_B T
+\end{aligned}
 $$
 
-である。
+ただし、途中でエネルギー等分配則を用いた。
 
 次にポテンシャル部分の計算であるが、まずポテンシャル項の$\alpha$微分は
 
@@ -262,30 +259,43 @@ $$
 q_{ij} = |\vec{q}_i - \vec{q}_j|
 $$
 
-である。粒子$i$から$j$に働く力$\vec{f}_{ij}$は
+である。粒子$j$から$i$に働く力$\vec{f}_{ij}$は
 
 $$
-\vec{f}_{ij} = - \Phi'(q_{ij}) \frac{\vec{q}_j - \vec{q}_i}{|\vec{q}_j - \vec{q}_i|}$$
+\vec{f}_{ij} = - \Phi'(q_{ij}) \frac{\vec{q}_i - \vec{q}_j}{|\vec{q}_i - \vec{q}_j|}$$
 
 である(ベクトルの向きに注意)。以上をまとめると、
 
 $$
-\lim_{\alpha \rightarrow 1}  \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha}  = \vec{q}_{ij} \cdot \vec{f}_{ij}
+\lim_{\alpha \rightarrow 1}  \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha}  = -\vec{q}_{ij} \cdot \vec{f}_{ij}
 $$
 
 となるので、両辺和を取れば、
 
 $$
-\lim_{\alpha \rightarrow 1} \sum_{i< j} \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha} = \sum_{i < j} \vec{q}_{ij} \cdot \vec{f}_{ij}\\
+\lim_{\alpha \rightarrow 1} \sum_{i< j} \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha} = -\sum_{i < j} \vec{q}_{ij} \cdot \vec{f}_{ij}\\
 $$
 
-
-ただし、途中で作用反作用の法則を用いた。
 
 以上から、
 
 $$
-P = \frac{1}{3V} \left(3 Nk_B T +  \sum_{i < j} \vec{q}_{ij} \cdot \vec{f}_{ij} \right)
+\begin{aligned}
+-P &= \left<\frac{\partial H}{\partial V} \right>_S\\
+&= \lim_{\alpha \rightarrow 1} \left<\frac{\partial H}{\partial \alpha}\right> \underbrace{\frac{d \alpha}{d V}}_{1/3V} \\
+&= \frac{1}{3V} \left(- 3 Nk_B T -  \right<\sum_{i < j} \vec{q}_{ij} \cdot \vec{f}_{ij} \left>\right)
+\end{aligned}
 $$
 
-いわゆるビリアル定理が導かれた。導出を見れば、分母の$3V$は$d\alpha /d V$から、$Nk_B T$の項は運動エネルギー由来、ビリアル項は相互作用由来であることがわかるであろう。
+整理すると、
+
+$$
+PV = N k_BT + \frac{1}{3} \left< \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}\right>
+$$
+
+先程ビリアル定理で導かれた圧力が導出された。導出を見れば、分母の$3V$は$d\alpha /d V$から、$Nk_B T$の項は運動エネルギー由来、ビリアル項は相互作用由来であることがわかるであろう。また、境界条件に依存しない導出であることもわかるであろう。
+
+分子動力学法では$\vec{q}_{ij} \cdot \vec{f}_{ij}$は容易に計算できるため、これで圧力が計算できることになる。
+
+## 局所圧力
+
