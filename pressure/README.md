@@ -278,7 +278,6 @@ $$
 \lim_{\alpha \rightarrow 1} \sum_{i< j} \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha} = -\sum_{i < j} \vec{q}_{ij} \cdot \vec{f}_{ij}\\
 $$
 
-
 以上から、
 
 $$
@@ -428,7 +427,7 @@ $$
 
 $$
 \delta(\vec{q^i}-\vec{r}) - \delta(\vec{q^j}-\vec{r}) 
-= -\frac{\partial}{x_\beta} (q_\beta^i - q_\beta^j)
+= -\frac{\partial}{\partial x_\beta} (q_\beta^i - q_\beta^j)
 \int_0^1 d\lambda 
 \delta(\vec{q}^i - \vec{r} + \lambda(\vec{q^j} - \vec{q^i}))
 $$
