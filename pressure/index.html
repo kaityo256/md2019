@@ -95,17 +95,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="古典的なビリアル定理">古典的なビリアル定理</h2>
 <p>まずは教科書によく書いてある古典的なビリアル定理から圧力を定義してみよう。天下りだが、以下のような量を考えよう。</p>
 <p><span class="math display">\[
-G = \sum_i \vec{p}_i \vec{q}_i
+G = \sum_i \vec{p}_i \cdot \vec{q}_i
 \]</span></p>
 <p>両辺を時間微分してみる。</p>
 <p><span class="math display">\[
 \begin{aligned}
-\dot{G} &amp;= \sum_i \underbrace{\vec{p}_i \dot{\vec{q}}_i}_{(1)} + \sum_i \underbrace{\dot{\vec{p}}_i \vec{q}_i}_{(2)}
+\dot{G} &amp;= \sum_i \underbrace{\vec{p}_i \cdot \dot{\vec{q}}_i}_{(1)} + \sum_i \underbrace{\dot{\vec{p}}_i \cdot \vec{q}_i}_{(2)}
 \end{aligned}
 \]</span></p>
 <p>まず(1)の項だが、<span class="math inline">\(\dot{\vec{q}}_i = \vec{p}_i/m\)</span>であるから、</p>
 <p><span class="math display">\[
-\vec{p}_i \dot{\vec{q}}_i  = \frac{\vec{p}_i^2}{m}
+\vec{p}_i \cdot \dot{\vec{q}}_i  = \frac{\vec{p}_i^2}{m}
 \]</span></p>
 <p>である。エネルギー等分配則から</p>
 <p><span class="math display">\[
@@ -117,24 +117,47 @@ G = \sum_i \vec{p}_i \vec{q}_i
 \]</span></p>
 <p>次に、(2)だが、<span class="math inline">\(\dot{\vec{p}}_i = \vec{f}_i\)</span>であるから、</p>
 <p><span class="math display">\[
-\dot{\vec{p}}_i \vec{q}_i = \vec{q}_i \vec{f}_i 
+\dot{\vec{p}}_i \cdot \vec{q}_i = \vec{q}_i \cdot \vec{f}_i 
 \]</span></p>
-<p>ここで<span class="math inline">\(\vec{f}_i\)</span>は、粒子<span class="math inline">\(i\)</span>にかかる力である。ここで、粒子間に働く力と、それ以外の外力<span class="math inline">\(\vec{f}^\mathrm{ext}_i\)</span>にわけ、粒子間力は二体力とし、ポテンシャル<span class="math inline">\(\Phi(r)\)</span>によるポテンシャル力であるとすると、</p>
-<p>TODO: 後の対応のため、二体力<span class="math inline">\(f_{ij}\)</span>で書くだけにして、ポテンシャルは後でにすること。</p>
+<p>ここで<span class="math inline">\(\vec{f}_i\)</span>は、粒子<span class="math inline">\(i\)</span>にかかる力である。ここで、粒子間に働く力と、外力<span class="math inline">\(\vec{f}^\mathrm{ext}_i\)</span>にわけよう。粒子間力は二体力とし、粒子<span class="math inline">\(j\)</span>から<span class="math inline">\(i\)</span>に働く力を<span class="math inline">\(\vec{f}_{ij}\)</span>とすると、</p>
+<p><span class="math display">\[
+\dot{\vec{p}}_i \vec{q}_i = \vec{q}_i \sum_{i\neq j} \vec{f}_{ij} + \vec{q}_i  \cdot \vec{f}^\mathrm{ext}_i
+\]</span></p>
+<p>と書ける。<span class="math inline">\(i\)</span>に関する和を取ると、</p>
 <p><span class="math display">\[
 \begin{aligned}
-\sum_i \dot{\vec{p}}_i \vec{q}_i &amp;= - \sum_i \vec{q}_i \sum_{i\neq j} \Phi&#39;(q_{ij}) \frac{\vec{q}_i - \vec{q}_j}{|\vec{q}_i - \vec{q}_j|}
-+ \sum_i \vec{q}_i \vec{f}^\mathrm{ext}_i \\
-&amp;= - \sum_{i &lt; j} q_{ij} \Phi&#39;(q_{ij})+ 
-\underbrace{\sum_i \vec{q}_i \vec{f}^\mathrm{ext}_i}_{-3PV}\\
-&amp;= - \sum_{i &lt; j} q_{ij} \Phi&#39;(q_{ij}) -3PV
+\sum_i \dot{\vec{p}}_i \vec{q}_i &amp;= \underbrace{\sum_i \vec{q}_i \sum_{i\neq j} \vec{f}_{ij}}_{(3)} + \underbrace{\sum_i \vec{q}_i \cdot \vec{f}^\mathrm{ext}_i}_{(4)}
 \end{aligned}
 \]</span></p>
-<p>ただし、外力を全て足すと、壁から受ける力の反作用であることを利用し、ガウスの定理を使って圧力<span class="math inline">\(3PV\)</span>に書き直した。また、<span class="math inline">\(q_{ij} = |\vec{q}_i - \vec{q}_j|\)</span>である。</p>
-<p>TODO: 3次元から3が出てくる理由を図解した方が良い？</p>
+<p>まずは(3)について計算しよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+(3) &amp;=  \sum_i \vec{q}_i \sum_{i\neq j} \vec{f}_{ij} \\
+&amp;= \sum_{i&lt; j} \left( \vec{q}_i  \cdot \vec{f}_{ij} + \vec{q}_j  \cdot \vec{f}_{ji} \right) \\
+&amp;=  \sum_{i&lt; j}\left( \vec{q}_i  \cdot \vec{f}_{ij} - \vec{q}_j  \cdot \vec{f}_{ij} \right) \\
+&amp;=  \sum_{i&lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij}
+\end{aligned}
+\]</span></p>
+<p>ただし、<span class="math inline">\(\vec{q}_{ij} = \vec{q}_i - \vec{q}_j\)</span>である。</p>
+<p>次に、外力からの寄与(4)を計算する。<span class="math inline">\(\vec{f}^\mathrm{ext}_i\)</span>は、外力から粒子<span class="math inline">\(i\)</span>に働く力であるから、その反作用が壁に働く。従って、</p>
+<p><span class="math display">\[
+\begin{aligned}
+(4) &amp;= \sum_i \vec{q}_i \cdot \vec{f}^\mathrm{ext}_i \\
+&amp;= -  \int_{\partial V} \vec{r} \cdot (P\vec{n}) d A \\
+&amp;= -P \int_V \underbrace{\nabla \cdot \vec{r}}_3 dV \\
+&amp;= -3PV
+\end{aligned}
+\]</span></p>
+<p>ただし、途中でガウスの定理を使った。また、</p>
+<p><span class="math display">\[
+\nabla \cdot \vec{r} = \frac{\partial x}{\partial x} +
+\frac{\partial y}{\partial y} +
+\frac{\partial z}{\partial z}  = 3
+\]</span></p>
+<p>を用いた。</p>
 <p>以上から、</p>
 <p><span class="math display">\[
-\dot{G} = 3Nk_B T - \sum_{i &lt; j} q_{ij} \Phi&#39;(q_{ij}) -3PV
+\dot{G} = 3Nk_B T + \sum_{i&lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij} -3PV
 \]</span></p>
 <p>となった。</p>
 <p>次に、両辺の時間平均を取ろう。時間変化する物理量<span class="math inline">\(A(t)\)</span>の時間平均<span class="math inline">\(\bar{A}\)</span>は、</p>
@@ -152,11 +175,11 @@ G = \sum_i \vec{p}_i \vec{q}_i
 \]</span></p>
 <p>ここで、<span class="math inline">\(G\)</span>という量に上限があるなら、十分に長い<span class="math inline">\(\tau\)</span>を取ればゼロになる。以上から、</p>
 <p><span class="math display">\[
-\bar{\dot{G}} = 3Nk_B T - \overline{\sum_{i &lt; j} q_{ij} \Phi&#39;(q_{ij})} -3PV = 0
+\bar{\dot{G}} = 3Nk_B T + \overline{\sum_{i&lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij}} -3PV = 0
 \]</span></p>
 <p>時間平均<span class="math inline">\(\bar{A}\)</span>とアンサンブル平均<span class="math inline">\(\left&lt; A\right&gt;\)</span>を同一視すると、</p>
 <p><span class="math display">\[
-PV = N k_BT - \frac{1}{3} \left&lt; \sum_{i &lt; j} q_{ij} \Phi&#39;(q_{ij}) \right&gt;
+PV = N k_BT + \frac{1}{3} \left&lt; \sum_{i&lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij}\right&gt;
 \]</span></p>
 <p>これが古典的なビリアル定理による、粒子系の圧力の導出である。最初の<span class="math inline">\(N k_B T\)</span>が理想気体からの寄与、つまり粒子の運動から圧力への寄与であり、右辺第二項が相互作用からの寄与である。</p>
 <h2 id="分配関数からの導出">分配関数からの導出</h2>
@@ -166,7 +189,12 @@ PV = N k_BT - \frac{1}{3} \left&lt; \sum_{i &lt; j} q_{ij} \Phi&#39;(q_{ij}) \ri
 <li>粒子にかかる力を粒子間力と外力に分けたが、周期境界条件ではどうなるかわかりにくい</li>
 </ul>
 <p>という問題がある。そこで、「分子動力学法の世界にはハミルトニアンしか存在しない」という立場から、分配関数経由で導出してみよう。</p>
-<p>まず、熱力学関係式</p>
+<p>まずはこの系のハミルトニアンを定義しよう。</p>
+<p><span class="math display">\[
+H = \sum_i \frac{\vec{p}_i^2}{2m} + \sum_{i &lt; j} \Phi(q_{ij})
+\]</span></p>
+<p>これがこの系の全エネルギーを定義する。</p>
+<p>さて、熱力学関係式</p>
 <p><span class="math display">\[
 P = - \left(\frac{\partial F}{\partial V} \right)_T
 \]</span></p>
@@ -187,7 +215,7 @@ P &amp;= - \left(\frac{\partial F}{\partial V} \right)_T\\
 <p><span class="math display">\[
 Z = \int d \Gamma \mathrm{e}^{-\beta H}
 \]</span></p>
-<p>であったから、</p>
+<p>と書けるから、</p>
 <p><span class="math display">\[
 \frac{\partial Z}{\partial V} = \int d \Gamma \left(-\beta \frac{\partial H}{\partial V} \right) \mathrm{e}^{-\beta H}
 \]</span></p>
@@ -206,7 +234,7 @@ P = - \left(\frac{\partial U}{\partial V} \right)_S
 <p>さて、ハミルトニアンの体積微分を取るために、系のサイズを変化させることを考えよう。一辺<span class="math inline">\(L\)</span>の立方体の系を考えると、<span class="math inline">\(V=L^3\)</span>である。この系の長さを一様に<span class="math inline">\(L \rightarrow \alpha L\)</span>と拡大することを考える。</p>
 <p>拡大された世界のハミルトニアンは</p>
 <p><span class="math display">\[
-H(\alpha) = \sum_i \frac{\alpha^2 \vec{p}_i^2}{2m} + \sum_{i &lt; j} \Phi(\alpha r_{ij})
+H(\alpha) = \sum_i \frac{\alpha^2 \vec{p}_i^2}{2m} + \sum_{i &lt; j} \Phi(\alpha q_{ij})
 \]</span></p>
 <p>となる。</p>
 <p>やや紛らわしいが、<span class="math inline">\(\alpha = 1\)</span>の時の体積を<span class="math inline">\(V\)</span>とすると、<span class="math inline">\(V \rightarrow \alpha^3 V\)</span>となるから</p>
@@ -216,36 +244,48 @@ dV = 3 \alpha^2 V d \alpha
 <p>となる(微分する変数としての<span class="math inline">\(V\)</span>と基準体積<span class="math inline">\(V\)</span>で同じ記号を使っていることに注意)。これにより、</p>
 <p><span class="math display">\[
 \frac{\partial H}{\partial V} = \lim_{\alpha \rightarrow 1} \frac{\partial H}{\partial \alpha} \frac{d \alpha}{dV}
-\]</span> <span class="math inline">\(V\)</span>による微分を<span class="math inline">\(\alpha\)</span>による微分に置き換えることができる。以下、<span class="math inline">\(\partial H/\partial \alpha\)</span>を計算しよう。</p>
+\]</span> <span class="math inline">\(V\)</span>による微分を<span class="math inline">\(\alpha\)</span>による微分に置き換えることができる。</p>
+<p>ここで、</p>
+<p><span class="math display">\[
+\lim_{\alpha \rightarrow 1} \frac{d \alpha}{d V} = \frac{1}{3V}
+\]</span></p>
+<p>である。</p>
+<p>以下、<span class="math inline">\(\partial H/\partial \alpha\)</span>を計算しよう。</p>
 <p>まず、運動エネルギー部分は簡単で、</p>
 <p><span class="math display">\[
 \lim_{\alpha \rightarrow 1}\frac{\partial K(\alpha)}{\partial \alpha} =
 \lim_{\alpha \rightarrow 1} \sum_i \frac{2 \alpha \vec{p}_i^2}{2m} = 2K
 \]</span></p>
-<p>つまり、運動エネルギーの二倍である。</p>
-<p>次にポテンシャル部分の計算であるが、</p>
+<p>つまり、運動エネルギーの二倍である。等分配則を用いれば、</p>
 <p><span class="math display">\[
-r_{ij} = |\vec{r}_i - \vec{r}_j|
+2K = 3 N k_B T
 \]</span></p>
+<p>である。</p>
+<p>次にポテンシャル部分の計算であるが、まずポテンシャル項の<span class="math inline">\(\alpha\)</span>微分は</p>
 <p><span class="math display">\[
-\vec{f}_{ij} = - \Psi&#39;(r_{ij}) \frac{\vec{r}_i - \vec{r}_j}{|\vec{r}_i - \vec{r}_j|}
-\]</span></p>
-<p>であることに注意すると、</p>
+\lim_{\alpha \rightarrow 1}  \frac{\partial\Phi(\alpha q_{ij})}{\partial \alpha} 
+= \Phi&#39;(q_{ij}) q_{ij} \]</span></p>
+<p>ここで、</p>
 <p><span class="math display">\[
-\begin{aligned}
-\lim_{\alpha \rightarrow 1} \sum_{i&lt; j}r_{ij} \frac{\partial \Psi(\alpha r_{ij})}{\partial \alpha} &amp;= \sum_{i&lt; j}r_{ij} \Psi&#39;(r_{ij}) \\
-&amp;= \sum_{i &lt; j} \vec{f}_{ij} \cdot (\vec{r}_i - \vec{r}_j)\\
-&amp;= \sum_i \vec{f}_i \cdot \vec{r}_i
-\end{aligned}
+q_{ij} = |\vec{q}_i - \vec{q}_j|
 \]</span></p>
-<p>TODO:符号が怪しい</p>
+<p>である。粒子<span class="math inline">\(i\)</span>から<span class="math inline">\(j\)</span>に働く力<span class="math inline">\(\vec{f}_{ij}\)</span>は</p>
+<p><span class="math display">\[
+\vec{f}_{ij} = - \Phi&#39;(q_{ij}) \frac{\vec{q}_j - \vec{q}_i}{|\vec{q}_j - \vec{q}_i|}\]</span></p>
+<p>である(ベクトルの向きに注意)。以上をまとめると、</p>
+<p><span class="math display">\[
+\lim_{\alpha \rightarrow 1}  \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha}  = \vec{q}_{ij} \cdot \vec{f}_{ij}
+\]</span></p>
+<p>となるので、両辺和を取れば、</p>
+<p><span class="math display">\[
+\lim_{\alpha \rightarrow 1} \sum_{i&lt; j} \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha} = \sum_{i &lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij}\\
+\]</span></p>
 <p>ただし、途中で作用反作用の法則を用いた。</p>
 <p>以上から、</p>
 <p><span class="math display">\[
-P = \frac{1}{3V} \left(2 K + \sum_i \vec{f}_i \cdot \vec{r}_i \right)
+P = \frac{1}{3V} \left(3 Nk_B T +  \sum_{i &lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij} \right)
 \]</span></p>
-<p>いわゆるビリアル定理が導かれた。導出を見れば、分母の<span class="math inline">\(3V\)</span>は<span class="math inline">\(d\alpha /d V\)</span>から、運動エネルギーの2倍のファクターは<span class="math inline">\(\alpha^2 \vec{p}_i^2\)</span>の<span class="math inline">\(\alpha\)</span>微分から出てくることがわかるであろう。</p>
-<p>TODO: まだところどころ符号が怪しい。</p>
+<p>いわゆるビリアル定理が導かれた。導出を見れば、分母の<span class="math inline">\(3V\)</span>は<span class="math inline">\(d\alpha /d V\)</span>から、<span class="math inline">\(Nk_B T\)</span>の項は運動エネルギー由来、ビリアル項は相互作用由来であることがわかるであろう。</p>
 </article>
 </body>
 </html>

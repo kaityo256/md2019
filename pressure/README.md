@@ -9,21 +9,21 @@
 まずは教科書によく書いてある古典的なビリアル定理から圧力を定義してみよう。天下りだが、以下のような量を考えよう。
 
 $$
-G = \sum_i \vec{p}_i \vec{q}_i
+G = \sum_i \vec{p}_i \cdot \vec{q}_i
 $$
 
 両辺を時間微分してみる。
 
 $$
 \begin{aligned}
-\dot{G} &= \sum_i \underbrace{\vec{p}_i \dot{\vec{q}}_i}_{(1)} + \sum_i \underbrace{\dot{\vec{p}}_i \vec{q}_i}_{(2)}
+\dot{G} &= \sum_i \underbrace{\vec{p}_i \cdot \dot{\vec{q}}_i}_{(1)} + \sum_i \underbrace{\dot{\vec{p}}_i \cdot \vec{q}_i}_{(2)}
 \end{aligned}
 $$
 
 まず(1)の項だが、$\dot{\vec{q}}_i = \vec{p}_i/m$であるから、
 
 $$
-\vec{p}_i \dot{\vec{q}}_i  = \frac{\vec{p}_i^2}{m}
+\vec{p}_i \cdot \dot{\vec{q}}_i  = \frac{\vec{p}_i^2}{m}
 $$
 
 である。エネルギー等分配則から
@@ -41,31 +41,61 @@ $$
 次に、(2)だが、$\dot{\vec{p}}_i = \vec{f}_i$であるから、
 
 $$
-\dot{\vec{p}}_i \vec{q}_i = \vec{q}_i \vec{f}_i 
+\dot{\vec{p}}_i \cdot \vec{q}_i = \vec{q}_i \cdot \vec{f}_i 
 $$
 
-ここで$\vec{f}_i$は、粒子$i$にかかる力である。ここで、粒子間に働く力と、それ以外の外力$\vec{f}^\mathrm{ext}_i$にわけ、粒子間力は二体力とし、ポテンシャル$\Phi(r)$によるポテンシャル力であるとすると、
+ここで$\vec{f}_i$は、粒子$i$にかかる力である。ここで、粒子間に働く力と、外力$\vec{f}^\mathrm{ext}_i$にわけよう。粒子間力は二体力とし、粒子$j$から$i$に働く力を$\vec{f}_{ij}$とすると、
 
-TODO: 後の対応のため、二体力$f_{ij}$で書くだけにして、ポテンシャルは後でにすること。
+$$
+\dot{\vec{p}}_i \vec{q}_i = \vec{q}_i \sum_{i\neq j} \vec{f}_{ij} + \vec{q}_i  \cdot \vec{f}^\mathrm{ext}_i
+$$
+
+と書ける。$i$に関する和を取ると、
 
 $$
 \begin{aligned}
-\sum_i \dot{\vec{p}}_i \vec{q}_i &= - \sum_i \vec{q}_i \sum_{i\neq j} \Phi'(q_{ij}) \frac{\vec{q}_i - \vec{q}_j}{|\vec{q}_i - \vec{q}_j|}
-+ \sum_i \vec{q}_i \vec{f}^\mathrm{ext}_i \\
-&= - \sum_{i < j} q_{ij} \Phi'(q_{ij})+ 
-\underbrace{\sum_i \vec{q}_i \vec{f}^\mathrm{ext}_i}_{-3PV}\\
-&= - \sum_{i < j} q_{ij} \Phi'(q_{ij}) -3PV
+\sum_i \dot{\vec{p}}_i \vec{q}_i &= \underbrace{\sum_i \vec{q}_i \sum_{i\neq j} \vec{f}_{ij}}_{(3)} + \underbrace{\sum_i \vec{q}_i \cdot \vec{f}^\mathrm{ext}_i}_{(4)}
 \end{aligned}
 $$
 
-ただし、外力を全て足すと、壁から受ける力の反作用であることを利用し、ガウスの定理を使って圧力$3PV$に書き直した。また、$q_{ij} = |\vec{q}_i - \vec{q}_j|$である。
+まずは(3)について計算しよう。
 
-TODO: 3次元から3が出てくる理由を図解した方が良い？
+$$
+\begin{aligned}
+(3) &=  \sum_i \vec{q}_i \sum_{i\neq j} \vec{f}_{ij} \\
+&= \sum_{i< j} \left( \vec{q}_i  \cdot \vec{f}_{ij} + \vec{q}_j  \cdot \vec{f}_{ji} \right) \\
+&=  \sum_{i< j}\left( \vec{q}_i  \cdot \vec{f}_{ij} - \vec{q}_j  \cdot \vec{f}_{ij} \right) \\
+&=  \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}
+\end{aligned}
+$$
+
+ただし、$\vec{q}_{ij} = \vec{q}_i - \vec{q}_j$である。
+
+次に、外力からの寄与(4)を計算する。$\vec{f}^\mathrm{ext}_i$は、外力から粒子$i$に働く力であるから、その反作用が壁に働く。従って、
+
+$$
+\begin{aligned}
+(4) &= \sum_i \vec{q}_i \cdot \vec{f}^\mathrm{ext}_i \\
+&= -  \int_{\partial V} \vec{r} \cdot (P\vec{n}) d A \\
+&= -P \int_V \underbrace{\nabla \cdot \vec{r}}_3 dV \\
+&= -3PV
+\end{aligned}
+$$
+
+ただし、途中でガウスの定理を使った。また、
+
+$$
+\nabla \cdot \vec{r} = \frac{\partial x}{\partial x} +
+\frac{\partial y}{\partial y} +
+\frac{\partial z}{\partial z}  = 3
+$$
+
+を用いた。
 
 以上から、
 
 $$
-\dot{G} = 3Nk_B T - \sum_{i < j} q_{ij} \Phi'(q_{ij}) -3PV
+\dot{G} = 3Nk_B T + \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij} -3PV
 $$
 
 となった。
@@ -90,13 +120,13 @@ $$
 ここで、$G$という量に上限があるなら、十分に長い$\tau$を取ればゼロになる。以上から、
 
 $$
-\bar{\dot{G}} = 3Nk_B T - \overline{\sum_{i < j} q_{ij} \Phi'(q_{ij})} -3PV = 0
+\bar{\dot{G}} = 3Nk_B T + \overline{\sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}} -3PV = 0
 $$
 
 時間平均$\bar{A}$とアンサンブル平均$\left< A\right>$を同一視すると、
 
 $$
-PV = N k_BT - \frac{1}{3} \left< \sum_{i < j} q_{ij} \Phi'(q_{ij}) \right>
+PV = N k_BT + \frac{1}{3} \left< \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}\right>
 $$
 
 これが古典的なビリアル定理による、粒子系の圧力の導出である。最初の$N k_B T$が理想気体からの寄与、つまり粒子の運動から圧力への寄与であり、右辺第二項が相互作用からの寄与である。
@@ -110,7 +140,15 @@ $$
 
 という問題がある。そこで、「分子動力学法の世界にはハミルトニアンしか存在しない」という立場から、分配関数経由で導出してみよう。
 
-まず、熱力学関係式
+まずはこの系のハミルトニアンを定義しよう。
+
+$$
+H = \sum_i \frac{\vec{p}_i^2}{2m} + \sum_{i < j} \Phi(q_{ij})
+$$
+
+これがこの系の全エネルギーを定義する。
+
+さて、熱力学関係式
 
 $$
 P = - \left(\frac{\partial F}{\partial V} \right)_T
@@ -140,7 +178,7 @@ $$
 Z = \int d \Gamma \mathrm{e}^{-\beta H}
 $$
 
-であったから、
+と書けるから、
 
 $$
 \frac{\partial Z}{\partial V} = \int d \Gamma \left(-\beta \frac{\partial H}{\partial V} \right) \mathrm{e}^{-\beta H}
@@ -169,7 +207,7 @@ $$
 拡大された世界のハミルトニアンは
 
 $$
-H(\alpha) = \sum_i \frac{\alpha^2 \vec{p}_i^2}{2m} + \sum_{i < j} \Phi(\alpha r_{ij})
+H(\alpha) = \sum_i \frac{\alpha^2 \vec{p}_i^2}{2m} + \sum_{i < j} \Phi(\alpha q_{ij})
 $$
 
 となる。
@@ -185,7 +223,17 @@ $$
 $$
 \frac{\partial H}{\partial V} = \lim_{\alpha \rightarrow 1} \frac{\partial H}{\partial \alpha} \frac{d \alpha}{dV}
 $$
-$V$による微分を$\alpha$による微分に置き換えることができる。以下、$\partial H/\partial \alpha$を計算しよう。
+$V$による微分を$\alpha$による微分に置き換えることができる。
+
+ここで、
+
+$$
+\lim_{\alpha \rightarrow 1} \frac{d \alpha}{d V} = \frac{1}{3V}
+$$
+
+である。
+
+以下、$\partial H/\partial \alpha$を計算しよう。
 
 まず、運動エネルギー部分は簡単で、
 
@@ -194,38 +242,50 @@ $$
 \lim_{\alpha \rightarrow 1} \sum_i \frac{2 \alpha \vec{p}_i^2}{2m} = 2K
 $$
 
-つまり、運動エネルギーの二倍である。
-
-次にポテンシャル部分の計算であるが、
+つまり、運動エネルギーの二倍である。等分配則を用いれば、
 
 $$
-r_{ij} = |\vec{r}_i - \vec{r}_j|
+2K = 3 N k_B T
 $$
 
-$$
-\vec{f}_{ij} = - \Psi'(r_{ij}) \frac{\vec{r}_i - \vec{r}_j}{|\vec{r}_i - \vec{r}_j|}
-$$
+である。
 
-であることに注意すると、
+次にポテンシャル部分の計算であるが、まずポテンシャル項の$\alpha$微分は
 
 $$
-\begin{aligned}
-\lim_{\alpha \rightarrow 1} \sum_{i< j}r_{ij} \frac{\partial \Psi(\alpha r_{ij})}{\partial \alpha} &= \sum_{i< j}r_{ij} \Psi'(r_{ij}) \\
-&= \sum_{i < j} \vec{f}_{ij} \cdot (\vec{r}_i - \vec{r}_j)\\
-&= \sum_i \vec{f}_i \cdot \vec{r}_i
-\end{aligned}
+\lim_{\alpha \rightarrow 1}  \frac{\partial\Phi(\alpha q_{ij})}{\partial \alpha} 
+= \Phi'(q_{ij}) q_{ij} $$
+
+ここで、
+
+$$
+q_{ij} = |\vec{q}_i - \vec{q}_j|
 $$
 
-TODO:符号が怪しい
+である。粒子$i$から$j$に働く力$\vec{f}_{ij}$は
+
+$$
+\vec{f}_{ij} = - \Phi'(q_{ij}) \frac{\vec{q}_j - \vec{q}_i}{|\vec{q}_j - \vec{q}_i|}$$
+
+である(ベクトルの向きに注意)。以上をまとめると、
+
+$$
+\lim_{\alpha \rightarrow 1}  \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha}  = \vec{q}_{ij} \cdot \vec{f}_{ij}
+$$
+
+となるので、両辺和を取れば、
+
+$$
+\lim_{\alpha \rightarrow 1} \sum_{i< j} \frac{\partial \Phi(\alpha q_{ij})}{\partial \alpha} = \sum_{i < j} \vec{q}_{ij} \cdot \vec{f}_{ij}\\
+$$
+
 
 ただし、途中で作用反作用の法則を用いた。
 
 以上から、
 
 $$
-P = \frac{1}{3V} \left(2 K + \sum_i \vec{f}_i \cdot \vec{r}_i \right)
+P = \frac{1}{3V} \left(3 Nk_B T +  \sum_{i < j} \vec{q}_{ij} \cdot \vec{f}_{ij} \right)
 $$
 
-いわゆるビリアル定理が導かれた。導出を見れば、分母の$3V$は$d\alpha /d V$から、運動エネルギーの2倍のファクターは$\alpha^2 \vec{p}_i^2$の$\alpha$微分から出てくることがわかるであろう。
-
-TODO: まだところどころ符号が怪しい。
+いわゆるビリアル定理が導かれた。導出を見れば、分母の$3V$は$d\alpha /d V$から、$Nk_B T$の項は運動エネルギー由来、ビリアル項は相互作用由来であることがわかるであろう。
