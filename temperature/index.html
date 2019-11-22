@@ -96,10 +96,110 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>分子動力学法では、示強性の量を制御したい場合がある。先ほど、圧力<span class="math inline">\(P\)</span>を制御するのに、共役な量の相方である体積<span class="math inline">\(V\)</span>をコントロールした。これはわかりやすい。</p>
 <p>では、温度<span class="math inline">\(T\)</span>を制御するにはどうすればよいだろうか？圧力制御からの類推では、エントロピーをコントロールすることになるが、エントロピーとはどうやってコントロールすればよいのだろうか。そもそもエントロピーと温度、どちらが基本的な量であり、どちらを従属的な量であろうか？</p>
 <p>この問いへの回答は筆者の能力を超える。ここでは「両方の立場があり得る」とだけコメントしておく。例えば田崎さんの熱力学の教科書は温度を基本的な量に取ってエントロピーを導く形式であり、清水さんの教科書はエントロピーを基本的な量に取って温度を導く形式である。</p>
-<p>TODO: 能勢のハミルトニアン</p>
-<p>TODO: 時間の制御？</p>
-<p>TODO: Nose-Hoover法</p>
-<h2 id="nose-hoover法の導出">Nose-Hoover法の導出</h2>
+<h2 id="能勢の方法">能勢の方法</h2>
+<p>TODO: 書く？さらっと流すだけ？</p>
+<h2 id="能勢のハミルトニアンからnosehoover法へ">能勢のハミルトニアンからNoseHoover法へ</h2>
+<p>能勢のハミルトニアンは以下で与えられる。</p>
+<p><span class="math display">\[
+H_\mathrm{Nose} = H(p/s, q) + \frac{p_s^2}{2Q} + \frac{\ln s}{\beta}
+\]</span></p>
+<p>運動方程式は以下の通り。後で時間のスケールをする都合上、時間微分を陽に書いている。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{dq}{dt} &amp;= \frac{1}{s} \partial_1 H(p/s, q) \\
+\frac{dp}{dt} &amp;= -\frac{\partial H(p/s,q)}{\partial q} \\
+\frac{d p_s}{dt} &amp;= \frac{p}{s^2}\partial_1 H(p/s, q) - \frac{1}{s\beta}\\
+\frac{ds}{dt} &amp;= \frac{p_s}{Q}
+\end{aligned}
+\]</span></p>
+<p>ただし、<span class="math inline">\(\partial_1\)</span>は多変数関数の一つ目の変数に関する微分という意味である。</p>
+<p>ここで、<span class="math inline">\(p/s = p&#39;\)</span>、<span class="math inline">\(dt&#39; = dt/s\)</span>という変換を考える。</p>
+<p>まず、<span class="math inline">\(q\)</span>について、<span class="math inline">\(p/s = p&#39;\)</span>を考えると、</p>
+<p><span class="math display">\[
+\frac{dq}{dt} = \frac{1}{s} \frac{\partial H}{\partial p&#39;}
+\]</span></p>
+<p>時間を<span class="math inline">\(t\)</span>から<span class="math inline">\(t&#39;\)</span>に変えると、</p>
+<p><span class="math display">\[
+\frac{dq}{dt&#39;} = \frac{\partial H}{\partial p&#39;}
+\]</span></p>
+<p>次に、<span class="math inline">\(p&#39;=p/s\)</span>について考えてみよう。<span class="math inline">\(p&#39;\)</span>を時間微分すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d p&#39;}{dt} &amp;= \frac{1}{s}\frac{d p}{dt} -\frac{p}{s^2} \frac{ds}{dt} \\
+&amp;= -\frac{1}{s} \frac{\partial H}{\partial q} - \frac{p&#39;}{s} \frac{p_s}{Q}
+\end{aligned}
+\]</span></p>
+<p>時間を<span class="math inline">\(t\)</span>から<span class="math inline">\(t&#39;\)</span>に変えると、</p>
+<p><span class="math display">\[
+\frac{dp&#39;}{dt&#39;} = - \frac{\partial H}{\partial q} -p&#39; \zeta
+\]</span></p>
+<p>ただし<span class="math inline">\(\zeta = p_s/Q\)</span>である。</p>
+<p>次に、<span class="math inline">\(\zeta\)</span>の時間微分を考えよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d \zeta}{dt} &amp;= \frac{1}{Q} \frac{d p_s}{d t} \\
+&amp;= \frac{1}{Q} \left(
+    \frac{p}{s^2}\partial_1 H(p/s, q) - \frac{1}{s\beta}
+\right) \\
+&amp;= \frac{1}{Qs}
+\left(
+p&#39; \frac{\partial H}{\partial p} - \frac{1}{\beta}
+\right)
+\end{aligned}
+\]</span></p>
+<p>時間を<span class="math inline">\(t\)</span>から<span class="math inline">\(t&#39;\)</span>に変えると、</p>
+<p><span class="math display">\[
+\frac{d \zeta}{dt&#39;} = \frac{1}{Q}
+\left(
+p&#39; \frac{\partial H}{\partial p} - \frac{1}{\beta}
+\right)
+\]</span></p>
+<p>さて、あらためて<span class="math inline">\(t&#39;, p&#39;\)</span>を<span class="math inline">\(t,p\)</span>と表記すると、運動方程式は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{q} &amp;= \frac{\partial H}{\partial q} \\
+\dot{p} &amp;= - \frac{\partial H}{\partial p} - p\zeta \\
+\dot{\zeta} &amp;= \frac{1}{Q}\left(
+p \frac{\partial H}{\partial p} - \frac{1}{\beta}
+\right)
+\end{aligned}
+\]</span> となり、これをNose-Hoover法と呼ぶ。この方程式が定常状態として指定の温度のカノニカル分布を持つことは後で証明する。</p>
+<h2 id="能勢の保存量">能勢の保存量</h2>
+<p>先程の運動方程式は<span class="math inline">\((p,q,\zeta)\)</span>で閉じてしまい、<span class="math inline">\(s\)</span>に関する式が含まれていなかった。これについて見てみよう。</p>
+<p>もともと能勢のハミルトニアンはこのような形であった。</p>
+<p><span class="math display">\[
+H_\mathrm{Nose} = H(p/s, q) + \frac{p_s^2}{2Q} + \frac{\ln s}{\beta}
+\]</span></p>
+<p>この、最後の<span class="math inline">\(\ln s/ \beta\)</span>を改めて<span class="math inline">\(\eta\)</span>と定義しよう。<span class="math inline">\(\eta\)</span>の時間微分は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d\eta}{dt} &amp;= \frac{1}{\beta s}\frac{ds}{dt} \\
+&amp;= \frac{1}{\beta s} \frac{p_s}{Q} \\
+&amp;= \frac{\zeta}{\beta s}
+\end{aligned}
+\]</span></p>
+<p>さらに<span class="math inline">\(t\)</span>から<span class="math inline">\(t&#39;\)</span>に移ると</p>
+<p><span class="math display">\[
+\frac{d \eta}{d t&#39;} = \frac{\zeta}{\beta}
+\]</span></p>
+<p>これも含めれば運動方程式は、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{q} &amp;= \frac{\partial H}{\partial q} \\
+\dot{p} &amp;= - \frac{\partial H}{\partial p} - p\zeta \\
+\dot{\zeta} &amp;= \frac{1}{Q}\left(
+p \frac{\partial H}{\partial p} - \frac{1}{\beta}
+\right) \\
+\dot{\eta} &amp;= \frac{\zeta}{\beta}
+\end{aligned}
+\]</span></p>
+<p>となる。<span class="math inline">\((p,q,\zeta)\)</span>で運動方程式が閉じているので、<span class="math inline">\(\eta\)</span>の時間発展を計算する必要は無いが、<span class="math inline">\(\eta\)</span>まで考えると、もともとの能勢のハミルトニアン</p>
+<p><span class="math display">\[
+H_\mathrm{Nose} = H(p/s, q) + \frac{p_s^2}{2Q} + \eta
+\]</span></p>
+<p>が時間不変量になっていることがわかる。もともと能勢の方法では、ハミルトンの運動方程式に従うために、能勢のハミルトニアンが保存量となっていたのだが、変数変換を行ってハミルトンの運動方程式でなくなった今でも、これは時間不変量のままとなっている。この量を能勢の保存量、もしくはNose-Hoover保存量と呼ぶことがある。</p>
+<p><span class="math inline">\(\eta\)</span>そのものは時間発展には不必要だが、Nose-Hoover保存量を見ることで時間発展の精度を確認するために計算される場合がある。</p>
+<h2 id="nose-hoover法の別導出">Nose-Hoover法の別導出</h2>
 <p>先程は能勢のハミルトニアンから導出された運動方程式を、変数変換することでNose-Hoover法が導出された。以下では逆に、「定常状態として指定の温度のカノニカル分布が実現するとしたら、運動方程式はどのような形でなければならないか」を考えてみよう。以下、簡単のために一自由度系を考える。</p>
 <p>今、カノニカル分布を実現したいハミルトニアン<span class="math inline">\(H_0(p,q)\)</span>があるとする。実現したい分布は</p>
 <p><span class="math display">\[
@@ -108,7 +208,7 @@ f(p,q) \sim \exp(-\beta H)
 <p>である。ただし、<span class="math inline">\(\beta = 1/kT\)</span>は逆温度である。この位相空間は<span class="math inline">\((p,q)\)</span>で張られている。</p>
 <p>さて、この分布を直接実現するのは難しそうなので、自由度<span class="math inline">\(\zeta\)</span>を追加し、拡大された位相空間<span class="math inline">\((p,q,\zeta)\)</span>を考える。この空間で、<span class="math inline">\(\zeta\)</span>も含めたカノニカル分布</p>
 <p><span class="math display">\[
-f_\mathrm{ex}(p,q,\zeta) \sim \exp(-\beta H)\exp\left(-\beta \frac{\zeta^2}{2Q}\right)
+f_\mathrm{ex}(p,q,\zeta) \sim \exp(-\beta H)\exp\left(-\beta \frac{Q \zeta^2}{2}\right)
 \]</span></p>
 <p>を考えよう。<span class="math inline">\(Q\)</span>の意味は後述する。もしこの分布が実現されたなら、<span class="math inline">\(\zeta\)</span>に関して積分してしまうことで、所望の分布<span class="math inline">\(f\)</span>を得ることができる。</p>
 <p><span class="math display">\[
@@ -124,38 +224,107 @@ f_0 = \int_{-\infty}^{\infty} f_\mathrm{ex} d \zeta \sim \exp(-\beta H)
 \end{aligned}
 \]</span></p>
 <p>我々の目標は、このダイナミクスが拡張された空間でのカノニカル分布<span class="math inline">\(f_\mathrm{ex}\)</span>を定常状態に保つように<span class="math inline">\(\phi_p\)</span>や<span class="math inline">\(\phi_\zeta\)</span>を決めることである。</p>
-<p>いま、位相空間が<span class="math inline">\(\Gamma = (p,q,\zeta)\)</span>で張られており、そこに速度場<span class="math inline">\(\dot{\Gamma} = (\dot{p},\dot{q},\dot{\zeta})\)</span>が定義されているとしよう。この空間の分布関数<span class="math inline">\(f_\mathrm{ex}\)</span>を考えると、分布関数と速度場の積<span class="math inline">\(\dot{\Gamma} f_\mathrm{ex}\)</span>が流れ場<span class="math inline">\(J\)</span>となる。</p>
-<p>は以下の連続の式を満たす。</p>
+<p>いま、位相空間が<span class="math inline">\(\Gamma = (p,q,\zeta)\)</span>で張られており、そこに速度場<span class="math inline">\(\dot{\Gamma} = (\dot{p},\dot{q},\dot{\zeta})\)</span>が定義されているとしよう。この空間の分布関数<span class="math inline">\(f_\mathrm{ex}\)</span>を考えると、分布関数と速度場の積<span class="math inline">\(\dot{\Gamma} f_\mathrm{ex}\)</span>が流れ場<span class="math inline">\(J\)</span>となる。確率の保存則から、分布関数は以下の連続の式を満たす。</p>
 <p><span class="math display">\[
 \frac{\partial f_\mathrm{ex}}{\partial t} = 
-- \mathrm{div} \left( \dot{\Gamma} f_\mathrm{ex}\right)
+- \mathrm{div} \underbrace{J}_{\dot{\Gamma} f_\mathrm{ex}}
 \]</span></p>
 <p>もし<span class="math inline">\(f_\mathrm{ex}\)</span>が定常状態なら時間微分がゼロとなるので、</p>
 <p><span class="math display">\[
-\begin{aligned}
-\mathrm{div} \left( \dot{\Gamma} f_\mathrm{ex}\right) &amp;= 
-\left( 
-\frac{\partial}{\partial p}    
-+ \frac{\partial}{\partial q}    
-+ \frac{\partial}{\partial p}    
-\right)
-\left(
-\dot{p}    
-+ \dot{q}
-+ \dot{\zeta}
-\right)
-\end{aligned}
+\mathrm{div} \left( \dot{\Gamma} f_\mathrm{ex}\right) = 
+  \frac{\partial}{\partial p} (\dot{p} f_\mathrm{ex})
++ \frac{\partial}{\partial q} (\dot{q} f_\mathrm{ex})
++ \frac{\partial}{\partial p} (\dot{\zeta} f_\mathrm{ex}) 
+=0
 \]</span></p>
+<p>ここで、</p>
 <p><span class="math display">\[
 \begin{aligned}
-\frac{\partial f_\mathrm{ex}}{\partial p} &amp;= \beta \frac{\partial H}{\partial q} f_\mathrm{ex}\\
-\frac{\partial f_\mathrm{ex}}{\partial q} &amp;= -\beta \frac{\partial H}{\partial p} f_\mathrm{ex}\\
-\frac{\partial f_\mathrm{ex}}{\partial \zeta} &amp;= - \beta \frac{\zeta}{Q}f_\mathrm{ex}\\
+\frac{\partial f_\mathrm{ex}}{\partial p} &amp;= - \beta \frac{\partial H}{\partial p} f_\mathrm{ex}\\
+\frac{\partial f_\mathrm{ex}}{\partial q} &amp;= -\beta \frac{\partial H}{\partial q} f_\mathrm{ex}\\
+\frac{\partial f_\mathrm{ex}}{\partial \zeta} &amp;= - \beta Q \zeta f_\mathrm{ex}\\
 \end{aligned}
 \]</span></p>
-<p>であることに注意して整理すると、</p>
+<p>であることに注意して、一つ一つ愚直に計算していくと、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial}{\partial p} (\dot{p}f_\mathrm{ex}) &amp;=
+\left(
+-\frac{\partial^2 H}{\partial p \partial q} - \frac{\partial \phi_p}{\partial p} +\beta\frac{\partial H}{\partial p} \frac{\partial H}{\partial q} + \beta \frac{\partial H}{\partial p} \phi_p   
+\right) f_\mathrm{ex} \\
+\frac{\partial}{\partial q} (\dot{q}f_\mathrm{ex}) &amp;= \left(
+\frac{\partial^2 H}{\partial p \partial q}
+-\beta\frac{\partial H}{\partial p} \frac{\partial H}{\partial q}
+\right)f_\mathrm{ex} \\
+\frac{\partial}{\partial \zeta} (\dot{\zeta}f_\mathrm{ex}) &amp;=
+\left( \frac{\partial \phi_\zeta}{\partial \zeta} -\beta Q \zeta \phi_\zeta
+\right)f_\mathrm{ex}
+\end{aligned}
+\]</span></p>
+<p>となる。整理すると、</p>
+<p><span class="math display">\[
+-\frac{\partial \phi_p}{\partial p} + \beta \frac{\partial H}{\partial p} \phi_p
++ \frac{\partial \phi_\zeta}{\partial \zeta} - \beta Q \zeta \phi_\zeta = 0
+\]</span></p>
+<p>が満たされなければならない。ここで、ハミルトンの運動方程式由来の項が消えていることに注意しよう。ハミルトンの運動方程式が作る流れは非圧縮であるので、圧縮性流れに寄与しない。</p>
+<p>さて、逆に上式が満たされれば、どのような<span class="math inline">\(\phi_p, \phi_\zeta\)</span>を与えようとも、カノニカル分布が定常状態に持つような運動方程式を作ることができる。</p>
+<p>まず、簡単のために<span class="math inline">\(\phi_\zeta\)</span>が<span class="math inline">\(\zeta\)</span>に依存しないとしよう。すると</p>
+<p><span class="math display">\[
+\frac{\partial \phi_\zeta}{\partial \zeta} = 0
+\]</span></p>
+<p>となる。次に、<span class="math inline">\(p\)</span>と<span class="math inline">\(\zeta\)</span>の相互作用を決める<span class="math inline">\(\phi_p\)</span>について、<span class="math inline">\(p\)</span>と<span class="math inline">\(\zeta\)</span>を含む最も簡単な非線形関数である<span class="math inline">\(p \zeta\)</span>としてしまおう。すると、満たすべき式は、</p>
+<p><span class="math display">\[
+-\zeta + \zeta \beta p \frac{\partial H}{\partial p} - \beta Q \zeta \phi_\zeta = 0
+\]</span></p>
+<p>となる。<span class="math inline">\(\phi_\zeta\)</span>について解くと、</p>
+<p><span class="math display">\[
+\phi_\zeta = \frac{1}{Q}\left(
+p\frac{\partial H}{\partial p} - \frac{1}{\beta}
+\right)
+\]</span></p>
+<p>以上から、運動方程式は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= - \frac{\partial H}{\partial q} - p \zeta \\
+\dot{q} &amp;= \frac{\partial H}{\partial p} \\
+\dot{\zeta} &amp;= \frac{1}{Q}\left(
+p\frac{\partial H}{\partial p} - \frac{1}{\beta}
+\right)
+\end{aligned}
+\]</span></p>
+<p>これはNose-Hoover法にほかならない。要するにNose-Hoover法とは、</p>
+<ul>
+<li>系に一つ自由度<span class="math inline">\(\zeta\)</span>を追加し、</li>
+<li>自由度を追加した世界でのカノニカル分布を実現するように運動方程式を修正したもの</li>
+</ul>
+<p>に過ぎない。そこになんらかの物理的な意味を認めるかどうかは、研究者の間で意見が別れている。</p>
+<h2 id="nose-hooverの保存量">Nose-Hooverの保存量</h2>
+<p>さて、Nose-Hoover法には、Noseのハミルトニアンに由来する保存量がある。この量を知らないものとして、導出してみよう。</p>
+<p>まず、Nose-Hoover法が実現する、拡張された空間におけるカノニカル分布は以下のように書かれる。</p>
+<p><span class="math display">\[
+f_\mathrm{ex}(p,q,\zeta) \sim \exp(-\beta H)\exp\left(-\beta \frac{Q \zeta^2}{2}\right)
+\]</span></p>
+<p>ここで<span class="math inline">\(H\)</span>は、もともと我々がカノニカル分布を実現したいハミルトニアンであった。さて、これを見ると、拡張されたハミルトニアン</p>
+<p><span class="math display">\[
+H_\mathrm{ex} = H + \frac{Q \zeta^2}{2}
+\]</span></p>
+<p>に対するカノニカル分布に見える。そこで、この拡張されたハミルトニアンの時間微分を計算してみよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{H_\mathrm{ex}} &amp;= \dot{H} + Q \zeta \dot{\zeta} \\
+&amp;= \frac{\partial H}{\partial p} \dot{p}
++ \frac{\partial H}{\partial q} \dot{q}
++ \zeta \left( p \frac{\partial H}{\partial p} - \frac{1}{\beta}\right) \\
+&amp;= -p\zeta \frac{\partial H}{\partial p} + p \zeta \frac{\partial H}{\partial p} - \frac{\zeta}{\beta}\\
+&amp;= - \frac{\zeta}{\beta}
+\end{aligned}
+\]</span></p>
+<p>ほとんどの項がキャンセルするのだが、最後に少しゴミが残る。そこで、時間微分がこのゴミとキャンセルするような新たな自由度<span class="math inline">\(\eta\)</span>を導入しよう。</p>
+<p><span class="math display">\[
+\dot{\eta} = \frac{\zeta}{\beta}
+\]</span></p>
+<p>定義から自明だが、<span class="math inline">\(H_\mathrm{ex} + \eta\)</span>は時間保存量となる。これは、Nose-Hoover保存量と一致する。能勢のハミルトニアンからNose-Hoover法を導出した時には、Nose-Hoover保存量は能勢のハミルトニアン由来という意味があったが、「分布関数がカノニカル分布になるべし」という立場からNose-Hoover法を導くと、拡張されたハミルトニアンの時間微分のゴミをキャンセルしただけのように見える。その物理的解釈については読者に委ねる。</p>
 <p>TODO: Nose-Hooverの一般化、Nose-Hoover-Family</p>
-<p>TODO: Nose-Hooverの保存量とは</p>
 <p>TODO: Nose-Hooverと調和振動子とエルゴード性</p>
 </article>
 </body>
