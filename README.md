@@ -40,6 +40,9 @@
 
 ## [分子動力学法における温度制御](temperature/README.md)
 
+* Nose-Hoover法
+* [ランジュバン熱浴とH定理](langevin/README.md)
+
 ## 参考文献
 
 * 大学演習「熱学・統計力学」 久保亮五編 裳華房
