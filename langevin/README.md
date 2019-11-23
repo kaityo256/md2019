@@ -36,7 +36,7 @@ $$
 を考える。$\vec{J}$を求めるためにKramers–Moyal展開をしよう。
 
 $$
-\frac{\partial f}{\partial t} 
+\frac{\partial f}{\partial t}
 = \sum_{n=0}^\infty
 \frac{1}{n!}
 (- \nabla)^n
@@ -54,15 +54,60 @@ $$
 一次のモーメント$C_1$はドリフト項と呼ばれ、ランダム力以外の項が残る。
 
 $$
-\nabla(C_1 f)= 
+\nabla(C_1 f)=
 \left[
 \frac{\partial}{\partial p}
 \left(
 -\frac{\partial H}{\partial q} - \gamma \frac{\partial H}{\partial p}\right)
-+ 
++
 \frac{\partial}{\partial q}
 \left(
 \frac{\partial H}{\partial q}
 \right)
 \right]f
 $$
+
+二次のモーメント$C_2$は拡散項と呼ばれ、ランダム力のみが残る。
+
+$$
+\frac{1}{2}\nabla^2(C_2f)=
+\frac{\partial^2}{\partial p^2} (Df)
+$$
+
+これらを連続の式の形に書くと、
+
+$$
+\frac{\partial f}{\partial t} =
+- \frac{\partial}{\partial p}
+\left(
+- \frac{\partial H}{\partial q}
+\underbrace{- \gamma \frac{\partial H}{\partial p}
+- D \frac{\partial}{\partial p}}_{(*)}
+\right) f
+-\frac{\partial}{\partial q}
+\left(\frac{\partial H}{\partial p} \right)f
+$$
+
+定常状態$f_\mathrm{eq}$では $\partial f_\mathrm{eq}/\partial = 0$となることと、ハミルトンの運動方程式由来の項がキャンセルすることを使うと、結局(*)の項しか残らず、
+
+$$
+\left(- \gamma \frac{\partial H}{\partial p} 
+- D\underbrace{\frac{\partial}{\partial p}}_{-\beta \frac{\partial H}{\partial p}}\right)f_\mathrm{eq} = 0
+$$
+
+が要請される。ここで、$f_\mathrm{eq} \sim \exp(-\beta H)$であるから、
+
+$$
+\gamma =D \beta
+$$
+
+つまり、
+
+$$
+\beta = \gamma/D
+$$
+
+これはEinsteinの関係式に他ならない。
+
+以上から、摩擦係数$\gamma$と、拡散係数$D$の比を適切に設定すれば、指定の温度のカノニカル分布が定常状態となる。
+
