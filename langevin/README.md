@@ -107,7 +107,89 @@ $$
 \beta = \gamma/D
 $$
 
-これはEinsteinの関係式に他ならない。
+これはEinsteinの関係式と呼ばれ、ランジュバン系の温度は、摩擦係数(散逸力)と揺動力の比が決めるということを意味する。
 
 以上から、摩擦係数$\gamma$と、拡散係数$D$の比を適切に設定すれば、指定の温度のカノニカル分布が定常状態となる。
 
+## ランジュバン熱浴の実装
+
+TODO: 書く？
+
+## H Theorem
+
+Nose-Hoover法が保証するのは、「位相空間をボルツマン重みに比例する確率で走る」ということのみであり、さらに運動がエルゴード的であって初めてカノニカル分布が達成される。先ほど、Langevin方程式もカノニカル分布を定常状態に持つことを示したが、Langevin系の場合はNose-Hoover系よりもう少し強いことが言える。すなわち、Langevin系では、いかなる初期条件から初めても、必ずカノニカル分布に収束することを示すことができる。以下、それを見てみよう。
+
+まず、時間に依存する自由エネルギー$F$を以下のように定義しよう。
+
+$$
+F = U - TS
+$$
+
+ここで$U$は内部エネルギーであり、ハミルトニアン$H$の期待値である。
+
+$$
+U = \int  H f dp dq
+$$
+
+$S$はエントロピーで、定義は以下の通り。
+
+$$
+S = - k_B \int f \ln f dp dq
+$$
+
+以上から、自由エネルギーは
+
+$$
+F = \int  (Hf+ k_B T f\ln f) dp dq
+$$
+
+と表せる。後の便利のために両辺$k_B T$で割っておこう。
+
+$$
+\beta F = \int  (\beta Hf + f \ln f) dp dq
+$$
+
+さて、この両辺を時間で微分する。
+
+$$
+\begin{aligned}
+\beta \dot{F} &= \int \left(\beta H \frac{\partial f}{\partial t} + \underbrace{\frac{\partial f}{\partial t}}_{=0} + \ln f  \frac{\partial f}{\partial t}\right)dpdq \\
+&= \int \frac{\partial f}{\partial t}\left( \beta H + \ln f \right) dpdq
+\end{aligned}
+$$
+
+途中で、確率の保存則
+
+$$
+\int f dpdq = 1
+$$
+
+を用いた。さて、$f$は連続の式、
+
+$$
+\frac{\partial f}{\partial t} = -
+\frac{\partial }{\partial p}
+\left(- \frac{\partial H}{\partial q} - \gamma  \frac{\partial H}{\partial p} - D \frac{\partial}{\partial p}\right)f
+- \frac{\partial }{\partial q}\left(\frac{\partial H}{\partial p}\right)f
+$$
+
+を満たす。このうち、ハミルトニアン由来の項はエントロピーの増加に寄与しないため、それ以外を代入すると、
+
+$$
+\begin{aligned}
+\beta \dot{F} &= \int \frac{\partial}{\partial p}\left[\left(\gamma \frac{\partial H}{\partial p} + D\frac{\partial}{\partial p}  \right)f \right] (\beta H + \ln f )dpdq \\
+&= - \int \left(\gamma \frac{\partial H}{\partial p}f + D \frac{\partial f}{\partial p} \right)
+\left(
+\beta \frac{\partial H}{\partial p} + \frac{1}{f} \frac{\partial f}{\partial p}
+\right) dpdq \\
+&= -\int \frac{D}{f} \left( \underbrace{\frac{\gamma}{D}}_{\beta} \frac{\partial H}{\partial p}f + \frac{\partial f}{\partial f} \right)
+\left(
+\beta \frac{\partial H}{\partial p}f + \frac{\partial f}{\partial p}
+\right)
+dqdq \\
+&= -\int \frac{D}{f} \left( \beta \frac{\partial H}{\partial p}f + \frac{\partial f}{\partial p}\right)^2 dpdq 
+ \leq 0
+\end{aligned}
+$$
+
+すなわち、自由エネルギーが単調減少することが示された。
