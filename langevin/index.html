@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="langevin-thermostat">Langevin Thermostat</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<p>Nose-Hoover法は決定論的な熱浴であったが、次は確率的な熱浴であるランジュバン熱浴を考えてみよう。</p>
+<h2 id="langevin-equation">Langevin Equation</h2>
+<p>以下のようなランジュバン方程式を考える。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= -\frac{\partial H}{\partial q} - \gamma \frac{\partial H}{\partial p} + \sqrt{2D} \hat{R} \\
+\dot{q} &amp;= \frac{\partial H}{\partial p}
+\end{aligned}
+\]</span></p>
+<p>ただし、<span class="math inline">\(\gamma\)</span>は定数、<span class="math inline">\(\hat{R}\)</span>は</p>
+<p><span class="math display">\[
+\left&lt;R(t_1)R(t_2)\right&gt; = \delta(t1-t2)
+\]</span></p>
+<p>を満たすランダムな力(White Noise)である。</p>
+<p>さて、この方程式が<span class="math inline">\(H\)</span>に関するカノニカル分布</p>
+<p><span class="math display">\[
+f \sim \exp\left(-\beta H\right)
+\]</span></p>
+<p>を定常状態に持って欲しい。そこで、Nose-Hoover法と同様に分布関数<span class="math inline">\(f\)</span>に関する連続の式、</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial t} = - \nabla \cdot \vec{J}
+\]</span></p>
+<p>を考える。<span class="math inline">\(\vec{J}\)</span>を求めるためにKramers–Moyal展開をしよう。</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial t}
+= \sum_{n=0}^\infty
+\frac{1}{n!}
+(- \nabla)^n
+\left(C_n f\right)
+\]</span></p>
+<p>ただし、<span class="math inline">\(C_n\)</span>は、遷移確率のモーメントであり、</p>
+<p><span class="math display">\[
+C_n(\vec{\Gamma}) = \int (\vec{\Gamma}&#39;-\vec{\Gamma})^n W(\vec{\Gamma}&#39;| \vec{\Gamma}) d \vec{\Gamma}&#39;
+\]</span></p>
+<p>が定義である。</p>
+<p>一次のモーメント<span class="math inline">\(C_1\)</span>はドリフト項と呼ばれ、ランダム力以外の項が残る。</p>
+<p><span class="math display">\[
+\nabla(C_1 f)=
+\left[
+\frac{\partial}{\partial p}
+\left(
+-\frac{\partial H}{\partial q} - \gamma \frac{\partial H}{\partial p}\right)
++
+\frac{\partial}{\partial q}
+\left(
+\frac{\partial H}{\partial q}
+\right)
+\right]f
+\]</span></p>
+<p>二次のモーメント<span class="math inline">\(C_2\)</span>は拡散項と呼ばれ、ランダム力のみが残る。</p>
+<p><span class="math display">\[
+\frac{1}{2}\nabla^2(C_2f)=
+\frac{\partial^2}{\partial p^2} (Df)
+\]</span></p>
+<p>これらを連続の式の形に書くと、</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial t} =
+- \frac{\partial}{\partial p}
+\left(
+- \frac{\partial H}{\partial q}
+\underbrace{- \gamma \frac{\partial H}{\partial p}
+- D \frac{\partial}{\partial p}}_{(*)}
+\right) f
+-\frac{\partial}{\partial q}
+\left(\frac{\partial H}{\partial p} \right)f
+\]</span></p>
+<p>定常状態<span class="math inline">\(f_\mathrm{eq}\)</span>では <span class="math inline">\(\partial f_\mathrm{eq}/\partial = 0\)</span>となることと、ハミルトンの運動方程式由来の項がキャンセルすることを使うと、結局(*)の項しか残らず、</p>
+<p><span class="math display">\[
+\left(- \gamma \frac{\partial H}{\partial p} 
+- D\underbrace{\frac{\partial}{\partial p}}_{-\beta \frac{\partial H}{\partial p}}\right)f_\mathrm{eq} = 0
+\]</span></p>
+<p>が要請される。ここで、<span class="math inline">\(f_\mathrm{eq} \sim \exp(-\beta H)\)</span>であるから、</p>
+<p><span class="math display">\[
+\gamma =D \beta
+\]</span></p>
+<p>つまり、</p>
+<p><span class="math display">\[
+\beta = \gamma/D
+\]</span></p>
+<p>これはEinsteinの関係式と呼ばれ、ランジュバン系の温度は、摩擦係数(散逸力)と揺動力の比が決めるということを意味する。</p>
+<p>以上から、摩擦係数<span class="math inline">\(\gamma\)</span>と、拡散係数<span class="math inline">\(D\)</span>の比を適切に設定すれば、指定の温度のカノニカル分布が定常状態となる。</p>
+<h2 id="ランジュバン熱浴の実装">ランジュバン熱浴の実装</h2>
+<p>TODO: 書く？</p>
+<h2 id="h-theorem">H Theorem</h2>
+<p>Nose-Hoover法が保証するのは、「位相空間をボルツマン重みに比例する確率で走る」ということのみであり、さらに運動がエルゴード的であって初めてカノニカル分布が達成される。先ほど、Langevin方程式もカノニカル分布を定常状態に持つことを示したが、Langevin系の場合はNose-Hoover系よりもう少し強いことが言える。すなわち、Langevin系では、いかなる初期条件から初めても、必ずカノニカル分布に収束することを示すことができる。以下、それを見てみよう。</p>
+<p>まず、時間に依存する自由エネルギー<span class="math inline">\(F\)</span>を以下のように定義しよう。</p>
+<p><span class="math display">\[
+F = U - TS
+\]</span></p>
+<p>ここで<span class="math inline">\(U\)</span>は内部エネルギーであり、ハミルトニアン<span class="math inline">\(H\)</span>の期待値である。</p>
+<p><span class="math display">\[
+U = \int  H f dp dq
+\]</span></p>
+<p><span class="math inline">\(S\)</span>はエントロピーで、定義は以下の通り。</p>
+<p><span class="math display">\[
+S = - k_B \int f \ln f dp dq
+\]</span></p>
+<p>以上から、自由エネルギーは</p>
+<p><span class="math display">\[
+F = \int  (Hf+ k_B T f\ln f) dp dq
+\]</span></p>
+<p>と表せる。後の便利のために両辺<span class="math inline">\(k_B T\)</span>で割っておこう。</p>
+<p><span class="math display">\[
+\beta F = \int  (\beta Hf + f \ln f) dp dq
+\]</span></p>
+<p>さて、この両辺を時間で微分する。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\beta \dot{F} &amp;= \int \left(\beta H \frac{\partial f}{\partial t} + \underbrace{\frac{\partial f}{\partial t}}_{=0} + \ln f  \frac{\partial f}{\partial t}\right)dpdq \\
+&amp;= \int \frac{\partial f}{\partial t}\left( \beta H + \ln f \right) dpdq
+\end{aligned}
+\]</span></p>
+<p>途中で、確率の保存則</p>
+<p><span class="math display">\[
+\int f dpdq = 1
+\]</span></p>
+<p>を用いた。さて、<span class="math inline">\(f\)</span>は連続の式、</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial t} = -
+\frac{\partial }{\partial p}
+\left(- \frac{\partial H}{\partial q} - \gamma  \frac{\partial H}{\partial p} - D \frac{\partial}{\partial p}\right)f
+- \frac{\partial }{\partial q}\left(\frac{\partial H}{\partial p}\right)f
+\]</span></p>
+<p>を満たす。このうち、ハミルトニアン由来の項はエントロピーの増加に寄与しないため、それ以外を代入すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\beta \dot{F} &amp;= \int \frac{\partial}{\partial p}\left[\left(\gamma \frac{\partial H}{\partial p} + D\frac{\partial}{\partial p}  \right)f \right] (\beta H + \ln f )dpdq \\
+&amp;= - \int \left(\gamma \frac{\partial H}{\partial p}f + D \frac{\partial f}{\partial p} \right)
+\left(
+\beta \frac{\partial H}{\partial p} + \frac{1}{f} \frac{\partial f}{\partial p}
+\right) dpdq \\
+&amp;= -\int \frac{D}{f} \left( \underbrace{\frac{\gamma}{D}}_{\beta} \frac{\partial H}{\partial p}f + \frac{\partial f}{\partial f} \right)
+\left(
+\beta \frac{\partial H}{\partial p}f + \frac{\partial f}{\partial p}
+\right)
+dqdq \\
+&amp;= -\int \frac{D}{f} \left( \beta \frac{\partial H}{\partial p}f + \frac{\partial f}{\partial p}\right)^2 dpdq 
+ \leq 0
+\end{aligned}
+\]</span></p>
+<p>すなわち、自由エネルギーが単調減少することが示された。</p>
+</article>
+</body>
+</html>
