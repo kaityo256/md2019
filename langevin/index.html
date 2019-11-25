@@ -101,10 +101,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \]</span></p>
 <p>ただし、<span class="math inline">\(\gamma\)</span>は定数、<span class="math inline">\(\hat{R}\)</span>は</p>
 <p><span class="math display">\[
-\left&lt;R(t_1)R(t_2)\right&gt; = \delta(t1-t2)
+\left&lt;R(t_1)R(t_2)\right&gt; = \delta(t_1-t_2)
 \]</span></p>
 <p>を満たすランダムな力(White Noise)である。</p>
-<p>さて、この方程式が<span class="math inline">\(H\)</span>に関するカノニカル分布</p>
+<p>さて、この方程式がハミルトニアン<span class="math inline">\(H\)</span>に関するカノニカル分布</p>
 <p><span class="math display">\[
 f \sim \exp\left(-\beta H\right)
 \]</span></p>
@@ -156,7 +156,7 @@ C_n(\vec{\Gamma}) = \int (\vec{\Gamma}&#39;-\vec{\Gamma})^n W(\vec{\Gamma}&#39;|
 -\frac{\partial}{\partial q}
 \left(\frac{\partial H}{\partial p} \right)f
 \]</span></p>
-<p>定常状態<span class="math inline">\(f_\mathrm{eq}\)</span>では <span class="math inline">\(\partial f_\mathrm{eq}/\partial = 0\)</span>となることと、ハミルトンの運動方程式由来の項がキャンセルすることを使うと、結局(*)の項しか残らず、</p>
+<p>定常状態<span class="math inline">\(f_\mathrm{eq}\)</span>では <span class="math inline">\(\partial f_\mathrm{eq}/\partial t = 0\)</span>となることと、ハミルトンの運動方程式由来の項がキャンセルする(ハミルトニアン由来の項は非圧縮流を作るため、分布関数を変化させない)ことを使うと、結局(*)の項しか残らず、</p>
 <p><span class="math display">\[
 \left(- \gamma \frac{\partial H}{\partial p} 
 - D\underbrace{\frac{\partial}{\partial p}}_{-\beta \frac{\partial H}{\partial p}}\right)f_\mathrm{eq} = 0
@@ -172,9 +172,46 @@ C_n(\vec{\Gamma}) = \int (\vec{\Gamma}&#39;-\vec{\Gamma})^n W(\vec{\Gamma}&#39;|
 <p>これはEinsteinの関係式と呼ばれ、ランジュバン系の温度は、摩擦係数(散逸力)と揺動力の比が決めるということを意味する。</p>
 <p>以上から、摩擦係数<span class="math inline">\(\gamma\)</span>と、拡散係数<span class="math inline">\(D\)</span>の比を適切に設定すれば、指定の温度のカノニカル分布が定常状態となる。</p>
 <h2 id="ランジュバン熱浴の実装">ランジュバン熱浴の実装</h2>
-<p>TODO: 書く？</p>
+<p>ランジュバン熱浴を実装するためには、シミュレーションで用いている時間刻み<span class="math inline">\(h\)</span>の間だけホワイトノイズを積分しただけの力積を計算する必要がある。しかし、ホワイトノイズ(連続的な確率過程)を積分する、という処理を数学的に厳密に扱うのは難しく、真面目にやるならWiener過程を導入して、などとやるのであろうが、以下では厳密さを犠牲にして直感的な導出を試みる。</p>
+<p>今、運動量<span class="math inline">\(p\)</span>がホワイトノイズ<span class="math inline">\(\sqrt{2D} \hat{R}\)</span>にさらされているとしよう。運動方程式は、</p>
+<p><span class="math display">\[
+\dot{p} = \sqrt{2D} \hat{R}
+\]</span></p>
+<p>であり、<span class="math inline">\(\hat{R}\)</span>は</p>
+<p><span class="math display">\[
+\left&lt;R(t_1)R(t_2)\right&gt; = \delta(t1-t2)
+\]</span></p>
+<p>を満たす標準揺動力とする。この運動量の確率分布関数<span class="math inline">\(f(p,t)\)</span>を考える。先程の運動方程式に対応するFocker-Plank方程式は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial f}{\partial t} &amp;= -\frac{\partial}{\partial p}
+\left(-D \frac{\partial}{\partial p} \right)f\\
+&amp;= D \frac{\partial^2 f}{\partial p^2}
+\end{aligned}
+\]</span></p>
+<p>これは拡散係数<span class="math inline">\(D\)</span>を持つ一次元拡散方程式に他ならない。今、時刻<span class="math inline">\(t\)</span>において運動量が<span class="math inline">\(p_0\)</span>であったとすると、時刻<span class="math inline">\(t+h\)</span>の分布は</p>
+<p><span class="math display">\[
+f(p, t+h) = \mathcal{N}(p_0, \underbrace{2Dh}_{\sigma^2})
+\]</span></p>
+<p>つまり、平均<span class="math inline">\(p_0\)</span>、分散<span class="math inline">\(2Dh\)</span>となるガウス分布となる。ここで、Einsteinの関係式から</p>
+<p><span class="math display">\[
+D = k_B \gamma T 
+\]</span></p>
+<p><span class="math inline">\(k_B=1\)</span>とする単位系を取れば、最終的に</p>
+<p><span class="math display">\[
+f(p, t+h) = \mathcal{N}(p_0, 2 \gamma T h)
+\]</span></p>
+<p>となる。実装では、Langevin部分は一次のオイラー法を用いて</p>
+<p><span class="math display">\[
+p(t+h) = p(t) - \gamma p(t)h + \hat{w}
+\]</span></p>
+<p>とすることが多い。ただし、<span class="math inline">\(\hat{w}\)</span>は平均<span class="math inline">\(0\)</span>、分散<span class="math inline">\(2\gamma T h\)</span>のガウス分布に従う乱数であり、例えばC++を使うなら、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="bu">std::</span>normal_distribution&lt;<span class="dt">double</span>&gt; nd(<span class="fl">0.0</span>, <span class="fl">2.0</span> * gamma * T * h);
+<span class="bu">std::</span>mt19937 mt;
+<span class="dt">double</span> w = nd(mt);</code></pre></div>
+<p>などとして生成することができる。</p>
 <h2 id="h-theorem">H Theorem</h2>
-<p>Nose-Hoover法が保証するのは、「位相空間をボルツマン重みに比例する確率で走る」ということのみであり、さらに運動がエルゴード的であって初めてカノニカル分布が達成される。先ほど、Langevin方程式もカノニカル分布を定常状態に持つことを示したが、Langevin系の場合はNose-Hoover系よりもう少し強いことが言える。すなわち、Langevin系では、いかなる初期条件から初めても、必ずカノニカル分布に収束することを示すことができる。以下、それを見てみよう。</p>
+<p>Nose-Hoover法が保証するのは、「位相空間をボルツマン重みに比例する確率で走る」ということのみであり、さらに運動がエルゴード的であって初めてカノニカル分布が達成される。先ほど、Langevin方程式もカノニカル分布を定常状態に持つことを示したが、Langevin系の場合はNose-Hoover系よりもう少し強いことが言える。すなわち、Langevin系では、いかなる初期条件から初めても、必ずカノニカル分布に収束することを示すことができる。以下、それを見てみよう。簡単のため、一自由度系を考え、位相空間<span class="math inline">\((p,q)\)</span>上に、ハミルトニアン<span class="math inline">\(H(p,q)\)</span>が定義されているとしよう。</p>
 <p>まず、時間に依存する自由エネルギー<span class="math inline">\(F\)</span>を以下のように定義しよう。</p>
 <p><span class="math display">\[
 F = U - TS
@@ -213,7 +250,7 @@ F = \int  (Hf+ k_B T f\ln f) dp dq
 \left(- \frac{\partial H}{\partial q} - \gamma  \frac{\partial H}{\partial p} - D \frac{\partial}{\partial p}\right)f
 - \frac{\partial }{\partial q}\left(\frac{\partial H}{\partial p}\right)f
 \]</span></p>
-<p>を満たす。このうち、ハミルトニアン由来の項はエントロピーの増加に寄与しないため、それ以外を代入すると、</p>
+<p>を満たす。このうち、ハミルトニアン由来の項はエントロピーの増加に寄与しない(しつこいが、非圧縮流れを作るため)ため、それ以外を代入すると、</p>
 <p><span class="math display">\[
 \begin{aligned}
 \beta \dot{F} &amp;= \int \frac{\partial}{\partial p}\left[\left(\gamma \frac{\partial H}{\partial p} + D\frac{\partial}{\partial p}  \right)f \right] (\beta H + \ln f )dpdq \\
@@ -231,6 +268,17 @@ dqdq \\
 \end{aligned}
 \]</span></p>
 <p>すなわち、自由エネルギーが単調減少することが示された。</p>
+<p>以上から、Langevin系は時間発展に伴って必ず自由エネルギーが単調減少することが示された。自由エネルギーが変化しなくなった場合は、定常状態としてカノニカル分布に収束する。</p>
+<p>ここで、自由エネルギーは、現在の分布と、カノニカル分布とのKullback–Leibler (KL)距離になっていることに注意したい。実際、</p>
+<p><span class="math display">\[
+\begin{aligned}
+D_{KL}(f | f_\mathrm{eq} ) &amp;\equiv \int f \ln \frac{f}{f_\mathrm{eq}} dpdq \\
+&amp;= \int (f \ln f - f \ln f_\mathrm{eq})dpdq \\
+&amp;= \int (f \ln f + \beta H f)dpdq + C \\
+&amp;= \beta F + C
+\end{aligned}
+\]</span></p>
+<p>ただし<span class="math inline">\(C\)</span>は定数である。ランジュバン系では、分布関数とカノニカル分布のKL距離が単調に減少し、最終的に距離がゼロ、つまりカノニカル分布が実現した時が定常状態であることがわかる。</p>
 </article>
 </body>
 </html>
