@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="nose-hoover法のエルゴード性">Nose-Hoover法のエルゴード性</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<p>Nose-Hoover法が保証するのは「位相空間をボルツマン重みに比例して走る」ということだけである。さらに「軌道が位相空間をくまなく走る」という条件が満たされて初めて、定常状態が指定温度のカノニカル分布となる。この条件をエルゴード性と呼ぶ。</p>
+<p>エルゴード性の定義は難しい。一般的には、時間平均とアンサンブル平均が等しいことを持ってエルゴード的であると定義する。逆に、時間平均とアンサンブル平均が一致しない場合、「エルゴード性が破れている」と表現する。厳密さを犠牲にした表現をすれば、力学系において「長時間極限で到達可能性のある領域全てに到達可能」であればエルゴード的、そうでなければ非エルゴード的と呼ぶ。</p>
+<p>さて、Nose-Hoover法は条件によってはエルゴード性を失うことが知られている。以下では、エルゴード性を失うとはどういうことか、エルゴード性はなぜ失われるか、どうすればエルゴード性を回復するかを見てみよう。</p>
+<p>一次元調和振動子系にNose-Hoover法を適用してみよう。質量を<span class="math inline">\(1\)</span>、目標温度を<span class="math inline">\(1\)</span>とすると、運動方程式は以下のようになる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= -q - p \zeta \\
+\dot{q} &amp;= p \\
+\dot{\zeta} &amp;= \frac{1}{Q}(p^2-1)
+\end{aligned}
+\]</span></p>
+<p>さて、この運動方程式が、<span class="math inline">\((p,q,\zeta)\)</span>空間でどのような流れを作っているか見てみよう。</p>
+<p>まず、ハミルトンの運動方程式由来の流れは以下の通り。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= -q \\
+\dot{q} &amp;= p 
+\end{aligned}
+\]</span></p>
+<p>この系は<span class="math inline">\(C = p^2 + q^2\)</span>、すなわち原点を中心とした円軌道を時間不変量に持つ。従って、この運動方程式は<span class="math inline">\((p,q)\)</span>空間において、原点を中心として反時計回りに回転する流れを作っている。</p>
+<p>Nose-Hoover法として追加された流れ場は以下の通り。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{dp}{dt} &amp;= -p\zeta \\
+\frac{d\zeta}{dt} &amp;= \frac{1}{Q}(p^2-1)
+\end{aligned}
+\]</span></p>
+<p>よく見ると、この微分方程式は変数分離形になっているために求積できる。</p>
+<p><span class="math display">\[
+\frac{dp}{d\zeta} = \frac{Q p\zeta}{(p^2-1)}
+\]</span></p>
+<p><span class="math display">\[
+\left(p - \frac{1}{p} \right)dp = -Q \zeta d\zeta
+\]</span></p>
+<p>ここから、以下の時間不変量を得る。</p>
+<p><span class="math display">\[
+C = \frac{p^2}{2} - \ln p + \frac{Q\zeta^2}{2}
+\]</span></p>
+<p>これは<span class="math inline">\((p,\zeta)\)</span>空間において閉曲線を作っており、先程の運動方程式はその閉曲線上を走る、やはり回転する流れを作っている。</p>
+<p>以上をまとめると、調和振動子+Nose-Hoover系は位相空間に以下のような流れ場を作っている。</p>
+<div class="figure">
+<img src="nhflow.png" alt="調和振動子+Nose-Hoover法の流れ" />
+<p class="caption">調和振動子+Nose-Hoover法の流れ</p>
+</div>
+<p>さて、調和振動子系のハミルトニアンは<span class="math inline">\(H=p^2/2 + q^2/2\)</span>である。この系においてカノニカル分布が実現するとは、分布関数<span class="math inline">\(f(p,q)\)</span>が、ボルツマン重み</p>
+<p><span class="math display">\[
+f \sim \exp(-\beta H)
+\]</span></p>
+<p>に従うことだ。ここで、エネルギーが高ければ高いほど、その分布の実現確率は指数関数的に低くなるが、ゼロではないことに注意したい。これから、調和振動子系にNose-Hoover法を適用すると、系に非自明な保存量が構築され、その結果としてエネルギーに下限、上限ができるためにカノニカル分布が実現しないことを示す。</p>
+<p>まず、<span class="math inline">\((p,q)\)</span>空間において回転しているので、極座標を取るのが自然であろう。以下のように<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((r, \zeta)\)</span>に変数変換する。</p>
+<p><span class="math display">\[
+\begin{aligned}
+p &amp;= r \cos \theta \\
+q &amp;= r \sin \theta \\
+\end{aligned}
+\]</span></p>
+<p>ここから<span class="math inline">\((r,\zeta, \zeta)\)</span>の運動方程式を導こう。</p>
+<p>まず、<span class="math inline">\(r^2/2 = p^2/2 + q^2/2\)</span>であるから、両辺を時間で微分すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+r\dot{r} &amp;= p \dot{p} + q \dot{q} \\
+&amp;= p (-q-p\zeta) + pq \\
+&amp;= -p^2 \zeta \\
+&amp;= - r^2 \zeta \cos^2 \theta
+\end{aligned}
+\]</span></p>
+<p>以上から、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{r} &amp;= -r \zeta \cos^2 \theta \\
+\dot{\zeta} &amp;= \frac{1}{Q}(r^2 \cos^2 \theta - 1)
+\end{aligned}
+\]</span></p>
+<p>ここで、<span class="math inline">\(Q\)</span>が十分に大きい場合、<span class="math inline">\(r, \zeta\)</span>の運動は<span class="math inline">\(\theta\)</span>に比べて非常に遅くなるであろう。そこで、<span class="math inline">\(\theta\)</span>について平均を取る(断熱近似)。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d r}{dt} &amp;= - \frac{r \zeta}{2} \\
+\frac{d\zeta}{dt} &amp;= \frac{1}{Q}\left(\frac{r^2}{2} - 1\right)
+\end{aligned}
+\]</span></p>
+<p>これは<span class="math inline">\(r,\zeta\)</span>に関して変数分離形になっている。</p>
+<p><span class="math display">\[
+\frac{d r}{d \zeta} = - \frac{r\zeta}{2} \frac{Q}{\left(r^2/2 - 1\right)}
+\]</span></p>
+<p><span class="math display">\[
+\left(\frac{r}{2} - \frac{1}{r}\right) dr = -\frac{Q\zeta}{2} d\zeta
+\]</span></p>
+<p>ここから直ちに以下の時間不変量(第一積分)を得る。</p>
+<p><span class="math display">\[
+C = r^2 - \ln r + Q\zeta^2
+\]</span></p>
+<p>さて、<span class="math inline">\(Q \zeta^2\)</span>はゼロより大きいので、</p>
+<p><span class="math display">\[
+r^2 - \ln r \le C
+\]</span></p>
+<p>ここで<span class="math inline">\(r^2 - \ln r\)</span>は<span class="math inline">\(r\rightarrow 0\)</span>もしくは<span class="math inline">\(r\rightarrow \infty\)</span>で無限大となり、その間に最小値を取るような下に凸な関数である。それがある閾値以下に制限されているということは、<span class="math inline">\(r\)</span>のとり得る値に下限と上限が存在する、ということを意味する。</p>
+<div class="figure">
+<img src="r_range.png" alt="断熱近似によるエルゴード性の破れ" />
+<p class="caption">断熱近似によるエルゴード性の破れ</p>
+</div>
+<p>もともと<span class="math inline">\(H = r^2/2\)</span>であったから、これはエネルギーに非自明な下限と上限が設けられた、すなわち軌道が位相空間全体を埋め尽くさず、結果としてエルゴード性を失うことがわかる。</p>
+<p>ここでは<span class="math inline">\(Q\)</span>が大きいとして断熱近似を行ったが、実際にやってみると<span class="math inline">\(Q\)</span>がある程度小さくても実効的に変数分離が起きて、エルゴード性が破れることがわかる。</p>
+<p>TODO: 他のエルゴード性の破れや多変数熱浴の話</p>
+</article>
+</body>
+</html>
