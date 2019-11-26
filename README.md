@@ -42,6 +42,7 @@
 
 * Nose-Hoover法
 * [ランジュバン熱浴とH定理](langevin/README.md)
+* [Problems on Nose-Hoover method](ergodic/README.md)
 
 ## 参考文献
 

@@ -88,8 +88,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="nose-hoover法のエルゴード性">Nose-Hoover法のエルゴード性</h1>
+<h1 id="problems-on-nose-hoover-method">Problems on Nose-Hoover method</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<p>Nose-Hoover法は実装が容易であり、他の熱浴(例えばVelocity Scaling法やBerendsenの方法)と違って厳密にカノニカル分布を定常状態に持つことから広く使われている。しかし、Nose-Hoover法で温度制御された系が、意図する状態にならない場合がある。広く知られているのは調和振動子にNose-Hoover法を適用するとエルゴード性が破れる例だが、他にもいくつか問題がある。以下ではNose-Hoover法を使う上での注意点について述べる。</p>
+<h2 id="ergodicity-of-the-nose-hoover-method">Ergodicity of the Nose-Hoover Method</h2>
 <p>Nose-Hoover法が保証するのは「位相空間をボルツマン重みに比例して走る」ということだけである。さらに「軌道が位相空間をくまなく走る」という条件が満たされて初めて、定常状態が指定温度のカノニカル分布となる。この条件をエルゴード性と呼ぶ。</p>
 <p>エルゴード性の定義は難しい。一般的には、時間平均とアンサンブル平均が等しいことを持ってエルゴード的であると定義する。逆に、時間平均とアンサンブル平均が一致しない場合、「エルゴード性が破れている」と表現する。厳密さを犠牲にした表現をすれば、力学系において「長時間極限で到達可能性のある領域全てに到達可能」であればエルゴード的、そうでなければ非エルゴード的と呼ぶ。</p>
 <p>さて、Nose-Hoover法は条件によってはエルゴード性を失うことが知られている。以下では、エルゴード性を失うとはどういうことか、エルゴード性はなぜ失われるか、どうすればエルゴード性を回復するかを見てみよう。</p>
@@ -192,7 +194,38 @@ r^2 - \ln r \le C
 </div>
 <p>もともと<span class="math inline">\(H = r^2/2\)</span>であったから、これはエネルギーに非自明な下限と上限が設けられた、すなわち軌道が位相空間全体を埋め尽くさず、結果としてエルゴード性を失うことがわかる。</p>
 <p>ここでは<span class="math inline">\(Q\)</span>が大きいとして断熱近似を行ったが、実際にやってみると<span class="math inline">\(Q\)</span>がある程度小さくても実効的に変数分離が起きて、エルゴード性が破れることがわかる。</p>
-<p>TODO: 他のエルゴード性の破れや多変数熱浴の話</p>
+<p>たまに、エルゴード性が破れるのは系が単自由度である場合であり、多自由度系であれば問題ない、といった誤解を見かける。しかし、エルゴード性が破れるのは追加自由度<span class="math inline">\(\zeta\)</span>が系の部分自由度と強く結合して非自明な保存量を構築するからであった。従って、多自由度系であっても同様なことが起き得るので注意が必要である。</p>
+<p>この問題は早くから認識され、エルゴード性を回復する手法が提案された。最も簡単には、熱浴自由度を追加してしまう方法が考えられる。</p>
+<p>代表的なものの一つはKinetic-Moments法で、これは<span class="math inline">\(p\)</span>の高次のモーメントも制御する方法である。もう一つはNose-Hoover-Chain法で、追加自由度<span class="math inline">\(\zeta\)</span>も、別の自由度で温度制御しよう、という方法だ。いずれも自由度が追加されているため、断熱近似しても変数分離形にならず、結果としてエルゴード性が破れない。</p>
+<h2 id="other-problems-on-nose-hoover-method">Other Problems on Nose-Hoover method</h2>
+<h3 id="non-uniform-steady-state">Non-uniform Steady State</h3>
+<p>Nose-Hoover法の問題として調和振動子でエルゴード性が破れる現象が有名であるが、実用上では他の現象が問題となることの方が多い。そのうちの一つは、「系の温度が非一様のまま定常状態となる」問題だ。</p>
+<p>Nose-Hoover法が制御するのは「系全体の温度」つまり平均温度である。従って、平均温度が指定の温度になっていればNose-Hoover法から見れば温度が制御できているように見える。しかし、なんらかの原因により高温の領域と低温領域にわかれてしまい、それが定常化する場合がある。</p>
+<div class="figure">
+<img src="phase_separation.png" alt="温度が非一様のまま定常化" />
+<p class="caption">温度が非一様のまま定常化</p>
+</div>
+<p>典型例は相分離する系である。例えば液滴と気相の共存状態を作ろうとして、最初に真空中に液滴を置いて蒸発させることで定常状態を作ろうとすると、液滴は気化熱により温度が下がり、その分Nose-Hoover法は全体の温度を上げて対応しようとするため、低温の液滴と高温の蒸気に分かれて安定化してしまう。液滴と蒸気の相互作用は非常に弱いため、現実的な時間では温度が一様にならない。この問題は、Nose-Hoover系のみならず、系全体の平均運動エネルギーを制御する熱浴(Velocity-Scaling, Berendsen, Kinetic-Momentsその他の他自由度熱浴 )全てで起きる可能性がある。なお、Langevin熱浴は各自由度ごとに制御がかかるため、このような問題は生じない。</p>
+<h3 id="non-trivial-oscillation">Non-trivial Oscillation</h3>
+<p>Nose-Hoover法は、新たに追加した自由度<span class="math inline">\(\zeta\)</span>が、<span class="math inline">\((p,\zeta)\)</span>空間に回転流れを作ることは既に述べた。Nose-Hoover法を用いると、この回転に由来する「振動」が系に導入される。</p>
+<div class="figure">
+<img src="spectra.png" alt="熱浴による振動" />
+<p class="caption">熱浴による振動</p>
+</div>
+<p>上左図は、熱浴をつけてない場合とつけた場合の系の温度の時間発展だ。熱浴をつけていない系はおよそ1.3の温度を持つが、熱浴で<span class="math inline">\(T=1\)</span>に制御した系は、意図通り温度が1付近で揺らいでいるように見える。</p>
+<p>この温度の時間変化をフーリエ変換し、パワースペクトルを見てみよう。熱浴をつけていない場合は、原点に強いピークが立つが、それ以外の成分はほとんどゼロ、すなわちこの系の温度ゆらぎは、ほぼホワイトノイズとみなすことができる。</p>
+<p>しかし、熱浴をつけた場合は、スペクトルに熱浴由来のピークが立つ。静的な性質を調べている場合はあまり問題とならないが、何かのゆらぎやスペクトルを調べている場合には、熱浴由来の振動と干渉しないように十分に注意しなければならない。この問題は温度を一階の遅れで制御するNose-Hoover系特有の問題であり、Velocity-Scaling法やBerendsen法では起きない。</p>
+<h3 id="slow-relaxation-of-configuration-temperature">Slow relaxation of Configuration Temperature</h3>
+<p>温度には「運動温度(Kinetic Tempearture)」と「状態温度(Configuration Temperature)」があることは既に述べた。それぞれ</p>
+<p><span class="math display">\[
+\left&lt;p \frac{\partial H}{\partial p} \right&gt; = k_B T
+\]</span></p>
+<p><span class="math display">\[
+\left&lt;q \frac{\partial H}{\partial q} \right&gt; = k_B T
+\]</span></p>
+<p>と定義され、カノニカル分布について部分積分すると上記の式が証明できる。これらは平衡状態では一致するが、非平衡状態では一般に一致しない。</p>
+<p>我々が温度依存性を知りたいのは、運動エネルギー部分ではなく、状態部分であることが多い。Nose-Hoover法を始めとする多くの熱浴は、運動温度を制御することで、「そのうち状態温度も指定の温度に緩和するだろう」ということを期待するが、一般に運動温度に比べて状態温度の緩和は遅い。</p>
+<p>特に系が相分離する場合や、ガラス系に見られるような遅い構造緩和を持つ場合は、状態温度の緩和は非常に遅くなる。このような時、運動温度しかモニターしていないと、自分が意図する温度とはずれた状態温度における振る舞いを観測してしまうので注意が必要である。</p>
 </article>
 </body>
 </html>
