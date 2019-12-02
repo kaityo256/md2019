@@ -107,6 +107,21 @@ $$
 
 を使って温度を定義することにしよう。しかし、今は我々はハミルトンダイナミクスに従う限りエネルギー$E$は一定であるので、$E$による微分を実行することができない。そこで、別の量を評価し、それが熱力学的極限において温度に一致することを示そう。
 
+具体的には、$B$修正されたエントロピー$S_B$を導入し、これを使って$B$修正された温度を定義する。
+
+$$
+\frac{\partial S_B}{\partial E} = 
+\frac{1}{T_B}
+$$
+
+そして、熱力学極限において、$B$修正された温度が、通常の温度に漸近することを示す。
+
+$$
+\lim_{N \rightarrow \infty} T_B = T
+$$
+
+TODO: 図解
+
 ## Devivation
 
 3次元$N$粒子系を表現する位相空間$\Gamma$を考える。この空間にハミルトニアン$H$が定義されているとしよう。全位相空間を$\Omega$、あるエネルギー$E$における等エネルギー面(isoenergetic surface)を$A(E)$とすると、$A(E)$は以下のように定義される。
@@ -157,6 +172,167 @@ $$
 &= \frac{1}{h^{3N }N!} \int_{A(E)} B d \mu_E
 \end{aligned}
 $$
+
+この量$S_B$を$B$修正されたエントロピー(B-modified entropy)とs呼ぼう。これを使って$B$修正された温度(B-modified temperature)$T_B$を定義することができる。
+
+$$
+\frac{1}{T_B} \equiv \frac{\partial S_B}{\partial E}
+$$
+
+さて、$B$修正されたエントロピーは
+
+$$
+\exp(S_B/k) = \frac{1}{h^{3N }N!} \int_{A(E)} B d \mu_E
+$$
+
+と書ける。これを両辺$E$で偏微分しよう。
+
+まず、左辺は
+
+$$
+\begin{aligned}
+\frac{\partial \exp(S_B/k)}{\partial E}
+&= \frac{\exp(S_B/k)}{k} \underbrace{\frac{\partial S_B}{\partial E}}_{1/T_B}\\
+&= \frac{\exp(S_B/k)}{k T_B}
+\end{aligned}
+$$
+
+右辺は、積分があるので面倒だが、微分の定義をそのまま書く。
+
+$$
+\frac{\partial}{\partial E} \int_{A(E)} B d \mu_E
+= \lim_{\delta \rightarrow 0} \frac{1}{\delta}
+\left[
+  \int_{A(E+\delta)} B d\mu_{E+\delta}
+- \int_{A(E)} B d\mu_{E}
+\right]
+$$
+
+ここで、これまで任意にとってきたスカラー量$B$として、あるベクトル場$\vec{B}$とハミルトニアンの勾配$\nabla H$との内積$\nabla H \cdot \vec{B}$を採用する。
+
+$$
+B \equiv \nabla H \cdot \vec{B}
+$$
+
+ここで、
+
+$$
+d \mu_E = \frac{d A_E}{||\nabla H||}
+$$
+
+であったので、
+
+$$
+\begin{aligned}
+\left< B\right>_E &= \int_{A(E)} \underbrace{B}_{\nabla H \cdot \vec{B}} \quad \underbrace{d\mu_E}_{dA_E / ||\nabla H||}\\
+&= \int_{A(E)} \nabla H
+\cdot \vec{B} \frac{dA_E}{||\nabla H||} \\
+&= \int_{A(E)} \vec{B} 
+\cdot \underbrace{\frac{\nabla H}{||\nabla H||}}_{\vec{n}} dA_E \\
+&= \int_{A(E)} \vec{B} \vec{n} dA_E
+\end{aligned}
+$$
+
+ただし、$\vec{n}$は等エネルギー面における単位法線ベクトルである。ベクトル場と等エネルギー面における法線ベクトルの内積を、等エネルギー面上で積分しているので、これはガウスの定理が適用できる。以上から、
+
+$$
+\begin{aligned}
+\frac{\partial}{\partial E} \int_{A(E)} \underbrace{\nabla H \cdot \vec{B}}_{B} dA_E &= \lim_{\delta \rightarrow 0}
+\frac{1}{\delta} \int_E^{E+\delta} dE
+\int_{A(E)} \nabla \cdot \vec{B} dA_E \\
+&= \int_{A(E)} \nabla \cdot \vec{B} dA_E
+\end{aligned}
+$$
+
+両辺$h^{3N}N!$で割ると、
+
+$$
+\begin{aligned}
+\frac{1}{h^{3N}N!}\frac{\partial}{\partial E} \int_{A(E)} B dA_E &= \frac{1}{h^{3N}N!} \int_{A(E)} \nabla \cdot \vec{B} dA_E \\
+&= \underbrace{A(E)}_{\exp(S/k)} \left<\nabla \cdot \vec{B} \right>_E\\
+&= \exp(S/k) \left<\nabla \cdot \vec{B} \right>_E
+\end{aligned}
+$$
+
+これが$\exp(S_B/k)/k T_B$に等しいのだから、
+
+$$
+\frac{\exp(S_B/k)}{k T_B} = \exp(S/k) \left<\nabla \cdot \vec{B} \right>_E
+$$
+
+さて、もともと$B$修正されたエントロピーの定義は
+
+$$
+\exp(S_B/k) \equiv \exp(S/k) \left< B \right>_E
+$$
+
+であった。今、$B = \nabla H \cdot \vec{B}$としたので、
+
+$$
+\exp(S/k) \frac{\left<\nabla H \cdot \vec{B}\right>_E}{k T_B}
+= \exp(S/k) \left<\nabla \cdot \vec{B} \right>_E
+$$
+
+以上から、
+
+$$
+\frac{1}{k T_B} = \frac{\left<\nabla \cdot \vec{B} \right>_E}{\left<\nabla H \cdot \vec{B}\right>_E}
+$$
+
+右辺は分子、分母ともに等エネルギー面上での平均なので、ハミルトンダイナミクスのみで求められる量になっている。
+
+さて、$S_B$の定義から、
+
+$$
+S_B = S + k \ln \left<B \right>_E
+$$
+
+ここで$N$が増加した時に$\left<B \right>_E$の増加が$\exp(N)$より十分に遅ければ、$B$修正されたエントロピーはエントロピーに漸近する。
+
+$$
+\lim_{N \rightarrow \infty} S_B = S
+$$
+
+同様に、$B$修正された温度$T_B$も$T$に漸近する。
+
+$$
+\lim_{N \rightarrow \infty} T_B = T
+$$
+
+従って、
+
+$$
+\lim_{N \rightarrow \infty}
+\frac{\left<\nabla \cdot \vec{B} \right>_E}{\left<\nabla H \cdot \vec{B}\right>_E}
+= \frac{1}{kT}
+$$
+
+これが一般化ビリアル定理のミクロカノニカル版の証明になっている。
+
+この式は通常のビリアル定理を含んでいる。
+例えば$\vec{B}$として
+
+$$
+\vec{B} = (p_1, p_2, \cdots, p_{3N}, 0, \cdots ,0)
+$$
+
+を選ぶと、
+
+$$
+\nabla \cdot \vec{B} = 3N
+$$
+
+$$
+\nabla H \cdot \vec{B} = \sum_i p_i \frac{\partial H}{\partial p_i} = 2K
+$$
+
+となるので、
+
+$$
+2K = 3N k T
+$$
+
+という、運動温度の定義に帰着する。
 
 ## 参考文献
 
