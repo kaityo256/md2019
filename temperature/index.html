@@ -96,6 +96,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>分子動力学法では、示強性の量を制御したい場合がある。先ほど、圧力<span class="math inline">\(P\)</span>を制御するのに、共役な量の相方である体積<span class="math inline">\(V\)</span>をコントロールした。これはわかりやすい。</p>
 <p>では、温度<span class="math inline">\(T\)</span>を制御するにはどうすればよいだろうか？圧力制御からの類推では、エントロピーをコントロールすることになるが、エントロピーとはどうやってコントロールすればよいのだろうか。そもそもエントロピーと温度、どちらが基本的な量であり、どちらを従属的な量であろうか？</p>
 <p>この問いへの回答は筆者の能力を超える。ここでは「両方の立場があり得る」とだけコメントしておく。例えば田崎さんの熱力学の教科書は温度を基本的な量に取ってエントロピーを導く形式であり、清水さんの教科書はエントロピーを基本的な量に取って温度を導く形式である。</p>
+<h2 id="nose-hoover法以外の方法">Nose-Hoover法以外の方法</h2>
+<ul>
+<li>Velocity Scaling</li>
+<li>Gaussian Thermostat</li>
+<li>Berendsen Thermostat</li>
+</ul>
+<p>TODO: 書く</p>
 <h2 id="能勢の方法">能勢の方法</h2>
 <p>TODO: 書く？さらっと流すだけ？</p>
 <h2 id="能勢のハミルトニアンからnosehoover法へ">能勢のハミルトニアンからNoseHoover法へ</h2>
@@ -325,7 +332,6 @@ H_\mathrm{ex} = H + \frac{Q \zeta^2}{2}
 \]</span></p>
 <p>定義から自明だが、<span class="math inline">\(H_\mathrm{ex} + \eta\)</span>は時間保存量となる。これは、Nose-Hoover保存量と一致する。能勢のハミルトニアンからNose-Hoover法を導出した時には、Nose-Hoover保存量は能勢のハミルトニアン由来という意味があったが、「分布関数がカノニカル分布になるべし」という立場からNose-Hoover法を導くと、拡張されたハミルトニアンの時間微分のゴミをキャンセルしただけのように見える。その物理的解釈については読者に委ねる。</p>
 <p>TODO: Nose-Hooverの一般化、Nose-Hoover-Family</p>
-<p>TODO: Nose-Hooverと調和振動子とエルゴード性</p>
 </article>
 </body>
 </html>
