@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="generalized-virial-theorem-and-microcanonical-temperature">Generalized Virial Theorem and Microcanonical Temperature</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<h2 id="generalized-virial-theorem">Generalized Virial Theorem</h2>
+<p>これまで、Nose-Hoover熱浴やLangevin熱浴で、定常状態が指定の温度のカノニカル分布となることを見てきた。分子動力学法においては、運動エネルギー<span class="math inline">\(K\)</span>の定数倍を温度と定義していた。3次元<span class="math inline">\(N\)</span>粒子系なら</p>
+<p><span class="math display">\[
+T = \frac{2K}{3N k_B}
+\]</span></p>
+<p>を温度と呼ぶのであった。念のためこれをもう一度導いておこう。</p>
+<p>まず、ビリアルと呼ばれる以下の量を定義する。</p>
+<p><span class="math display">\[
+I = \sum_{i=1}^{3N} p_i \frac{\partial H}{\partial p_i}
+\]</span></p>
+<p>なお、以下では次元の自由度は<span class="math inline">\(i\)</span>に含める。すなわち、和は<span class="math inline">\(1\)</span>から<span class="math inline">\(3N\)</span>まで取ることにする。ハミルトニアンが</p>
+<p><span class="math display">\[
+H = \sum_i \frac{p_i^2}{2m} + V(\{q_i\})
+\]</span></p>
+<p>という形をしている時</p>
+<p><span class="math display">\[
+I = \sum_i 
+p_i \frac{\partial H}{\partial p_i} = \sum_i \frac{p_i^2}{m} = 2 K
+\]</span></p>
+<p>が成り立つ。これでビリアルが運動エネルギー<span class="math inline">\(K\)</span>と結びついた。</p>
+<p>また、カノニカル分布が</p>
+<p><span class="math display">\[
+f = Z^{-1} \exp(-\beta H)
+\]</span></p>
+<p>という形をしているとき、物理量<span class="math inline">\(A\)</span>のアンサンブル平均は</p>
+<p><span class="math display">\[
+\left&lt; A \right&gt; \equiv \int A f d\Gamma 
+\]</span></p>
+<p>で定義されるのであった。ここで、部分積分から容易に</p>
+<p><span class="math display">\[
+\left&lt;p_i \frac{\partial H}{\partial p_i} \right&gt; = k_B T
+\]</span></p>
+<p>であることから、</p>
+<p><span class="math display">\[
+\left&lt; I \right&gt; = \sum_i \left&lt;p_i \frac{\partial H}{\partial p_i} \right&gt;  = 3 N k_B T
+\]</span></p>
+<p>以上の二式から<span class="math inline">\(I\)</span>を消去すると、</p>
+<p><span class="math display">\[
+2K = 3 N k_B T
+\]</span></p>
+<p>こうして運動エネルギーと温度が結びついた。</p>
+<p>本質的にはカノニカル分布と部分積分しか使っていないので、<span class="math inline">\(p_i\)</span>ではなく<span class="math inline">\(q_i\)</span>で微分して</p>
+<p><span class="math display">\[
+\left&lt; q_i \frac{\partial H}{\partial q_i}\right&gt; = k_B T
+\]</span></p>
+<p>も成立し、こちらを状態温度と呼ぶのであった。</p>
+<p>さて、上記をさらに一般化しよう。位相空間<span class="math inline">\(\Gamma = (p_i, q_i)\)</span>をまとめて、<span class="math inline">\(\vec{z} = (p_1, p_2, \cdots, p_{3N}, q_1, q_2, \cdots, q_{3N})\)</span>で表現しよう。</p>
+<p>今、位相空間上に、ベクトル場<span class="math inline">\(\vec{B}\)</span>を定義する。<span class="math inline">\(\vec{B}\)</span>は<span class="math inline">\(3N\)</span>次元のベクトルで、その成分<span class="math inline">\(B_i\)</span>それぞれについて以下が成り立つことを示すのは容易であろう。</p>
+<p><span class="math display">\[
+\left&lt;B_i \frac{\partial H}{\partial z_i}\right&gt; = k_B T \left&lt;\frac{\partial B_i}{\partial z_i} \right&gt;
+\]</span></p>
+<p>これをベクトル場の言葉で書けば、</p>
+<p><span class="math display">\[
+\left&lt;\vec{B} \cdot \nabla H \right&gt;
+= k_B T \left&lt; \nabla \cdot \vec{B}\right&gt;
+\]</span></p>
+<p>この左辺を一般化ビリアル、この式を一般化ビリアル定理(Generalized Virial Theorem)と呼ぶ。</p>
+<p>さて、等式が成立するのは、カノニカル分布における平均の時のみであるが、ミクロカノニカル分布における平均においても、上記が漸近的に成立することを示し、それが温度の幾何学的定義となっていることを見てみよう。</p>
+<p>なお、物理量の期待値が熱力学極限において一致するのは、ミクロカノニカルとカノニカルで直観的には明らかである。</p>
+<div class="figure">
+<img src="b-modified.png" alt="ミクロカノニカルとカノニカル" />
+<p class="caption">ミクロカノニカルとカノニカル</p>
+</div>
+<p>ミクロカノニカルにおける平均とは、等エネルギー面における期待値である。一方、カノニカル分布では、全位相空間においてボルツマン重みに従って平均を取る必要があるが、<span class="math inline">\(N\)</span>が大きければ、その分布はほとんどデルタ関数的になり、エネルギーの期待値<span class="math inline">\(\left&lt;E\right&gt;\)</span>もほとんど揺らがないであろう。従って、<span class="math inline">\(N\)</span>が大きければミクロカノニカルとカノニカルの区別はつかなくなる。以下では、それを真面目に計算してみる。</p>
+<h2 id="overview">Overview</h2>
+<p>我々はハミルトンダイナミクスに従う系で温度を定義したい。ハミルトンダイナミクスではエネルギーが保存されるのであるから、等エネルギー面の面積を使うのが自然であろう。そこで、今考えている位相空間において、あるエネルギー<span class="math inline">\(E\)</span>における等エネルギー面の面積を<span class="math inline">\(A(E)\)</span>としよう。そして、この系のエントロピー<span class="math inline">\(S\)</span>を</p>
+<p><span class="math display">\[
+S = k_B \ln A
+\]</span></p>
+<p>と定義する。ここで、熱力学関係式</p>
+<p><span class="math display">\[
+\frac{\partial S}{\partial E} = 
+\frac{1}{T}
+\]</span></p>
+<p>を使って温度を定義することにしよう。しかし、今は我々はハミルトンダイナミクスに従う限りエネルギー<span class="math inline">\(E\)</span>は一定であるので、<span class="math inline">\(E\)</span>による微分を実行することができない。そこで、別の量を評価し、それが熱力学的極限において温度に一致することを示そう。</p>
+<p>具体的には、<span class="math inline">\(B\)</span>修正されたエントロピー<span class="math inline">\(S_B\)</span>を導入し、これを使って<span class="math inline">\(B\)</span>修正された温度を定義する。</p>
+<p><span class="math display">\[
+\frac{\partial S_B}{\partial E} = 
+\frac{1}{T_B}
+\]</span></p>
+<p>そして、熱力学極限において、<span class="math inline">\(B\)</span>修正された温度が、通常の温度に漸近することを示す。</p>
+<p><span class="math display">\[
+\lim_{N \rightarrow \infty} T_B = T
+\]</span></p>
+<h2 id="derivation">Derivation</h2>
+<p>3次元<span class="math inline">\(N\)</span>粒子系を表現する位相空間<span class="math inline">\(\Gamma\)</span>を考える。この空間にハミルトニアン<span class="math inline">\(H\)</span>が定義されているとしよう。全位相空間を<span class="math inline">\(\Omega\)</span>、あるエネルギー<span class="math inline">\(E\)</span>における等エネルギー面(isoenergetic surface)を<span class="math inline">\(A(E)\)</span>とすると、<span class="math inline">\(A(E)\)</span>は以下のように定義される。</p>
+<p><span class="math display">\[
+\begin{aligned}
+A(E) &amp;= \frac{1}{h^{3N}N!} \int_\Omega \delta(H-E) d \Gamma\\
+&amp;= \frac{1}{h^{3N}N!} \int_{A(E)} 
+\underbrace{\frac{dA_E}{||\nabla H||}}_{d \mu_E} \\
+&amp;= \frac{1}{h^{3N}N!} \int_{A(E)} d \mu_E
+\end{aligned}
+\]</span></p>
+<p>ここで、<span class="math inline">\(d \mu_E = dA_E / ||\nabla H||\)</span>は等エネルギー面の面積要素である。</p>
+<p>さて、等エネルギー面の面積が定義できたので、この系のエントロピーを以下のように定義できる。</p>
+<p><span class="math display">\[
+S = k \ln A
+\]</span></p>
+<p>以下では<span class="math inline">\(B\)</span>を別の意味に使うため、ボルツマン定数を<span class="math inline">\(k_B\)</span>ではなく<span class="math inline">\(k\)</span>と表記する。こうして定義されたエントロピーを、ミクロカノニカルエントロピー(microcanonical entropy)と呼ぶことがある。</p>
+<p>さて、この式を<span class="math inline">\(A\)</span>について解くと、</p>
+<p><span class="math display">\[
+\exp(S/k) = A
+\]</span></p>
+<p><span class="math inline">\(A(E)\)</span>の定義から、</p>
+<p><span class="math display">\[
+\exp(S/k) = \frac{1}{h^{3N}N!} \int_{A(E)} d \mu_E
+\]</span></p>
+<p>次に、この位相空間上に定義されたスカラー関数<span class="math inline">\(B\)</span>を考え、等エネルギー面上での平均<span class="math inline">\(\left&lt; B \right&gt;_E\)</span>を以下のように定義する。</p>
+<p><span class="math display">\[
+\left&lt; B \right&gt;_E = \frac{A^{-1}}{h^{3N}N!} \int_{A(E)} B d \mu_E
+\]</span></p>
+<p>ここで、<span class="math inline">\(h\)</span>はプランク定数であり、位相空間上での積分の次元をキャンセルするために導入している。<span class="math inline">\(N!\)</span>は、同じ原子は区別できないことを表現している。</p>
+<p>これを使って、<span class="math inline">\(S_B\)</span>という量を定義する。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\exp(S_B/k) &amp;\equiv \exp(S/k) \left&lt; B \right&gt;_E \\
+&amp;= \underbrace{\exp(S/k)}_A \frac{A^{-1}}{h^{3N }N!} \int_{A(E)} B d \mu_E \\
+&amp;= \frac{1}{h^{3N }N!} \int_{A(E)} B d \mu_E
+\end{aligned}
+\]</span></p>
+<p>この量<span class="math inline">\(S_B\)</span>を<span class="math inline">\(B\)</span>修正されたエントロピー(B-modified entropy)とs呼ぼう。これを使って<span class="math inline">\(B\)</span>修正された温度(B-modified temperature)<span class="math inline">\(T_B\)</span>を定義することができる。</p>
+<p><span class="math display">\[
+\frac{1}{T_B} \equiv \frac{\partial S_B}{\partial E}
+\]</span></p>
+<p>さて、<span class="math inline">\(B\)</span>修正されたエントロピーは</p>
+<p><span class="math display">\[
+\exp(S_B/k) = \frac{1}{h^{3N }N!} \int_{A(E)} B d \mu_E
+\]</span></p>
+<p>と書ける。これを両辺<span class="math inline">\(E\)</span>で偏微分しよう。</p>
+<p>まず、左辺は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial \exp(S_B/k)}{\partial E}
+&amp;= \frac{\exp(S_B/k)}{k} \underbrace{\frac{\partial S_B}{\partial E}}_{1/T_B}\\
+&amp;= \frac{\exp(S_B/k)}{k T_B}
+\end{aligned}
+\]</span></p>
+<p>右辺は、積分があるので面倒だが、微分の定義をそのまま書く。</p>
+<p><span class="math display">\[
+\frac{\partial}{\partial E} \int_{A(E)} B d \mu_E
+= \lim_{\delta \rightarrow 0} \frac{1}{\delta}
+\left[
+  \int_{A(E+\delta)} B d\mu_{E+\delta}
+- \int_{A(E)} B d\mu_{E}
+\right]
+\]</span></p>
+<p>ここで、これまで任意にとってきたスカラー量<span class="math inline">\(B\)</span>として、あるベクトル場<span class="math inline">\(\vec{B}\)</span>とハミルトニアンの勾配<span class="math inline">\(\nabla H\)</span>との内積<span class="math inline">\(\nabla H \cdot \vec{B}\)</span>を採用する。</p>
+<p><span class="math display">\[
+B \equiv \nabla H \cdot \vec{B}
+\]</span></p>
+<p>ここで、</p>
+<p><span class="math display">\[
+d \mu_E = \frac{d A_E}{||\nabla H||}
+\]</span></p>
+<p>であったので、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\left&lt; B\right&gt;_E &amp;= \int_{A(E)} \underbrace{B}_{\nabla H \cdot \vec{B}} \quad \underbrace{d\mu_E}_{dA_E / ||\nabla H||}\\
+&amp;= \int_{A(E)} \nabla H
+\cdot \vec{B} \frac{dA_E}{||\nabla H||} \\
+&amp;= \int_{A(E)} \vec{B} 
+\cdot \underbrace{\frac{\nabla H}{||\nabla H||}}_{\vec{n}} dA_E \\
+&amp;= \int_{A(E)} \vec{B} \vec{n} dA_E
+\end{aligned}
+\]</span></p>
+<p>ただし、<span class="math inline">\(\vec{n}\)</span>は等エネルギー面における単位法線ベクトルである。ベクトル場と等エネルギー面における法線ベクトルの内積を、等エネルギー面上で積分しているので、これはガウスの定理が適用できる。以上から、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial}{\partial E} \int_{A(E)} \underbrace{\nabla H \cdot \vec{B}}_{B} dA_E &amp;= \lim_{\delta \rightarrow 0}
+\frac{1}{\delta} \int_E^{E+\delta} dE
+\int_{A(E)} \nabla \cdot \vec{B} dA_E \\
+&amp;= \int_{A(E)} \nabla \cdot \vec{B} dA_E
+\end{aligned}
+\]</span></p>
+<p>TODO:図解必要？</p>
+<p>両辺<span class="math inline">\(h^{3N}N!\)</span>で割ると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{1}{h^{3N}N!}\frac{\partial}{\partial E} \int_{A(E)} B dA_E &amp;= \frac{1}{h^{3N}N!} \int_{A(E)} \nabla \cdot \vec{B} dA_E \\
+&amp;= \underbrace{A(E)}_{\exp(S/k)} \left&lt;\nabla \cdot \vec{B} \right&gt;_E\\
+&amp;= \exp(S/k) \left&lt;\nabla \cdot \vec{B} \right&gt;_E
+\end{aligned}
+\]</span></p>
+<p>これが<span class="math inline">\(\exp(S_B/k)/k T_B\)</span>に等しいのだから、</p>
+<p><span class="math display">\[
+\frac{\exp(S_B/k)}{k T_B} = \exp(S/k) \left&lt;\nabla \cdot \vec{B} \right&gt;_E
+\]</span></p>
+<p>さて、もともと<span class="math inline">\(B\)</span>修正されたエントロピーの定義は</p>
+<p><span class="math display">\[
+\exp(S_B/k) \equiv \exp(S/k) \left&lt; B \right&gt;_E
+\]</span></p>
+<p>であった。今、<span class="math inline">\(B = \nabla H \cdot \vec{B}\)</span>としたので、</p>
+<p><span class="math display">\[
+\exp(S/k) \frac{\left&lt;\nabla H \cdot \vec{B}\right&gt;_E}{k T_B}
+= \exp(S/k) \left&lt;\nabla \cdot \vec{B} \right&gt;_E
+\]</span></p>
+<p>以上から、</p>
+<p><span class="math display">\[
+\frac{1}{k T_B} = \frac{\left&lt;\nabla \cdot \vec{B} \right&gt;_E}{\left&lt;\nabla H \cdot \vec{B}\right&gt;_E}
+\]</span></p>
+<p>右辺は分子、分母ともに等エネルギー面上での平均なので、ハミルトンダイナミクスのみで求められる量になっている。</p>
+<p>さて、<span class="math inline">\(S_B\)</span>の定義から、</p>
+<p><span class="math display">\[
+S_B = S + k \ln \left&lt; B \right&gt;_E
+\]</span></p>
+<p>ここで<span class="math inline">\(N\)</span>が増加した時に<span class="math inline">\(\left&lt; B \right&gt;_E\)</span>の増加が<span class="math inline">\(\exp(N)\)</span>より十分に遅ければ、<span class="math inline">\(B\)</span>修正されたエントロピーはエントロピーに漸近する。</p>
+<p><span class="math display">\[
+\lim_{N \rightarrow \infty} S_B = S
+\]</span></p>
+<p>同様に、<span class="math inline">\(B\)</span>修正された温度<span class="math inline">\(T_B\)</span>も<span class="math inline">\(T\)</span>に漸近する。</p>
+<p><span class="math display">\[
+\lim_{N \rightarrow \infty} T_B = T
+\]</span></p>
+<p>従って、</p>
+<p><span class="math display">\[
+\lim_{N \rightarrow \infty}
+\frac{\left&lt;\nabla \cdot \vec{B} \right&gt;_E}{\left&lt;\nabla H \cdot \vec{B}\right&gt;_E}
+= \frac{1}{kT}
+\]</span></p>
+<p>これが一般化ビリアル定理のミクロカノニカル版の証明になっている。</p>
+<p>この式は通常のビリアル定理を含んでいる。 例えば<span class="math inline">\(\vec{B}\)</span>として</p>
+<p><span class="math display">\[
+\vec{B} = (p_1, p_2, \cdots, p_{3N}, 0, \cdots ,0)
+\]</span></p>
+<p>を選ぶと、</p>
+<p><span class="math display">\[
+\nabla \cdot \vec{B} = 3N
+\]</span></p>
+<p><span class="math display">\[
+\nabla H \cdot \vec{B} = \sum_i p_i \frac{\partial H}{\partial p_i} = 2K
+\]</span></p>
+<p>となるので、</p>
+<p><span class="math display">\[
+2K = 3N k T
+\]</span></p>
+<p>という、運動温度の定義に帰着する。</p>
+<h2 id="summary">Summary</h2>
+<p>一般化ビリアル定理</p>
+<p><span class="math display">\[
+\left&lt;\vec{B} \cdot \nabla H \right&gt;
+= k T \left&lt; \nabla \cdot \vec{B}\right&gt;
+\]</span></p>
+<p>に対して、ミクロカノニカル平均<span class="math inline">\(\left&lt; \cdots \right&gt;_E\)</span>を用いた</p>
+<p><span class="math display">\[
+\left&lt;\vec{B} \cdot \nabla H \right&gt;_E
+= k T \left&lt; \nabla \cdot \vec{B}\right&gt;_E
+\]</span></p>
+<p>も漸近的に成立することを示した。ミクロカノニカル平均は、等エネルギー面における平均であり、ハミルトンダイナミクスだけで定義可能な量である。また、等エネルギー面の面積からエントロピーを定義し、さらにそれをエネルギーで微分することで温度を定義したので、これは位相空間において幾何学的に温度を定義したことになっている。直観的には「<span class="math inline">\(N\)</span>が大きければミクロカノニカルとカノニカルは本質的に同じ」ということを言っているに過ぎないが、これが運動温度をハミルトンダイナミクスにおいても「温度」と呼んで良い裏付けとなっている。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li>H. H. Rugh, Phys. Rev. Lett. vol. 78, 772 (1997).</li>
+<li>O. G. Jepps, G. Ayton, and D. J. Evans, Phys. Rev. E vol. 62 4547 (2000).</li>
+<li>C. Braga and K. P. Travis, J. Chem. Phys., vol. 123, 134101 (2005).</li>
+</ul>
+</article>
+</body>
+</html>

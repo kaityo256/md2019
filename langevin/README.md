@@ -169,7 +169,7 @@ std::mt19937 mt;
 double w = nd(mt);
 ```
 
-などとして生成することができる。
+などとして生成することができる。なお、この手法をEuler-Maruyamaの方法と呼ぶ。
 
 ## H Theorem
 

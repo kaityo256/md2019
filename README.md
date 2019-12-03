@@ -37,6 +37,10 @@
 * [ランジュバン熱浴とH定理](langevin/README.md)
 * [Generalized Liouville's Theorem of non-Hamiltonian systems](liouville/README.md)
 
+## 謝辞
+
+中村壮伸さんにIrving-Kirkwoodによる微視的圧力定義、およびEuler-Maruyamaの方法を教えていただきました。
+
 ## 参考文献
 
 * 大学演習「熱学・統計力学」 久保亮五編 裳華房

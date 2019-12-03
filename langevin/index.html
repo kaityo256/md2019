@@ -209,7 +209,7 @@ p(t+h) = p(t) - \gamma p(t)h + \hat{w}
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="bu">std::</span>normal_distribution&lt;<span class="dt">double</span>&gt; nd(<span class="fl">0.0</span>, <span class="fl">2.0</span> * gamma * T * h);
 <span class="bu">std::</span>mt19937 mt;
 <span class="dt">double</span> w = nd(mt);</code></pre></div>
-<p>などとして生成することができる。</p>
+<p>などとして生成することができる。なお、この手法をEuler-Maruyamaの方法と呼ぶ。</p>
 <h2 id="h-theorem">H Theorem</h2>
 <p>Nose-Hoover法が保証するのは、「位相空間をボルツマン重みに比例する確率で走る」ということのみであり、さらに運動がエルゴード的であって初めてカノニカル分布が達成される。先ほど、Langevin方程式もカノニカル分布を定常状態に持つことを示したが、Langevin系の場合はNose-Hoover系よりもう少し強いことが言える。すなわち、Langevin系では、いかなる初期条件から初めても、必ずカノニカル分布に収束することを示すことができる。以下、それを見てみよう。簡単のため、一自由度系を考え、位相空間<span class="math inline">\((p,q)\)</span>上に、ハミルトニアン<span class="math inline">\(H(p,q)\)</span>が定義されているとしよう。</p>
 <p>まず、時間に依存する自由エネルギー<span class="math inline">\(F\)</span>を以下のように定義しよう。</p>
