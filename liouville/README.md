@@ -281,6 +281,10 @@ $$
 
 シンプレクティック積分においては、時間積分スキームが位相空間体積を変化させないことが本質的であった。一般のダイナミクス、特に温度制御された系においても、同様に位相空間体積に関してある種の制約を課す数値積分法は構築可能であろうか。この問題については後ほど触れる。
 
+## Liouville's operator for thermostated dynamics
+
+TODO: 書く
+
 ## 参考文献
 
 * M. E. Tuckerman et al. "On the classical statistical mechanics of non-Hamiltonian systems", Europhys. Lett. 45, 149 (1999).
