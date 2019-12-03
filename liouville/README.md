@@ -1,4 +1,4 @@
-# Generalized Liouville Theorem
+# Generalized Liouville's Theorem of non-Hamiltonian systems
 
 ハミルトンの運動方程式に付随するLiouville演算子は必ずエルミートとなり、エルミートなリュービル演算子が位相空間に作る「流れ」は非圧縮となることを見た。分布関数は位相空間における流れの「密度場」に対応するため、非圧縮な流れ場では密度は一定、すなわち、分布関数が不変に保たれることがわかる(Liouvilleの定理)。
 
@@ -127,11 +127,12 @@ $$
 $$
 \begin{aligned}
 \frac{dJ}{dt} &= \frac{d}{dt} \det M \\
-&= \det M \mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right)
+&= \underbrace{\det M}_J \mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right) \\
+&= J \underbrace{\mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right)}_{(*)}
 \end{aligned}
 $$
 
-さて、ヤコビ行列の性質として、逆行列は、各要素の偏微分をひっくり返したものになる。
+以下、(*)の部分の計算を実行しよう。まず、ヤコビ行列の性質として、逆行列は、各要素の偏微分をひっくり返したものになる。
 
 $$
 \left(M\right)^{-1}_{ij} = \frac{\partial z_0^j}{\partial z_t^i}
@@ -165,6 +166,121 @@ $$
 これを先程の式に代入して、
 
 $$
-\mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right) = \sum_i \sum_j \sum_k \frac{\partial z_0^k}{\partial z_t^i} \frac{\partial \dot{z_t^i}}{\partial z_t^j}
-\frac{\partial z_t^j}{\partial z_0^i}
+\mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right) = \sum_i \sum_j \sum_k 
+\underbrace{\frac{\partial z_0^k}{\partial z_t^i}}_{M^{-1}}
+\underbrace{\frac{\partial \dot{z_t^i}}{\partial z_t^j}}_{X}
+\underbrace{\frac{\partial z_t^j}{\partial z_0^i}}_{M}
 $$
+
+この右辺は$\mathrm{Tr}(M^{-1}XM)$の形になっている。対角和の性質から、
+
+$$
+\mathrm{Tr} (M^{-1}XM) = \mathrm{Tr} (MM^{-1}X) = \mathrm{Tr}X
+$$
+
+ここで行列$X$の要素は
+
+$$
+X_{ij} = \frac{\partial \dot{z_t^i}}{\partial z_t^j}
+$$
+
+この行列の対角和を取ると、
+
+$$
+\begin{aligned}
+\mathrm{Tr} X &= \sum_i X_{ii} \\
+& = \sum_i \frac{\partial \dot{z_t^i}}{\partial z_t^i}\\
+& = \nabla \cdot \dot
+{\vec{z}}
+\end{aligned}
+$$
+
+これは、ダイナミクス$\dot{\vec{z}}$の発散に他ならない。
+
+以上から、時間発展のヤコビアンの時間微分は
+
+$$
+\frac{dJ}{dt} = J  \nabla \cdot  \dot{\vec{z}}
+$$
+
+となる。
+
+## Generalized Liouvllie's Theorem
+
+今、位相空間が$\vec{z}$で張られており、ダイナミクス$\dot{\vec{z}}$が与えられているとする。そして、時刻$t=0$で$\vec{z}(0)$であった状態が、時間発展により時刻$t$で$\vec{z}(t)$になったとしよう。
+
+この系がハミルトンダイナミクスであった場合は、時間発展の前後で位相空間体積が保存する、すなわち
+
+$$
+d\vec{z}(t) = d\vec{z}(0)
+$$
+
+が成り立ち、これがLiouvilleの定理であった。
+
+さて、一般のダイナミクスでは位相空間体積が変化する。その変化をヤコビアンで表現しよう。
+
+位相空間の速度場の発散(divergence)を$\kappa$と表現しよう。
+
+$$
+\kappa \equiv \nabla \cdot  \dot{\vec{z}}
+$$
+
+先程示したヤコビアンの時間発展の式から
+
+$$
+\frac{dJ}{dt} = \kappa J 
+$$
+
+形式的に積分すると
+
+$$
+J(t|0) = \int_0^t \kappa dt
+$$
+
+$\dot{\omega} = \kappa$という変数を導入すると、
+
+$$
+J(t|0) = \exp\left(\omega(t) - \omega(0)  \right)
+$$
+
+さて、ヤコビアンの定義から
+
+$$
+d \vec{z}(t) = J d \vec{z}(0)
+$$
+
+先程求めたヤコビアンの式を使うと、
+
+$$
+d \vec{z}(t) =  \exp\left(\omega(t) - \omega(0)  \right) d \vec{z}(0)
+$$
+
+整理して、
+
+$$
+\mathrm{e}^{-w(t)}d \vec{z}(t) = \mathrm{e}^{-w(0)} d \vec{z}(0)
+$$
+
+上式が時刻に寄らず成立する。これを一般化Liouvilleの定理(Generalized Liouville's Theorem)と呼ぶ。
+
+これは、$\mathrm{e}^{-w}d\vec{z}$という量が不変計量(invariant measure)になっていることを意味する。
+
+ハミルトンダイナミクスでは、速度場が非圧縮流、すなわち
+
+$$
+\kappa \equiv \nabla \cdot \dot{\vec{z}} = 0
+$$
+
+になるのであった。$\dot{\omega} = \kappa$であったから、$\dot{\omega} = 0$、すなわち$\omega$は時間に依存しない定数となる。ここから、$w(t) = w(0)$であるから、
+
+$$
+d \vec{z}(t) =  d \vec{z}(0)
+$$
+
+通常のLiouvilleの定理が導かれた。先程の一般化Liouvilleの定理が、通常のLiouvilleの定理の自然な一般化になっていることがわかるであろう。
+
+シンプレクティック積分においては、時間積分スキームが位相空間体積を変化させないことが本質的であった。一般のダイナミクス、特に温度制御された系においても、同様に位相空間体積に関してある種の制約を課す数値積分法は構築可能であろうか。この問題については後ほど触れる。
+
+## 参考文献
+
+* M. E. Tuckerman et al. "On the classical statistical mechanics of non-Hamiltonian systems", Europhys. Lett. 45, 149 (1999).
