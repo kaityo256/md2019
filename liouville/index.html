@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="generalized-liouvilles-theorem-of-non-hamiltonian-systems">Generalized Liouville's Theorem of non-Hamiltonian systems</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<p>ハミルトンの運動方程式に付随するLiouville演算子は必ずエルミートとなり、エルミートなリュービル演算子が位相空間に作る「流れ」は非圧縮となることを見た。分布関数は位相空間における流れの「密度場」に対応するため、非圧縮な流れ場では密度は一定、すなわち、分布関数が不変に保たれることがわかる(Liouvilleの定理)。</p>
+<p>Liouvilleの定理は、時間発展に伴って位相空間体積が変化しないことを主張する。例えば一自由度系<span class="math inline">\((p,q)\)</span>において、時間<span class="math inline">\(h\)</span>後に<span class="math inline">\((P,Q)\)</span>に系が変化した時、その前後で位相空間体積が変化しないとは、</p>
+<p><span class="math display">\[
+dPdQ = dpdq
+\]</span></p>
+<p>が成立することを指す。さて、<span class="math inline">\(P\)</span>も<span class="math inline">\(Q\)</span>も<span class="math inline">\(p, q\)</span>の関数であるから、</p>
+<p><span class="math display">\[
+dP dQ = 
+\underbrace{
+\begin{pmatrix}
+\frac{\partial P}{\partial p} &amp; \frac{\partial P}{\partial q} \\
+\frac{\partial Q}{\partial p} &amp; \frac{\partial Q}{\partial q} 
+\end{pmatrix}
+}_J
+dpdq
+\]</span></p>
+<p>である。ただし、<span class="math inline">\(J\)</span>は<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((P,Q)\)</span>への変換のヤコビアンである。<span class="math inline">\(dPdQ = dpdq\)</span>が成り立つのであるから、Liouvilleの定理は力学系に付随するヤコビアンが常に1となることを主張する。</p>
+<p>では、熱浴をつけ、定常状態がカノニカル分布となる場合はどうだろうか？当然、分布関数が時間変化するため、位相空間体積も一定ではなく、ヤコビアンも時間変化する。この時、Liouvilleの定理と同様なことが言えないだろうか？</p>
+<p>以下では、一般化された形でのLiouvilleの定理を導き、温度制御された系においてLiouville演算子がどのような性質を持つか議論する。</p>
+<h2 id="jacobis-formula">Jacobi's Formula</h2>
+<p>まず、位相空間<span class="math inline">\((p_i, q_i)\)</span>をまとめて<span class="math inline">\(\vec{z} = (p_1, p_2, \cdots, p_{3N}, q_1, q_2, \cdots, q_{3N})=(z_1, \cdots, z_{6N})\)</span>と記述しよう。この系が時刻<span class="math inline">\(t\)</span>から<span class="math inline">\(t+h\)</span>まで時間発展発展し、<span class="math inline">\(\vec{z}(t)\)</span>から<span class="math inline">\(\vec{z}(t+h)\)</span>になったとしよう。</p>
+<p><span class="math display">\[
+\vec{z}(t) \xrightarrow{h} \vec{z}(t+h)
+\]</span></p>
+<p>時間発展は決定論的であるから、<span class="math inline">\(\vec{z}(t+h)\)</span>は<span class="math inline">\(\vec{z}(t)\)</span>を決めれば一意に決まる。従って、<span class="math inline">\(\vec{z}(t+h)\)</span>は<span class="math inline">\(\vec{z}(t)\)</span>の関数となるから、両者の間にヤコビアンを考えることができる。</p>
+<p><span class="math display">\[
+J(t+h|t) \equiv \frac{\partial \vec{z}(t+h)}{\partial \vec{z}(t)}
+\]</span></p>
+<p>我々は一般の力学系におけるヤコビアンの時間発展を知りたいので、ヤコビアンが従う方程式を書き下したい。すなわち、<span class="math inline">\(dJ/dt\)</span>が知りたい。位相空間の流れ<span class="math inline">\(\dot{\vec{z}}\)</span>が指定されれば力学系が定まるのであるから、<span class="math inline">\(dJ/dt\)</span>と<span class="math inline">\(\dot{\vec{z}}\)</span>の間になんらかの関係があるはずである。実際、以下の等式が成り立つ。</p>
+<p><span class="math display">\[
+\frac{dJ}{dt} = J \nabla \frac{d \vec{z}}{dt}
+\]</span></p>
+<p>上記を証明するために、まずJacobiの公式と呼ばれる式を証明する。</p>
+<p><span class="math inline">\(A\)</span>を時間依存する正方行列とする時、以下が成り立つ。</p>
+<p><span class="math display">\[
+\frac{d}{dt}\det A = \det A \mathrm{Tr} \left(A^{-1} \frac{d A}{dt} \right)
+\]</span></p>
+<p>これを証明するため、まずは<span class="math inline">\(\det A\)</span>の時間微分を定義どおりに計算し、<span class="math inline">\(A(t+h)\)</span>を一次までテイラー展開しよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d}{dt}\det A &amp;= \lim_{h\rightarrow 0} \frac{\det A(t+h) - \det A(t)}{h} \\
+&amp;= \lim_{h\rightarrow 0} \frac{\det \left(A + \frac{dA}{d t} h\right) - \det A(t)}{h}
+\end{aligned}
+\]</span></p>
+<p>さて、行列の積の行列式は、行列式の積でかける。</p>
+<p><span class="math display">\[
+\det (XY) = \det X \det Y
+\]</span></p>
+<p>したがって、以下の恒等式が成り立つ。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\det X &amp;= \det A A^{-1} X \\
+&amp;= \det A \det A^{-1}X
+\end{aligned}
+\]</span></p>
+<p>この恒等式を使って、先程の四季から<span class="math inline">\(\det A\)</span>をくくりだすことを考える。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d}{dt}\det A &amp;= \lim_{h\rightarrow 0} \frac{\det \left(A + \frac{dA}{d t} h\right) - \det A(t)}{h} \\
+&amp;= \lim_{h\rightarrow 0} \frac{\det \left[A \left(I + A^{-1}\frac{dA}{d t} h\right)\right] - \det (A(t)I)}{h} \\
+&amp;= \lim_{h\rightarrow 0} \frac{\det A \det\left(I + A^{-1}\frac{dA}{d t} h\right) - \det A \det I}{h} \\
+&amp;= \det A \lim_{h\rightarrow 0}\frac{ \det\left(I + A^{-1}\frac{dA}{d t} h\right) - \det I}{h}
+\end{aligned}
+\]</span></p>
+<p>ここで、行列の性質として以下が成り立つ。</p>
+<p><span class="math display">\[
+\det(I + h X) = 1 + h \mathrm{Tr} X + O(h^2)
+\]</span></p>
+<p>これを<span class="math inline">\(X = A^{-1} dA/dt\)</span>として先の式に代入すると、</p>
+<p><span class="math display">\[
+\frac{d}{dt}\det A = \det A \mathrm{Tr} \left(A^{-1} \frac{d A}{dt} \right)
+\]</span></p>
+<p>これが求めたい式であった。</p>
+<h2 id="dynamics-of-jacobian">Dynamics of Jacobian</h2>
+<p>さて、位相空間<span class="math inline">\(\vec{z}\)</span>上に、ダイナミクス<span class="math inline">\(\vec{z}\)</span>が与えられているとしよう。時刻<span class="math inline">\(0\)</span>から時刻<span class="math inline">\(t\)</span>への時間発展</p>
+<p><span class="math display">\[
+\vec{z}(0) \xrightarrow{h} \vec{z}(t)
+\]</span></p>
+<p>を考える(先程は<span class="math inline">\(t\)</span>から<span class="math inline">\(t+h\)</span>を考えたが、今後時間微分が煩雑にならないように時刻<span class="math inline">\(0\)</span>からのダイナミクスを考えている)。</p>
+<p>この時間発展のヤコビ行列<span class="math inline">\(M_{ij}\)</span>を以下のように定義する。</p>
+<p><span class="math display">\[
+M_{ij} = \frac{\partial z_t^j}{\partial z_0^i}
+\]</span></p>
+<p>ただし、<span class="math inline">\(\vec{z}(0)\)</span>の<span class="math inline">\(i\)</span>成分を<span class="math inline">\(z_0^i\)</span>、<span class="math inline">\(\vec{z}(t)\)</span>の<span class="math inline">\(i\)</span>成分を<span class="math inline">\(z_t^i\)</span>と表記している。</p>
+<p>ヤコビアンは<span class="math inline">\(J=\det M\)</span>であるから、先程のヤコビの公式により、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{dJ}{dt} &amp;= \frac{d}{dt} \det M \\
+&amp;= \underbrace{\det M}_J \mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right) \\
+&amp;= J \underbrace{\mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right)}_{(*)}
+\end{aligned}
+\]</span></p>
+<p>以下、(*)の部分の計算を実行しよう。まず、ヤコビ行列の性質として、逆行列は、各要素の偏微分をひっくり返したものになる。</p>
+<p><span class="math display">\[
+\left(M\right)^{-1}_{ij} = \frac{\partial z_0^j}{\partial z_t^i}
+\]</span></p>
+<p>また、ヤコビ行列の時間依存性は、<span class="math inline">\(z_t^j\)</span>にしかないので、</p>
+<p><span class="math display">\[
+\left(\frac{d M}{dt}\right)_{ij} = \frac{\partial \dot{z_t^j}}{\partial z_0^i}
+\]</span></p>
+<p>以上から、</p>
+<p><span class="math display">\[
+\left(M^{-1} \frac{dM}{dt}\right)_{ij} = \sum_k \frac{\partial z_0^k}{\partial z_t^i} \frac{\partial \dot{z_t^j}}{\partial z_0^k}
+\]</span></p>
+<p>この対角和を取ると、</p>
+<p><span class="math display">\[
+\mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right) = \sum_i \sum_k \frac{\partial z_0^k}{\partial z_t^i} \frac{\partial \dot{z_t^i}}{\partial z_0^k}
+\]</span></p>
+<p>さて、ライプニッツ則により、</p>
+<p><span class="math display">\[
+\frac{\partial \dot{z_t^i}}{\partial z_0^k} = \sum_j \frac{\partial \dot{z_t^i}}{\partial z_t^j}
+\frac{\partial z_t^j}{\partial z_0^i}
+\]</span></p>
+<p>これを先程の式に代入して、</p>
+<p><span class="math display">\[
+\mathrm{Tr} \left(M^{-1} \frac{dM}{dt}\right) = \sum_i \sum_j \sum_k 
+\underbrace{\frac{\partial z_0^k}{\partial z_t^i}}_{M^{-1}}
+\underbrace{\frac{\partial \dot{z_t^i}}{\partial z_t^j}}_{X}
+\underbrace{\frac{\partial z_t^j}{\partial z_0^i}}_{M}
+\]</span></p>
+<p>この右辺は<span class="math inline">\(\mathrm{Tr}(M^{-1}XM)\)</span>の形になっている。対角和の性質から、</p>
+<p><span class="math display">\[
+\mathrm{Tr} (M^{-1}XM) = \mathrm{Tr} (MM^{-1}X) = \mathrm{Tr}X
+\]</span></p>
+<p>ここで行列<span class="math inline">\(X\)</span>の要素は</p>
+<p><span class="math display">\[
+X_{ij} = \frac{\partial \dot{z_t^i}}{\partial z_t^j}
+\]</span></p>
+<p>この行列の対角和を取ると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{Tr} X &amp;= \sum_i X_{ii} \\
+&amp; = \sum_i \frac{\partial \dot{z_t^i}}{\partial z_t^i}\\
+&amp; = \nabla \cdot \dot
+{\vec{z}}
+\end{aligned}
+\]</span></p>
+<p>これは、ダイナミクス<span class="math inline">\(\dot{\vec{z}}\)</span>の発散に他ならない。</p>
+<p>以上から、時間発展のヤコビアンの時間微分は</p>
+<p><span class="math display">\[
+\frac{dJ}{dt} = J  \nabla \cdot  \dot{\vec{z}}
+\]</span></p>
+<p>となる。</p>
+<h2 id="generalized-liouvllies-theorem">Generalized Liouvllie's Theorem</h2>
+<p>今、位相空間が<span class="math inline">\(\vec{z}\)</span>で張られており、ダイナミクス<span class="math inline">\(\dot{\vec{z}}\)</span>が与えられているとする。そして、時刻<span class="math inline">\(t=0\)</span>で<span class="math inline">\(\vec{z}(0)\)</span>であった状態が、時間発展により時刻<span class="math inline">\(t\)</span>で<span class="math inline">\(\vec{z}(t)\)</span>になったとしよう。</p>
+<p>この系がハミルトンダイナミクスであった場合は、時間発展の前後で位相空間体積が保存する、すなわち</p>
+<p><span class="math display">\[
+d\vec{z}(t) = d\vec{z}(0)
+\]</span></p>
+<p>が成り立ち、これがLiouvilleの定理であった。</p>
+<p>さて、一般のダイナミクスでは位相空間体積が変化する。その変化をヤコビアンで表現しよう。</p>
+<p>位相空間の速度場の発散(divergence)を<span class="math inline">\(\kappa\)</span>と表現しよう。</p>
+<p><span class="math display">\[
+\kappa \equiv \nabla \cdot  \dot{\vec{z}}
+\]</span></p>
+<p>先程示したヤコビアンの時間発展の式から</p>
+<p><span class="math display">\[
+\frac{dJ}{dt} = \kappa J 
+\]</span></p>
+<p>形式的に積分すると</p>
+<p><span class="math display">\[
+J(t|0) = \int_0^t \kappa dt
+\]</span></p>
+<p><span class="math inline">\(\dot{\omega} = \kappa\)</span>という変数を導入すると、</p>
+<p><span class="math display">\[
+J(t|0) = \exp\left(\omega(t) - \omega(0)  \right)
+\]</span></p>
+<p>さて、ヤコビアンの定義から</p>
+<p><span class="math display">\[
+d \vec{z}(t) = J d \vec{z}(0)
+\]</span></p>
+<p>先程求めたヤコビアンの式を使うと、</p>
+<p><span class="math display">\[
+d \vec{z}(t) =  \exp\left(\omega(t) - \omega(0)  \right) d \vec{z}(0)
+\]</span></p>
+<p>整理して、</p>
+<p><span class="math display">\[
+\mathrm{e}^{-w(t)}d \vec{z}(t) = \mathrm{e}^{-w(0)} d \vec{z}(0)
+\]</span></p>
+<p>上式が時刻に寄らず成立する。これを一般化Liouvilleの定理(Generalized Liouville's Theorem)と呼ぶ。</p>
+<p>これは、<span class="math inline">\(\mathrm{e}^{-w}d\vec{z}\)</span>という量が不変計量(invariant measure)になっていることを意味する。</p>
+<p>ハミルトンダイナミクスでは、速度場が非圧縮流、すなわち</p>
+<p><span class="math display">\[
+\kappa \equiv \nabla \cdot \dot{\vec{z}} = 0
+\]</span></p>
+<p>になるのであった。<span class="math inline">\(\dot{\omega} = \kappa\)</span>であったから、<span class="math inline">\(\dot{\omega} = 0\)</span>、すなわち<span class="math inline">\(\omega\)</span>は時間に依存しない定数となる。ここから、<span class="math inline">\(w(t) = w(0)\)</span>であるから、</p>
+<p><span class="math display">\[
+d \vec{z}(t) =  d \vec{z}(0)
+\]</span></p>
+<p>通常のLiouvilleの定理が導かれた。先程の一般化Liouvilleの定理が、通常のLiouvilleの定理の自然な一般化になっていることがわかるであろう。</p>
+<p>シンプレクティック積分においては、時間積分スキームが位相空間体積を変化させないことが本質的であった。一般のダイナミクス、特に温度制御された系においても、同様に位相空間体積に関してある種の制約を課す数値積分法は構築可能であろうか。この問題については後ほど触れる。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li>M. E. Tuckerman et al. &quot;On the classical statistical mechanics of non-Hamiltonian systems&quot;, Europhys. Lett. 45, 149 (1999).</li>
+</ul>
+</article>
+</body>
+</html>
