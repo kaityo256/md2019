@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+    .btn-square {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      text-decoration: none;
+      background: #668ad8;
+      color: #FFF;
+      border-bottom: solid 4px #626295;
+      border-radius: 5px;
+    }
+
+    .btn-square:active {
+      -webkit-transform: translateY(4px);
+      transform: translateY(4px);
+      border-bottom: none;
+    }
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  p.caption{
+    display:none;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="integration-scheme-for-non-hamliton-systems">Integration scheme for non-Hamliton systems</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<p>常微分方程式の数値積分には多数の方法があるが、分子動力学法、すなわちハミルトンの運動方程式の積分には、ほとんどの場合においてシンプレクティック積分が用いられている。その理由は、シンプレクティック積分が軌道には誤差を持ちつつも、エネルギーを厳密に保存するからであった。シンプレクティック積分は</p>
+<ul>
+<li>リュービル演算子がエルミートになっている</li>
+<li>リュービル演算子が、エルミート演算子の和に分解できる</li>
+<li>分解した演算子それぞれについて、指数関数の肩に乗せた時間発展演算子が厳密に計算できる</li>
+</ul>
+<p>という性質を使い、指数分解の公式により数値積分法を構築する手法である。こうして構築されたシンプレクティック積分は、位相空間の体積を厳密に保存する。</p>
+<p>では、温度制御が入った場合はどうだろうか？温度制御が入るということは、本質的に分布関数が揺らぐため、位相空間の体積は保存しない。この時、シンプレクティック積分と同様な数値積分法が構築できるだろうか？</p>
+<p>ここでは、シンプレクティック積分と同様に指数分解の方法を使って数値積分法を構築するRESPAと呼ばれる手法と、その性質について紹介する。</p>
+<h2 id="thermostat-term">Thermostat Term</h2>
+<p>簡単のため、一自由度系を考える。また、熱浴の質量も1としておこう。ハミルトニアン<span class="math inline">\(H\)</span>にNose-Hoover熱浴をつけた運動方程式は以下の通りである。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= \underbrace{-\frac{\partial H}{\partial q}}_{iL_K} \underbrace{- p\zeta}_{iL_T} \\
+\dot{q} &amp;= \underbrace{\frac{\partial H}{\partial p}}_{iL_V} \\
+\dot{\zeta} &amp;= \underbrace{\left(p\frac{\partial H}{\partial p} - \frac{1}{\beta}\right)}_{iL_Z}
+\end{aligned}
+\]</span></p>
+<p>この方程式は以下のカノニカル分布を定常状態に持つ。</p>
+<p><span class="math display">\[
+f = Z^{-1} \exp\left[ -\beta\left( H + \frac{\zeta^2}{2}\right) \right]
+\]</span></p>
+<p>この系のリュービル演算子<span class="math inline">\(iL\)</span>は、以下のように記述できる。</p>
+<p><span class="math display">\[
+iL = \dot{p} \frac{\partial}{\partial p} +
+\dot{q} \frac{\partial}{\partial p} + 
+\dot{\zeta} \frac{\partial}{\partial \zeta}
+\]</span></p>
+<p>数値積分法を構築するとは、これを指数関数の肩に乗せた演算子</p>
+<p><span class="math display">\[
+U(h) = \mathrm{e}^{ih L}
+\]</span></p>
+<p>をなんらかの手段で近似、評価することである。</p>
+<p>シンプレクティック積分の場合と同様に、リュービル演算子を以下のように分解しよう。</p>
+<p><span class="math display">\[
+iL = iL_K + iL_V + iL_T + iL_Z
+\]</span></p>
+<p>ハミルトンの運動方程式では、リュービル演算子を分解したとき、指数関数の二次以上の項が消えるために厳密に計算ができることを利用してシンプレクティック積分を構築していた。</p>
+<p>たとえば、ハミルトンの運動方程式の運動項由来の部分は</p>
+<p><span class="math display">\[
+\begin{aligned}
+U_K(h) &amp;= \mathrm{e}^{i h L_K} \\
+&amp;= \exp\left(-h \frac{\partial H}{\partial q} \frac{\partial}{\partial p} \right)\\
+&amp;= \sum_k \frac{1}{k!}\left( -h\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)^n
+\end{aligned}
+\]</span></p>
+<p>となっている。<span class="math inline">\(p\)</span>による偏微分があるため、</p>
+<p><span class="math display">\[
+iL_K q = iL_K \zeta = 0
+\]</span></p>
+<p>になるのはすぐにわかる。問題は<span class="math inline">\(p\)</span>に演算した場合だが、<span class="math inline">\(p\)</span>の偏微分の左側に<span class="math inline">\(p\)</span>依存性がないのがポイントで、リュービル演算子を一度かけると、<span class="math inline">\(p\)</span>依存性が消えてしまう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+iL_K p &amp;= \left(-h \frac{\partial H}{\partial q} \frac{\partial }{\partial p}\right) p \\
+&amp;= -h \frac{\partial H}{\partial q}
+\end{aligned}
+\]</span></p>
+<p>したがって、リュービル演算子を二回かけるとゼロになる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+(iL_K)^n p &amp;= iL_K \left( -h \frac{\partial H}{\partial q} \right) \\
+&amp;=0
+\end{aligned}
+\]</span></p>
+<p>結局、</p>
+<p><span class="math display">\[
+\begin{aligned}
+U_K(h) p &amp;= \mathrm{e}^{i h L_P} p \\
+&amp; =(1 + ih L_K) p\\
+&amp;= p - h \frac{\partial H}{\partial q}
+\end{aligned}
+\]</span></p>
+<p>と、一次のオイラー法のような更新が導かれる。</p>
+<p>同様に<span class="math inline">\(iL_V, iL_Z\)</span>についても、指数関数の肩に乗せると二次の項が消える。問題は摩擦項<span class="math inline">\(iL_T\)</span>である。</p>
+<p><span class="math display">\[
+iL_T = - p\zeta \frac{\partial}{\partial p}
+\]</span></p>
+<p>これを指数関数の肩に乗せた演算子は</p>
+<p><span class="math display">\[
+\begin{aligned}
+U_T(h) &amp;= \mathrm{e}^{i h L_T} \\
+&amp;= \exp\left(-h p\zeta \frac{\partial}{\partial p} \right)
+\end{aligned}
+\]</span></p>
+<p>となる。<span class="math inline">\(p\)</span>による偏微分を含むため、<span class="math inline">\(q\)</span>や<span class="math inline">\(\zeta\)</span>にかけると0になる。問題は<span class="math inline">\(p\)</span>にかけた場合である。この部分リュービル演算子<span class="math inline">\(iL_T\)</span>を<span class="math inline">\(p\)</span>にかけてやると</p>
+<p><span class="math display">\[
+iL_T p = -hp\zeta
+\]</span></p>
+<p>となり、<span class="math inline">\(p\)</span>依存性が残る。したがって、<span class="math inline">\(iL_T\)</span>をもう一度かけてもゼロとはならない。</p>
+<p><span class="math display">\[
+(iL_T)^2 p = h^2 p \zeta^2
+\]</span></p>
+<p>高次項はゼロとはならないのだが、<span class="math inline">\(k\)</span>回かけたものが簡単に計算できる。</p>
+<p><span class="math display">\[
+(iL_T)^k p = (-h\zeta)^k p
+\]</span></p>
+<p>これにより、<span class="math inline">\(U_T(h)p\)</span>が厳密に計算できてしまう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+U_T(h) p &amp;= \exp(iL_K) p\\
+&amp;= \sum_k \frac{1}{k!} 
+\underbrace{\left(-hp\zeta \frac{\partial}{\partial p} \right)^k p}_{(-h\zeta)^kp}\\
+&amp;= p \underbrace{\sum_k \frac{(-h\zeta)^k}{k!}}_{\exp(-h\zeta)}\\
+&amp;= \mathrm{e}^{-h\zeta} p
+\end{aligned}
+\]</span></p>
+<p>これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すと思われる。</p>
+<p>RESPAの構築方法には複数あるが、通常は二次の対称分解の形として、真ん中に最も計算が重い力の計算を持ってくることが多い。</p>
+<p><span class="math display">\[
+\tilde{U}(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+\]</span></p>
+<p>この時間発展は</p>
+<ol style="list-style-type: decimal">
+<li>位置を現在の速度で<span class="math inline">\(h/2\)</span>だけ進める</li>
+<li>運動量を<span class="math inline">\(\zeta\)</span>を使って<span class="math inline">\(p \rightarrow p \mathrm{e}^{-h\zeta/2}\)</span>とスケールする</li>
+<li>現在の位置において力を計算し、運動量を<span class="math inline">\(h\)</span>だけ更新する</li>
+<li>運動量を<span class="math inline">\(\zeta\)</span>を使って<span class="math inline">\(p \rightarrow p \mathrm{e}^{-h\zeta/2}\)</span>とスケールする</li>
+<li>位置を現在の速度で<span class="math inline">\(h/2\)</span>だけ進める</li>
+</ol>
+<p>という手続きになり、二次精度で、かつ時間反転対称となっている。ただし、<span class="math inline">\(L_T\)</span>がエルミート演算子ではないために、全体としてシンプレクティック変換にはなっていない。</p>
+<h2 id="time-reversibility">Time Reversibility</h2>
+<p>ここで、時間発展演算子の時間反転対称性についてまとめておこう。時間を<span class="math inline">\(h\)</span>だけ進める時間発展演算子<span class="math inline">\(U(h)\)</span>が時間反転対称であるとは、</p>
+<p><span class="math display">\[
+U^{-1}(h) = U(-h)
+\]</span></p>
+<p>を満たすことを言う。</p>
+<p>この式の意味を見るために、調和振動子系を考えて見よう。いま、時刻<span class="math inline">\(t\)</span>において<span class="math inline">\((p,q)\)</span>にいた系が、時間発展により時刻<span class="math inline">\(t+h\)</span>で<span class="math inline">\((P,Q)\)</span>に移ったとする。すなわち</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+= 
+U(h)
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\]</span></p>
+<p>この時、<span class="math inline">\(U(h)\)</span>は行列になる。<span class="math inline">\((P,Q)\)</span>は<span class="math inline">\((p,q)\)</span>の関数であるが、それを逆に解いて、<span class="math inline">\((p,q)\)</span>を<span class="math inline">\((P,Q)\)</span>で表してみよう。線形の場合は逆行列をかけるだけだ。</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+= 
+U^{-1}(h)
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+\]</span></p>
+<p>さて、時間反転対称であるとは、時間を<span class="math inline">\(h\)</span>だけ進める演算子を演算子た結果を逆に解いたら、それは時間を<span class="math inline">\(-h\)</span>だけ進める演算子をかけた結果と等しい、ということである。従って、</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+= 
+U(-h)
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+\]</span></p>
+<p>さて、よく誤解されているのだが、シンプレクティック積分は時間反転対称性を持つとは限らない。実際、一次のシンプレクティック積分に対応する行列</p>
+<p><span class="math display">\[
+\tilde{U}_1(h) = 
+\begin{pmatrix}
+1 -h^2 &amp; -h \\
+h  &amp; 1
+\end{pmatrix}
+\]</span></p>
+<p>の逆行列は</p>
+<p><span class="math display">\[
+\tilde{U}^h_1(h) = 
+\begin{pmatrix}
+1  &amp; h \\
+-h  &amp; 1 - h^2
+\end{pmatrix}
+\]</span></p>
+<p>であり、これは明らかに<span class="math inline">\(\tilde{U}(-h)\)</span>とは一致しない。</p>
+<p>一方、二次のシンプレクティック積分に対応する行列</p>
+<p><span class="math display">\[
+\tilde{U}_2(h)
+= 
+\begin{pmatrix}
+1 - h^2/2 &amp; h \\
+-h + h^3/4 &amp; 1 - h^2/2
+\end{pmatrix}
+\]</span></p>
+<p>逆行列は</p>
+<p><span class="math display">\[
+\tilde{U}^{-1}_2(h)
+= 
+\begin{pmatrix}
+1 - h^2/2 &amp; h \\
+h - h^3/4 &amp; 1 - h^2/2
+\end{pmatrix}
+\]</span></p>
+<p>となり、これは<span class="math inline">\(\tilde{U}_2(-h)\)</span>に一致する。</p>
+<p>これがなぜかを演算子の形で考えよう。</p>
+<p>TODO： 演算子による時間反転対称性の説明</p>
+</article>
+</body>
+</html>
