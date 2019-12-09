@@ -60,17 +60,17 @@ $$
 \begin{aligned}
 U_K(h) &= \mathrm{e}^{i h L_K} \\
 &= \exp\left(-h \frac{\partial H}{\partial q} \frac{\partial}{\partial p} \right)\\
-&= \sum_k \frac{1}{k!}\left( -h\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)^n
+&= \sum_k \frac{1}{k!}\left( -h\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)^k
 \end{aligned}
 $$
 
-となっている。$p$による偏微分があるため、
+となっている。$p$による偏微分があるため、$p$や$\zeta$にかけると、
 
 $$
-iL_K q = iL_K \zeta = 0
+(iL_K) q = (iL_K) \zeta = 0
 $$
 
-になるのはすぐにわかる。問題は$p$に演算した場合だが、$p$の偏微分の左側に$p$依存性がないのがポイントで、リュービル演算子を一度かけると、$p$依存性が消えてしまう。
+と、それぞれ0になるのはすぐにわかる。問題は$p$に演算した場合だが、$p$の偏微分の左側に$p$依存性がないのがポイントで、リュービル演算子を一度かけると、$p$依存性が消えてしまう。
 
 $$
 \begin{aligned}
@@ -79,7 +79,7 @@ iL_K p &= \left(-h \frac{\partial H}{\partial q} \frac{\partial }{\partial p}\ri
 \end{aligned}
 $$
 
-したがって、リュービル演算子を二回かけるとゼロになる。
+したがって、リュービル演算子をもう一度かけるとゼロになる。
 
 $$
 \begin{aligned}
@@ -127,7 +127,7 @@ $$
 (iL_T)^2 p = h^2 p \zeta^2
 $$
 
-高次項はゼロとはならないのだが、$k$回かけたものが簡単に計算できる。
+しかし、高次項はゼロとはならないのだが、$k$回かけたものが簡単に計算できる。
 
 $$
 (iL_T)^k p = (-h\zeta)^k p
@@ -145,7 +145,7 @@ U_T(h) p &= \exp(iL_K) p\\
 \end{aligned}
 $$
 
-これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すと思われる。
+これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すことが多い。
 
 RESPAの構築方法には複数あるが、通常は二次の対称分解の形として、真ん中に最も計算が重い力の計算を持ってくることが多い。
 
@@ -164,6 +164,8 @@ $$
 という手続きになり、二次精度で、かつ時間反転対称となっている。ただし、$L_T$がエルミート演算子ではないために、全体としてシンプレクティック変換にはなっていない。
 
 ## Time Reversibility
+
+### Linear System
 
 ここで、時間発展演算子の時間反転対称性についてまとめておこう。時間を$h$だけ進める時間発展演算子$U(h)$が時間反転対称であるとは、
 
@@ -203,7 +205,7 @@ Q
 \end{pmatrix}
 $$
 
-さて、時間反転対称であるとは、時間を$h$だけ進める演算子を演算子た結果を逆に解いたら、それは時間を$-h$だけ進める演算子をかけた結果と等しい、ということである。従って、
+さて、時間反転対称であるとは、時間を$h$だけ進める演算子を演算した結果を逆に解いたら、それは時間を$-h$だけ進める演算子をかけた結果と等しい、ということである。従って、
 
 $$
 \begin{pmatrix}
@@ -264,6 +266,160 @@ $$
 
 となり、これは$\tilde{U}_2(-h)$に一致する。
 
-これがなぜかを演算子の形で考えよう。
+### Operator Formulation
 
-TODO： 演算子による時間反転対称性の説明
+時間発展演算子を指数分解の形で書くと、時間反転対称性がわかりやすい。以下のハミルトンダイナミクスを考える。
+
+$$
+\begin{aligned}
+\dot{p} &= - \frac{\partial H}{\partial q} \\
+\dot{q} &= \frac{\partial H}{\partial p}
+\end{aligned}
+$$
+
+対応するリュービル演算子は以下の通り。
+
+$$
+iL = 
+\underbrace{-\frac{\partial H}{\partial q} \frac{\partial}{\partial p}}_{iL_V}
++
+\underbrace{\frac{\partial H}{\partial p} \frac{\partial}{\partial q}}_{iL_K}
+$$
+
+まず、厳密な時間発展演算子を考えよう。
+
+$$
+U(h) = \mathrm{e}^{ih L}
+$$
+
+この時間発展演算子で時刻$t$において$(p,q)$であった状態が時刻$t+h$において$(P,Q)$に移動したのなら
+
+$$
+\begin{aligned}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix}
+&= U(h) 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} \\
+&= 
+\mathrm{e}^{ihL}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} 
+\end{aligned}
+$$
+
+$(p,q)$を$(P,Q)$で表すには、時間発展演算子を逆側に持ってくれば良いから、
+
+$$
+\begin{aligned}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+&= 
+\mathrm{e}^{-ihL}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+&\equiv U^{-1}(h) 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+\end{aligned}
+$$
+
+ここから、
+
+$$
+U^{-1}(h) = U(-h)
+$$
+
+が成立するのは自明であろう。要するに、時間発展演算子の時間反転対称性は、指数関数を移項すると負符号がつくことに対応している。
+
+次に、時間発展演算子を指数分解公式で近似する場合を考えよう。一次のシンプレクティック積分に対応する時間発展演算子は
+
+$$
+\tilde{U}_1(h) = \mathrm{e}^{ihL_K}\mathrm{e}^{ihL_V}
+$$
+
+となる。
+
+$$
+\begin{aligned}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix}
+&= \tilde{U}_1(h) 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} \\
+&= 
+\mathrm{e}^{ihL_K}\mathrm{e}^{ihL_V}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} 
+\end{aligned}
+$$
+
+$(p,q)$について解くと、
+
+$$
+\begin{aligned}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+&= 
+\mathrm{e}^{-ihL_V}\mathrm{e}^{-ihL_K}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+&\equiv
+\tilde{U}_1^{-1}(h) 
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+\end{aligned}
+$$
+
+と、$\mathrm{e}^{-ihL_V}$と$\mathrm{e}^{-ihL_K}$の位置が入れ替わる。一般に$iL_K$と$iL_V$は交換しないため、$\tilde{U}_1^{-1}(h)$が$\tilde{U}_1(-h)$と等しくないことがわかるであろう。ただし、この演算子$\tilde{U}_1(h)$はユニタリ演算子であるから、この演算子による時間発展はシンプレクティックになる。なぜなら分解した部分リュービル演算子は全てエルミートであり、それに虚数単位$i$をつけて指数関数の肩に乗せたものはユニタリであり、ユニタリ演算子の積はユニタリになるからだ。
+
+次に、二次のシンプレクティック積分を考えよう。時間発展演算子を対称分解すると
+
+$$
+\tilde{U}_2(h) = \mathrm{e}^{ihL_K/2}\mathrm{e}^{ihL_V}\mathrm{e}^{ihL_K/2}
+$$
+
+これが、時間反転対称であるのは自明であろう。演算子が左右対称な形をしているため、移項しても形が変わらない。従って、
+
+$$
+\tilde{U}_2^{-1}(h) = \tilde{U}_2(-h)
+$$
+
+が成り立つ。また、近似された時間発展演算子はユニタリ演算子の積で構築されているため、全体としてやはりユニタリになっており、位相空間体積を保存する。すなわちシンプレクティック積分となっている。
+
+さて、Nose-Hoover熱浴がついた系にRESPAを適用すると、
+
+$$
+\tilde{U}(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+$$
+
+となるのであった。二次の対称分解の場合と同様に、これが時間反転対称性を持っていることは明らかであろう。しかし、途中で非ユニタリな項$\mathrm{e}^{ihL_T/2}$を含むため、全体としても非ユニタリになっている。
+
+以上見てきた通り、シンプレクティック積分においては、一次の場合は時間反転対称ではなく、二次の対称分解の場合は時間反転対称であった。そして、どちらもシンプレクティックであった。ハミルトンダイナミクスにシンプレクティック積分を適用するとエネルギーが保存するのだが、それと時間反転対称性は関係がない(時間反転対称でなくてもシンプレクティックであり得る)。
+
+二次のシンプレクティック積分と同様に、Nose-Hoover熱浴がついた系にRESPAを適用すると、時間反転対称な時間発展を得ることができる。しかし、温度制御された系において時間発展が時間反転対称性を持つことがどれだけうれしいかは、さほど自明ではない。
+
