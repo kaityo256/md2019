@@ -423,3 +423,79 @@ $$
 
 二次のシンプレクティック積分と同様に、Nose-Hoover熱浴がついた系にRESPAを適用すると、時間反転対称な時間発展を得ることができる。しかし、温度制御された系において時間発展が時間反転対称性を持つことがどれだけうれしいかは、さほど自明ではない。
 
+## Non-Hermiticity of Liouville Operator
+
+ハミルトンダイナミクスにおいてはリュービル演算子がエルミートになり、さらにエルミート性から「位相空間の流れ」が非圧縮となることを見た。確率流が非圧縮であることから、分布関数が不変になること、すなわち(エルゴード的であれば)ミクロカノニカルであることが結論されるのであった。
+
+では、定常状態としてカノニカル分布を持つような系のリュービル演算子がどのような性質を持つか見てみよう。
+
+簡単のため、位相空間を $\Gamma = \vec{z} = (z_1, z_2, \cdots)$と書く。なんらかの方法により、この空間に運動方程式$\dot{\vec{z}} = (\dot{z_1},\dot{z_2},\cdots)$が導入されたとしよう。この系のリュービル演算子は
+
+$$
+-iL = \sum_i \dot{z_i} \frac{\partial }{\partial z_i}
+$$
+
+となる(虚数単位$i$と添え字が紛らわしいが、文脈で判別して欲しい)。
+
+この空間に住む分布関数を$f$とすると、確率保存から連続の式
+
+$$
+\begin{aligned}
+\frac{\partial f}{\partial t} &= 
+- \nabla \cdot \left( \dot{z} f\right)\\
+&= - \sum_i \frac{\partial}{\partial z_i} \left( \dot{z} f\right)
+\end{aligned}
+$$
+
+定常状態としてカノニカル分布
+
+$$
+f_\mathrm{eq} = Z^{-1} \exp(-\beta H)
+$$
+
+を持つならば、
+
+$$
+\sum_i \frac{\partial }{\partial z_i} (\dot{z}_i \mathrm{e}^{-\beta H}) = 0
+$$
+
+が成り立つ必要がある。従って、
+
+$$
+\sum_i\frac{\partial \dot{z}_i}{\partial z_i} = \beta 
+\sum_i \frac{\partial H}{\partial z_i}
+$$
+
+が成り立つ必要がある。Nose-HooverでもKinetic-Momentsでも、Nose-Hoover-Chainでも、カノニカル分布を定常状態に持つ決定論的運動方程式は必ずこの関係式を満たしている。
+
+さて、この式の意味を見てみよう。この位相空間に住むスカラー関数$f, g$に対して、内積$(f, g) \in \mathcal{R}$が定義されている時、リュービル演算子がエルミートであるとは、
+
+$$
+(Lf, g) = (f, Lg)
+$$
+
+が成り立つことであった。それぞれ式で書くと、
+
+$$
+\begin{aligned}
+(f, Lg) &= \int d\Gamma f^* \left(i \sum_i \dot{z}_i \frac{\partial g}{\partial z_i}\right) \\
+(L, g) &= \int d\Gamma \left(i \sum_i \dot{z}_i \frac{\partial f}{\partial z_i}\right)^* g
+\end{aligned}
+$$
+
+となる。さて、$(f, Lg)$の式を部分積分すると、
+
+$$
+\begin{aligned}
+(f, Lg) &= \int d\Gamma f^* \left(i \sum_i \dot{z}_i \frac{\partial g}{\partial z_i}\right) \\
+&= -i \int d\Gamma g \sum_i  \frac{\partial }{\partial z_i}
+\left( \dot{z}_i f^*\right) \\
+&= -i \int d\Gamma f^* g \sum_i  \frac{\partial\dot{z}_i }{\partial z_i}
+-i \int d\Gamma  g \sum_i  \dot{z}_i \frac{\partial f^* }{\partial z_i} \\
+&= -i \beta \int d \Gamma f^* g \sum_i \frac{\partial H}{\partial z_i} + (Lf, g) \\
+&= \left(\left[L + i\beta \sum_i\frac{\partial H}{\partial z_i} \right]f, g \right) \\
+&\equiv (L^\dagger f, g)
+\end{aligned}
+$$
+
+TODO: 計算が怪しい。確認すること。

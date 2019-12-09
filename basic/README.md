@@ -181,39 +181,39 @@ $$
 \dot{q} \frac{\partial}{\partial q} +
 \dot{p} \frac{\partial}{\partial p}
 \right)
-}_{-i\mathcal{L}}
+}_{-iL}
 A \\
-&= -i\mathcal{L}A
+&= -iLA
 \end{aligned}
 $$
 
-ここに表れた$\mathcal{L}$をリュービル演算子と呼ぶ。$-i$をつけるのは、リュービル演算子をエルミートにするためである。
+ここに表れた$L$をリュービル演算子と呼ぶ。$-i$をつけるのは、リュービル演算子をエルミートにするためである。
 
 先程の式は任意の物理量$A$で成り立つから、形式的に
 
 $$
-\frac{d}{dt} = -i\mathcal{L}
+\frac{d}{dt} = -iL
 $$
 
 となっている。従って、リュービル演算子は時間微分を与える演算子であることがわかる。先程のテイラー展開の式に代入すると、
 
 $$
-A(t+h) = \exp(-i h\mathcal{L}) A(t)
+A(t+h) = \exp(-i hL) A(t)
 $$
 
-以上から、時間発展演算子$U$は、時間微分演算子$i\mathcal{L}$を指数の肩に乗せたものであることがわかった。
+以上から、時間発展演算子$U$は、時間微分演算子$iL$を指数の肩に乗せたものであることがわかった。
 
 リュービル演算子についてもう少し見てみよう。リュービル演算子は
 
 $$
--i \mathcal{L} = \dot{q} \frac{\partial}{\partial q} +
+-i L = \dot{q} \frac{\partial}{\partial q} +
 \dot{p} \frac{\partial}{\partial p}
 $$
 
 と書けた。$p,q$はハミルトンの運動方程式に従うため、$\dot{p}, \dot{q}$をハミルトニアンを用いて書き直すと、
 
 $$
--i \mathcal{L} = \frac{\partial H}{\partial p} \frac{\partial}{\partial q} - \frac{\partial H}{\partial q} \frac{\partial}{\partial p}
+-i L = \frac{\partial H}{\partial p} \frac{\partial}{\partial q} - \frac{\partial H}{\partial q} \frac{\partial}{\partial p}
 $$
 
 と書ける。ここで、ハミルトニアンが時間に陽に依存しないため、リュービル演算子も時間に陽に依存しないことに注意。リュービル演算子を用いると、$p,q$で記述される任意の量の時間微分を表現できる。もちろん$p,q$自身の時間微分も表現できるので、運動方程式は以下のように記述できる。
@@ -225,7 +225,7 @@ p \\
 q
 \end{pmatrix}
 =
--i \mathcal{L}
+-i L
 \begin{pmatrix}
 p \\
 q
@@ -240,7 +240,7 @@ P \\
 Q
 \end{pmatrix}
 =
-\exp\left(-i h \mathcal{L}\right)
+\exp\left(-i h L\right)
 \begin{pmatrix}
 p \\
 q
@@ -250,7 +250,7 @@ $$
 これは、先程得られた「時間発展演算子はリュービル演算子を指数関数の肩に乗せたもの」
 
 $$
-U(h) = \exp\left(-i h \mathcal{L}\right)
+U(h) = \exp\left(-i h L\right)
 $$
 
 という結果と同じである。
@@ -267,29 +267,29 @@ $$
 
 ただし$f^*$は複素共役、$d \Gamma = dp dq$である。
 
-さて、リュービル演算子がエルミートであることを示すには、$\mathcal{L}$に対して、$(\mathcal{L}f,g) = (f, \mathcal{L}g)$を示せば良い。
+さて、リュービル演算子がエルミートであることを示すには、$L$に対して、$(Lf,g) = (f, Lg)$を示せば良い。
 
 リュービル演算子は
 
 $$
-- i \mathcal{L} = \dot{q} \frac{\partial }{\partial q}
+- i L = \dot{q} \frac{\partial }{\partial q}
 +\dot{p} \frac{\partial }{\partial p}
 $$
 
 であったから、両辺に$i$をかけて、
 
 $$
-\mathcal{L} = i \left(
+L = i \left(
 \dot{p} \frac{\partial }{\partial p}
 +\dot{q} \frac{\partial }{\partial q}
 \right)
 $$
 
-となる。これを$(f, \mathcal{L}g)$に代入すると、
+となる。これを$(f, Lg)$に代入すると、
 
 $$
 \begin{aligned}
-(f, \mathcal{L}g) &= \int d\Gamma f^* \mathcal{L}g \\
+(f, Lg) &= \int d\Gamma f^* Lg \\
 &= \int d\Gamma f^*
 i \left(
 \dot{p} \frac{\partial }{\partial p}
@@ -302,7 +302,7 @@ $$
 
 $$
 \begin{aligned}
-(f, \mathcal{L}g) &= \int d\Gamma f^* \mathcal{L}g \\
+(f, Lg) &= \int d\Gamma f^* Lg \\
 &= -\int d\Gamma 
 i
 \left(
@@ -323,17 +323,17 @@ f^*\frac{\partial \dot{q}}{\partial q}
 \left(
 \mathcal{L^*}f^*
 \right) g  \\
-&= (\mathcal{L}f, g)
+&= (Lf, g)
 \end{aligned}
 $$
 
 ただし、途中で部分積分で出てくるゴミが境界条件でゼロになることを仮定した。以上から、
 
 $$
-(\mathcal{L}f, g) = (f,\mathcal{L}g)
+(Lf, g) = (f,Lg)
 $$
 
-であるから、リュービル演算子$\mathcal{L}$がエルミートであることが示された。
+であるから、リュービル演算子$L$がエルミートであることが示された。
 
 逆に、リュービル演算子がエルミートであるためには、部分積分で出てくる余計な項がゼロ、つまり
 
