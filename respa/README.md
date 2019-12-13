@@ -150,7 +150,7 @@ $$
 RESPAの構築方法には複数あるが、通常は二次の対称分解の形として、真ん中に最も計算が重い力の計算を持ってくることが多い。
 
 $$
-\tilde{U}(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+\tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
 $$
 
 この時間発展は
@@ -264,6 +264,82 @@ $$
 
 となり、これは$\tilde{U}_2(-h)$に一致する。
 
-これがなぜかを演算子の形で考えよう。
+これがなぜかは、演算子の形で考えると容易に理解できる。
 
-TODO： 演算子による時間反転対称性の説明
+今、厳密な時間発展演算子$U(h)$を、一次のシンプレクティック積分$\tilde{U}_1(h)$で近似したとしよう。運動項の部分Liouville演算子を$iL_K$、ポテンシャル項を$iL_V$とすると、
+
+$$
+\tilde{U}_1(h) = \mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
+$$
+
+である。従って、この時間発展により$(p,q)$が$(P,Q)$に移ったのなら、
+
+$$
+\begin{aligned}
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+&= 
+\tilde{U}_1(h)
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix} \\
+&= 
+\mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\end{aligned}
+$$
+
+これを$(p,q)$について逆に解くと、
+
+$$
+\begin{aligned}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+&= 
+\mathrm{e}^{-ihL_V} \mathrm{e}^{-ihL_K}
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}\\
+&\equiv
+\tilde{U}_1^{-1}(h)
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}\\
+\end{aligned}
+$$
+
+要するに、指数分解された項の左右が入れ替わってしまうため、$\tilde{U}_1^{-1}(h) = \tilde{U}_1(-h)$が成り立たない。
+
+それに対して、二次の対称分解で構築した時間発展演算子$\tilde{U}_2(h)$は
+
+$$
+\tilde{U}_2(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_K/2}
+$$
+
+と左右対称な形をしているため、右辺から左辺に移項しても形が変わらず、それにより$\tilde{U}_2^{-1}(h) = \tilde{U}_2(-h)$が成立していることがわかる。
+
+全く同様にして、温度制御がある系にRESPAを適用して構築した時間発展演算子、
+
+$$
+\tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+$$
+
+も左右対称な形になっているため、
+
+$$
+\tilde{U}(h)^{-1}_{\mathrm{RESPA}} = \tilde{U}(-h)_\mathrm{RESPA}
+$$
+
+が成立し、時間反転対称であることがわかる。
+
+しかし、ハミルトンダイナミクスの場合には、時間反転対称でない一次の公式であっても位相空間の体積が保存し、それに伴ってエネルギーが保存するというメリットがあったが、温度制御された系においては時間反転対称であることが数値計算上なにかメリットがあるかどうかは定かではない。
