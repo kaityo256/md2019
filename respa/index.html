@@ -133,21 +133,21 @@ iL = iL_K + iL_V + iL_T + iL_Z
 \begin{aligned}
 U_K(h) &amp;= \mathrm{e}^{i h L_K} \\
 &amp;= \exp\left(-h \frac{\partial H}{\partial q} \frac{\partial}{\partial p} \right)\\
-&amp;= \sum_k \frac{1}{k!}\left( -h\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)^n
+&amp;= \sum_k \frac{1}{k!}\left( -h\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)^k
 \end{aligned}
 \]</span></p>
-<p>となっている。<span class="math inline">\(p\)</span>による偏微分があるため、</p>
+<p>となっている。<span class="math inline">\(p\)</span>による偏微分があるため、<span class="math inline">\(p\)</span>や<span class="math inline">\(\zeta\)</span>にかけると、</p>
 <p><span class="math display">\[
-iL_K q = iL_K \zeta = 0
+(iL_K) q = (iL_K) \zeta = 0
 \]</span></p>
-<p>になるのはすぐにわかる。問題は<span class="math inline">\(p\)</span>に演算した場合だが、<span class="math inline">\(p\)</span>の偏微分の左側に<span class="math inline">\(p\)</span>依存性がないのがポイントで、リュービル演算子を一度かけると、<span class="math inline">\(p\)</span>依存性が消えてしまう。</p>
+<p>と、それぞれ0になるのはすぐにわかる。問題は<span class="math inline">\(p\)</span>に演算した場合だが、<span class="math inline">\(p\)</span>の偏微分の左側に<span class="math inline">\(p\)</span>依存性がないのがポイントで、リュービル演算子を一度かけると、<span class="math inline">\(p\)</span>依存性が消えてしまう。</p>
 <p><span class="math display">\[
 \begin{aligned}
 iL_K p &amp;= \left(-h \frac{\partial H}{\partial q} \frac{\partial }{\partial p}\right) p \\
 &amp;= -h \frac{\partial H}{\partial q}
 \end{aligned}
 \]</span></p>
-<p>したがって、リュービル演算子を二回かけるとゼロになる。</p>
+<p>したがって、リュービル演算子をもう一度かけるとゼロになる。</p>
 <p><span class="math display">\[
 \begin{aligned}
 (iL_K)^n p &amp;= iL_K \left( -h \frac{\partial H}{\partial q} \right) \\
@@ -182,7 +182,7 @@ iL_T p = -hp\zeta
 <p><span class="math display">\[
 (iL_T)^2 p = h^2 p \zeta^2
 \]</span></p>
-<p>高次項はゼロとはならないのだが、<span class="math inline">\(k\)</span>回かけたものが簡単に計算できる。</p>
+<p>しかし、高次項はゼロとはならないのだが、<span class="math inline">\(k\)</span>回かけたものが簡単に計算できる。</p>
 <p><span class="math display">\[
 (iL_T)^k p = (-h\zeta)^k p
 \]</span></p>
@@ -196,7 +196,7 @@ U_T(h) p &amp;= \exp(iL_K) p\\
 &amp;= \mathrm{e}^{-h\zeta} p
 \end{aligned}
 \]</span></p>
-<p>これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すと思われる。</p>
+<p>これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すことが多い。</p>
 <p>RESPAの構築方法には複数あるが、通常は二次の対称分解の形として、真ん中に最も計算が重い力の計算を持ってくることが多い。</p>
 <p><span class="math display">\[
 \tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
@@ -211,6 +211,7 @@ U_T(h) p &amp;= \exp(iL_K) p\\
 </ol>
 <p>という手続きになり、二次精度で、かつ時間反転対称となっている。ただし、<span class="math inline">\(L_T\)</span>がエルミート演算子ではないために、全体としてシンプレクティック変換にはなっていない。</p>
 <h2 id="time-reversibility">Time Reversibility</h2>
+<h3 id="linear-system">Linear System</h3>
 <p>ここで、時間発展演算子の時間反転対称性についてまとめておこう。時間を<span class="math inline">\(h\)</span>だけ進める時間発展演算子<span class="math inline">\(U(h)\)</span>が時間反転対称であるとは、</p>
 <p><span class="math display">\[
 U^{-1}(h) = U(-h)
@@ -242,7 +243,7 @@ P \\
 Q
 \end{pmatrix}
 \]</span></p>
-<p>さて、時間反転対称であるとは、時間を<span class="math inline">\(h\)</span>だけ進める演算子を演算子た結果を逆に解いたら、それは時間を<span class="math inline">\(-h\)</span>だけ進める演算子をかけた結果と等しい、ということである。従って、</p>
+<p>さて、時間反転対称であるとは、時間を<span class="math inline">\(h\)</span>だけ進める演算子を演算した結果を逆に解いたら、それは時間を<span class="math inline">\(-h\)</span>だけ進める演算子をかけた結果と等しい、ということである。従って、</p>
 <p><span class="math display">\[
 \begin{pmatrix}
 p \\
@@ -291,6 +292,7 @@ h - h^3/4 &amp; 1 - h^2/2
 \end{pmatrix}
 \]</span></p>
 <p>となり、これは<span class="math inline">\(\tilde{U}_2(-h)\)</span>に一致する。</p>
+<<<<<<< HEAD
 <p>これがなぜかは、演算子の形で考えると容易に理解できる。</p>
 <p>今、厳密な時間発展演算子<span class="math inline">\(U(h)\)</span>を、一次のシンプレクティック積分<span class="math inline">\(\tilde{U}_1(h)\)</span>で近似したとしよう。運動項の部分Liouville演算子を<span class="math inline">\(iL_K\)</span>、ポテンシャル項を<span class="math inline">\(iL_V\)</span>とすると、</p>
 <p><span class="math display">\[
@@ -313,10 +315,68 @@ q
 \mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
 \begin{pmatrix}
 p \\
+=======
+<h3 id="operator-formulation">Operator Formulation</h3>
+<p>時間発展演算子を指数分解の形で書くと、時間反転対称性がわかりやすい。以下のハミルトンダイナミクスを考える。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= - \frac{\partial H}{\partial q} \\
+\dot{q} &amp;= \frac{\partial H}{\partial p}
+\end{aligned}
+\]</span></p>
+<p>対応するリュービル演算子は以下の通り。</p>
+<p><span class="math display">\[
+iL = 
+\underbrace{-\frac{\partial H}{\partial q} \frac{\partial}{\partial p}}_{iL_V}
++
+\underbrace{\frac{\partial H}{\partial p} \frac{\partial}{\partial q}}_{iL_K}
+\]</span></p>
+<p>まず、厳密な時間発展演算子を考えよう。</p>
+<p><span class="math display">\[
+U(h) = \mathrm{e}^{ih L}
+\]</span></p>
+<p>この時間発展演算子で時刻<span class="math inline">\(t\)</span>において<span class="math inline">\((p,q)\)</span>であった状態が時刻<span class="math inline">\(t+h\)</span>において<span class="math inline">\((P,Q)\)</span>に移動したのなら</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix}
+&amp;= U(h) 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} \\
+&amp;= 
+\mathrm{e}^{ihL}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} 
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\((p,q)\)</span>を<span class="math inline">\((P,Q)\)</span>で表すには、時間発展演算子を逆側に持ってくれば良いから、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+&amp;= 
+\mathrm{e}^{-ihL}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+&amp;\equiv U^{-1}(h) 
+\begin{pmatrix}
+p\\
+>>>>>>> origin/master
 q
 \end{pmatrix}
 \end{aligned}
 \]</span></p>
+<<<<<<< HEAD
 <p>これを<span class="math inline">\((p,q)\)</span>について逆に解くと、</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -354,6 +414,130 @@ Q
 \]</span></p>
 <p>が成立し、時間反転対称であることがわかる。</p>
 <p>しかし、ハミルトンダイナミクスの場合には、時間反転対称でない一次の公式であっても位相空間の体積が保存し、それに伴ってエネルギーが保存するというメリットがあったが、温度制御された系においては時間反転対称であることが数値計算上なにかメリットがあるかどうかは定かではない。</p>
+=======
+<p>ここから、</p>
+<p><span class="math display">\[
+U^{-1}(h) = U(-h)
+\]</span></p>
+<p>が成立するのは自明であろう。要するに、時間発展演算子の時間反転対称性は、指数関数を移項すると負符号がつくことに対応している。</p>
+<p>次に、時間発展演算子を指数分解公式で近似する場合を考えよう。一次のシンプレクティック積分に対応する時間発展演算子は</p>
+<p><span class="math display">\[
+\tilde{U}_1(h) = \mathrm{e}^{ihL_K}\mathrm{e}^{ihL_V}
+\]</span></p>
+<p>となる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix}
+&amp;= \tilde{U}_1(h) 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} \\
+&amp;= 
+\mathrm{e}^{ihL_K}\mathrm{e}^{ihL_V}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} 
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\((p,q)\)</span>について解くと、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+&amp;= 
+\mathrm{e}^{-ihL_V}\mathrm{e}^{-ihL_K}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+&amp;\equiv
+\tilde{U}_1^{-1}(h) 
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+\end{aligned}
+\]</span></p>
+<p>と、<span class="math inline">\(\mathrm{e}^{-ihL_V}\)</span>と<span class="math inline">\(\mathrm{e}^{-ihL_K}\)</span>の位置が入れ替わる。一般に<span class="math inline">\(iL_K\)</span>と<span class="math inline">\(iL_V\)</span>は交換しないため、<span class="math inline">\(\tilde{U}_1^{-1}(h)\)</span>が<span class="math inline">\(\tilde{U}_1(-h)\)</span>と等しくないことがわかるであろう。ただし、この演算子<span class="math inline">\(\tilde{U}_1(h)\)</span>はユニタリ演算子であるから、この演算子による時間発展はシンプレクティックになる。なぜなら分解した部分リュービル演算子は全てエルミートであり、それに虚数単位<span class="math inline">\(i\)</span>をつけて指数関数の肩に乗せたものはユニタリであり、ユニタリ演算子の積はユニタリになるからだ。</p>
+<p>次に、二次のシンプレクティック積分を考えよう。時間発展演算子を対称分解すると</p>
+<p><span class="math display">\[
+\tilde{U}_2(h) = \mathrm{e}^{ihL_K/2}\mathrm{e}^{ihL_V}\mathrm{e}^{ihL_K/2}
+\]</span></p>
+<p>これが、時間反転対称であるのは自明であろう。演算子が左右対称な形をしているため、移項しても形が変わらない。従って、</p>
+<p><span class="math display">\[
+\tilde{U}_2^{-1}(h) = \tilde{U}_2(-h)
+\]</span></p>
+<p>が成り立つ。また、近似された時間発展演算子はユニタリ演算子の積で構築されているため、全体としてやはりユニタリになっており、位相空間体積を保存する。すなわちシンプレクティック積分となっている。</p>
+<p>さて、Nose-Hoover熱浴がついた系にRESPAを適用すると、</p>
+<p><span class="math display">\[
+\tilde{U}(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+\]</span></p>
+<p>となるのであった。二次の対称分解の場合と同様に、これが時間反転対称性を持っていることは明らかであろう。しかし、途中で非ユニタリな項<span class="math inline">\(\mathrm{e}^{ihL_T/2}\)</span>を含むため、全体としても非ユニタリになっている。</p>
+<p>以上見てきた通り、シンプレクティック積分においては、一次の場合は時間反転対称ではなく、二次の対称分解の場合は時間反転対称であった。そして、どちらもシンプレクティックであった。ハミルトンダイナミクスにシンプレクティック積分を適用するとエネルギーが保存するのだが、それと時間反転対称性は関係がない(時間反転対称でなくてもシンプレクティックであり得る)。</p>
+<p>二次のシンプレクティック積分と同様に、Nose-Hoover熱浴がついた系にRESPAを適用すると、時間反転対称な時間発展を得ることができる。しかし、温度制御された系において時間発展が時間反転対称性を持つことがどれだけうれしいかは、さほど自明ではない。</p>
+<h2 id="non-hermiticity-of-liouville-operator">Non-Hermiticity of Liouville Operator</h2>
+<p>ハミルトンダイナミクスにおいてはリュービル演算子がエルミートになり、さらにエルミート性から「位相空間の流れ」が非圧縮となることを見た。確率流が非圧縮であることから、分布関数が不変になること、すなわち(エルゴード的であれば)ミクロカノニカルであることが結論されるのであった。</p>
+<p>では、定常状態としてカノニカル分布を持つような系のリュービル演算子がどのような性質を持つか見てみよう。</p>
+<p>簡単のため、位相空間を <span class="math inline">\(\Gamma = \vec{z} = (z_1, z_2, \cdots)\)</span>と書く。なんらかの方法により、この空間に運動方程式<span class="math inline">\(\dot{\vec{z}} = (\dot{z_1},\dot{z_2},\cdots)\)</span>が導入されたとしよう。この系のリュービル演算子は</p>
+<p><span class="math display">\[
+-iL = \sum_i \dot{z_i} \frac{\partial }{\partial z_i}
+\]</span></p>
+<p>となる(虚数単位<span class="math inline">\(i\)</span>と添え字が紛らわしいが、文脈で判別して欲しい)。</p>
+<p>この空間に住む分布関数を<span class="math inline">\(f\)</span>とすると、確率保存から連続の式</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial f}{\partial t} &amp;= 
+- \nabla \cdot \left( \dot{z} f\right)\\
+&amp;= - \sum_i \frac{\partial}{\partial z_i} \left( \dot{z} f\right)
+\end{aligned}
+\]</span></p>
+<p>定常状態としてカノニカル分布</p>
+<p><span class="math display">\[
+f_\mathrm{eq} = Z^{-1} \exp(-\beta H)
+\]</span></p>
+<p>を持つならば、</p>
+<p><span class="math display">\[
+\sum_i \frac{\partial }{\partial z_i} (\dot{z}_i \mathrm{e}^{-\beta H}) = 0
+\]</span></p>
+<p>が成り立つ必要がある。従って、</p>
+<p><span class="math display">\[
+\sum_i\frac{\partial \dot{z}_i}{\partial z_i} = \beta 
+\sum_i \frac{\partial H}{\partial z_i}
+\]</span></p>
+<p>が成り立つ必要がある。Nose-HooverでもKinetic-Momentsでも、Nose-Hoover-Chainでも、カノニカル分布を定常状態に持つ決定論的運動方程式は必ずこの関係式を満たしている。</p>
+<p>さて、この式の意味を見てみよう。この位相空間に住むスカラー関数<span class="math inline">\(f, g\)</span>に対して、内積<span class="math inline">\((f, g) \in \mathcal{R}\)</span>が定義されている時、リュービル演算子がエルミートであるとは、</p>
+<p><span class="math display">\[
+(Lf, g) = (f, Lg)
+\]</span></p>
+<p>が成り立つことであった。それぞれ式で書くと、</p>
+<p><span class="math display">\[
+\begin{aligned}
+(f, Lg) &amp;= \int d\Gamma f^* \left(i \sum_i \dot{z}_i \frac{\partial g}{\partial z_i}\right) \\
+(L, g) &amp;= \int d\Gamma \left(i \sum_i \dot{z}_i \frac{\partial f}{\partial z_i}\right)^* g
+\end{aligned}
+\]</span></p>
+<p>となる。さて、<span class="math inline">\((f, Lg)\)</span>の式を部分積分すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+(f, Lg) &amp;= \int d\Gamma f^* \left(i \sum_i \dot{z}_i \frac{\partial g}{\partial z_i}\right) \\
+&amp;= -i \int d\Gamma g \sum_i  \frac{\partial }{\partial z_i}
+\left( \dot{z}_i f^*\right) \\
+&amp;= -i \int d\Gamma f^* g \sum_i  \frac{\partial\dot{z}_i }{\partial z_i}
+-i \int d\Gamma  g \sum_i  \dot{z}_i \frac{\partial f^* }{\partial z_i} \\
+&amp;= -i \beta \int d \Gamma f^* g \sum_i \frac{\partial H}{\partial z_i} + (Lf, g) \\
+&amp;= \left(\left[L + i\beta \sum_i\frac{\partial H}{\partial z_i} \right]f, g \right) \\
+&amp;\equiv (L^\dagger f, g)
+\end{aligned}
+\]</span></p>
+<p>TODO: 計算が怪しい。確認すること。</p>
+>>>>>>> origin/master
 </article>
 </body>
 </html>

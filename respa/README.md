@@ -60,17 +60,17 @@ $$
 \begin{aligned}
 U_K(h) &= \mathrm{e}^{i h L_K} \\
 &= \exp\left(-h \frac{\partial H}{\partial q} \frac{\partial}{\partial p} \right)\\
-&= \sum_k \frac{1}{k!}\left( -h\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)^n
+&= \sum_k \frac{1}{k!}\left( -h\frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)^k
 \end{aligned}
 $$
 
-となっている。$p$による偏微分があるため、
+となっている。$p$による偏微分があるため、$p$や$\zeta$にかけると、
 
 $$
-iL_K q = iL_K \zeta = 0
+(iL_K) q = (iL_K) \zeta = 0
 $$
 
-になるのはすぐにわかる。問題は$p$に演算した場合だが、$p$の偏微分の左側に$p$依存性がないのがポイントで、リュービル演算子を一度かけると、$p$依存性が消えてしまう。
+と、それぞれ0になるのはすぐにわかる。問題は$p$に演算した場合だが、$p$の偏微分の左側に$p$依存性がないのがポイントで、リュービル演算子を一度かけると、$p$依存性が消えてしまう。
 
 $$
 \begin{aligned}
@@ -79,7 +79,7 @@ iL_K p &= \left(-h \frac{\partial H}{\partial q} \frac{\partial }{\partial p}\ri
 \end{aligned}
 $$
 
-したがって、リュービル演算子を二回かけるとゼロになる。
+したがって、リュービル演算子をもう一度かけるとゼロになる。
 
 $$
 \begin{aligned}
@@ -127,7 +127,7 @@ $$
 (iL_T)^2 p = h^2 p \zeta^2
 $$
 
-高次項はゼロとはならないのだが、$k$回かけたものが簡単に計算できる。
+しかし、高次項はゼロとはならないのだが、$k$回かけたものが簡単に計算できる。
 
 $$
 (iL_T)^k p = (-h\zeta)^k p
@@ -145,7 +145,7 @@ U_T(h) p &= \exp(iL_K) p\\
 \end{aligned}
 $$
 
-これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すと思われる。
+これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すことが多い。
 
 RESPAの構築方法には複数あるが、通常は二次の対称分解の形として、真ん中に最も計算が重い力の計算を持ってくることが多い。
 
@@ -164,6 +164,8 @@ $$
 という手続きになり、二次精度で、かつ時間反転対称となっている。ただし、$L_T$がエルミート演算子ではないために、全体としてシンプレクティック変換にはなっていない。
 
 ## Time Reversibility
+
+### Linear System
 
 ここで、時間発展演算子の時間反転対称性についてまとめておこう。時間を$h$だけ進める時間発展演算子$U(h)$が時間反転対称であるとは、
 
@@ -203,7 +205,7 @@ Q
 \end{pmatrix}
 $$
 
-さて、時間反転対称であるとは、時間を$h$だけ進める演算子を演算子た結果を逆に解いたら、それは時間を$-h$だけ進める演算子をかけた結果と等しい、ということである。従って、
+さて、時間反転対称であるとは、時間を$h$だけ進める演算子を演算した結果を逆に解いたら、それは時間を$-h$だけ進める演算子をかけた結果と等しい、ということである。従って、
 
 $$
 \begin{pmatrix}
@@ -264,82 +266,250 @@ $$
 
 となり、これは$\tilde{U}_2(-h)$に一致する。
 
-これがなぜかは、演算子の形で考えると容易に理解できる。
+### Operator Formulation
 
-今、厳密な時間発展演算子$U(h)$を、一次のシンプレクティック積分$\tilde{U}_1(h)$で近似したとしよう。運動項の部分Liouville演算子を$iL_K$、ポテンシャル項を$iL_V$とすると、
+時間発展演算子を指数分解の形で書くと、時間反転対称性がわかりやすい。以下のハミルトンダイナミクスを考える。
 
 $$
-\tilde{U}_1(h) = \mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
+\begin{aligned}
+\dot{p} &= - \frac{\partial H}{\partial q} \\
+\dot{q} &= \frac{\partial H}{\partial p}
+\end{aligned}
 $$
 
-である。従って、この時間発展により$(p,q)$が$(P,Q)$に移ったのなら、
+対応するリュービル演算子は以下の通り。
+
+$$
+iL = 
+\underbrace{-\frac{\partial H}{\partial q} \frac{\partial}{\partial p}}_{iL_V}
++
+\underbrace{\frac{\partial H}{\partial p} \frac{\partial}{\partial q}}_{iL_K}
+$$
+
+まず、厳密な時間発展演算子を考えよう。
+
+$$
+U(h) = \mathrm{e}^{ih L}
+$$
+
+この時間発展演算子で時刻$t$において$(p,q)$であった状態が時刻$t+h$において$(P,Q)$に移動したのなら
 
 $$
 \begin{aligned}
 \begin{pmatrix}
-P \\
+P\\
 Q
 \end{pmatrix}
-&= 
-\tilde{U}_1(h)
+&= U(h) 
 \begin{pmatrix}
-p \\
+p\\
 q
 \end{pmatrix} \\
 &= 
-\mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
+\mathrm{e}^{ihL}
 \begin{pmatrix}
-p \\
+p\\
 q
-\end{pmatrix}
+\end{pmatrix} 
 \end{aligned}
 $$
 
-これを$(p,q)$について逆に解くと、
+$(p,q)$を$(P,Q)$で表すには、時間発展演算子を逆側に持ってくれば良いから、
 
 $$
 \begin{aligned}
 \begin{pmatrix}
-p \\
+p\\
 q
 \end{pmatrix}
 &= 
-\mathrm{e}^{-ihL_V} \mathrm{e}^{-ihL_K}
+\mathrm{e}^{-ihL}
 \begin{pmatrix}
-P \\
+P\\
 Q
-\end{pmatrix}\\
-&\equiv
-\tilde{U}_1^{-1}(h)
+\end{pmatrix} \\
+&\equiv U^{-1}(h) 
 \begin{pmatrix}
-P \\
-Q
-\end{pmatrix}\\
+p\\
+q
+\end{pmatrix}
 \end{aligned}
 $$
 
-要するに、指数分解された項の左右が入れ替わってしまうため、$\tilde{U}_1^{-1}(h) = \tilde{U}_1(-h)$が成り立たない。
-
-それに対して、二次の対称分解で構築した時間発展演算子$\tilde{U}_2(h)$は
+ここから、
 
 $$
-\tilde{U}_2(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_K/2}
+U^{-1}(h) = U(-h)
 $$
 
-と左右対称な形をしているため、右辺から左辺に移項しても形が変わらず、それにより$\tilde{U}_2^{-1}(h) = \tilde{U}_2(-h)$が成立していることがわかる。
+が成立するのは自明であろう。要するに、時間発展演算子の時間反転対称性は、指数関数を移項すると負符号がつくことに対応している。
 
-全く同様にして、温度制御がある系にRESPAを適用して構築した時間発展演算子、
-
-$$
-\tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
-$$
-
-も左右対称な形になっているため、
+次に、時間発展演算子を指数分解公式で近似する場合を考えよう。一次のシンプレクティック積分に対応する時間発展演算子は
 
 $$
-\tilde{U}(h)^{-1}_{\mathrm{RESPA}} = \tilde{U}(-h)_\mathrm{RESPA}
+\tilde{U}_1(h) = \mathrm{e}^{ihL_K}\mathrm{e}^{ihL_V}
 $$
 
-が成立し、時間反転対称であることがわかる。
+となる。
 
-しかし、ハミルトンダイナミクスの場合には、時間反転対称でない一次の公式であっても位相空間の体積が保存し、それに伴ってエネルギーが保存するというメリットがあったが、温度制御された系においては時間反転対称であることが数値計算上なにかメリットがあるかどうかは定かではない。
+$$
+\begin{aligned}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix}
+&= \tilde{U}_1(h) 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} \\
+&= 
+\mathrm{e}^{ihL_K}\mathrm{e}^{ihL_V}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} 
+\end{aligned}
+$$
+
+$(p,q)$について解くと、
+
+$$
+\begin{aligned}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+&= 
+\mathrm{e}^{-ihL_V}\mathrm{e}^{-ihL_K}
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+&\equiv
+\tilde{U}_1^{-1}(h) 
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix} \\
+\end{aligned}
+$$
+
+と、$\mathrm{e}^{-ihL_V}$と$\mathrm{e}^{-ihL_K}$の位置が入れ替わる。一般に$iL_K$と$iL_V$は交換しないため、$\tilde{U}_1^{-1}(h)$が$\tilde{U}_1(-h)$と等しくないことがわかるであろう。ただし、この演算子$\tilde{U}_1(h)$はユニタリ演算子であるから、この演算子による時間発展はシンプレクティックになる。なぜなら分解した部分リュービル演算子は全てエルミートであり、それに虚数単位$i$をつけて指数関数の肩に乗せたものはユニタリであり、ユニタリ演算子の積はユニタリになるからだ。
+
+次に、二次のシンプレクティック積分を考えよう。時間発展演算子を対称分解すると
+
+$$
+\tilde{U}_2(h) = \mathrm{e}^{ihL_K/2}\mathrm{e}^{ihL_V}\mathrm{e}^{ihL_K/2}
+$$
+
+これが、時間反転対称であるのは自明であろう。演算子が左右対称な形をしているため、移項しても形が変わらない。従って、
+
+$$
+\tilde{U}_2^{-1}(h) = \tilde{U}_2(-h)
+$$
+
+が成り立つ。また、近似された時間発展演算子はユニタリ演算子の積で構築されているため、全体としてやはりユニタリになっており、位相空間体積を保存する。すなわちシンプレクティック積分となっている。
+
+さて、Nose-Hoover熱浴がついた系にRESPAを適用すると、
+
+$$
+\tilde{U}(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+$$
+
+となるのであった。二次の対称分解の場合と同様に、これが時間反転対称性を持っていることは明らかであろう。しかし、途中で非ユニタリな項$\mathrm{e}^{ihL_T/2}$を含むため、全体としても非ユニタリになっている。
+
+以上見てきた通り、シンプレクティック積分においては、一次の場合は時間反転対称ではなく、二次の対称分解の場合は時間反転対称であった。そして、どちらもシンプレクティックであった。ハミルトンダイナミクスにシンプレクティック積分を適用するとエネルギーが保存するのだが、それと時間反転対称性は関係がない(時間反転対称でなくてもシンプレクティックであり得る)。
+
+二次のシンプレクティック積分と同様に、Nose-Hoover熱浴がついた系にRESPAを適用すると、時間反転対称な時間発展を得ることができる。しかし、温度制御された系において時間発展が時間反転対称性を持つことがどれだけうれしいかは、さほど自明ではない。
+
+## Non-Hermiticity of Liouville Operator
+
+ハミルトンダイナミクスにおいてはリュービル演算子がエルミートになり、さらにエルミート性から「位相空間の流れ」が非圧縮となることを見た。確率流が非圧縮であることから、分布関数が不変になること、すなわち(エルゴード的であれば)ミクロカノニカルであることが結論されるのであった。
+
+では、定常状態としてカノニカル分布を持つような系のリュービル演算子がどのような性質を持つか見てみよう。
+
+簡単のため、位相空間を $\Gamma = \vec{z} = (z_1, z_2, \cdots)$と書く。なんらかの方法により、この空間に運動方程式$\dot{\vec{z}} = (\dot{z_1},\dot{z_2},\cdots)$が導入されたとしよう。この系のリュービル演算子は
+
+$$
+-iL = \sum_i \dot{z_i} \frac{\partial }{\partial z_i}
+$$
+
+となる(虚数単位$i$と添え字が紛らわしいが、文脈で判別して欲しい)。
+
+この空間に住む分布関数を$f$とすると、確率保存から連続の式
+
+$$
+\begin{aligned}
+\frac{\partial f}{\partial t} &= 
+- \nabla \cdot \left( \dot{z} f\right)\\
+&= - \sum_i \frac{\partial}{\partial z_i} \left( \dot{z} f\right)
+\end{aligned}
+$$
+
+定常状態としてカノニカル分布
+
+$$
+f_\mathrm{eq} = Z^{-1} \exp(-\beta H)
+$$
+
+を持つならば、
+
+$$
+\sum_i \frac{\partial }{\partial z_i} (\dot{z}_i \mathrm{e}^{-\beta H}) = 0
+$$
+
+が成り立つ必要がある。従って、
+
+$$
+\begin{aligned}
+\sum_i\frac{\partial \dot{z}_i}{\partial z_i} &= \beta 
+\sum_i \frac{\partial H}{\partial z_i} 
+\end{aligned}
+$$
+
+が成り立つ必要がある。Nose-HooverでもKinetic-Momentsでも、Nose-Hoover-Chainでも、カノニカル分布を定常状態に持つ決定論的運動方程式は必ずこの関係式を満たしている。
+
+さて、この式の意味を見てみよう。この位相空間に住むスカラー関数$f, g$に対して、内積$(f, g) \in \mathcal{R}$が定義されている時、リュービル演算子がエルミートであるとは、
+
+$$
+(Lf, g) = (f, Lg)
+$$
+
+が成り立つことであった。それぞれ式で書くと、
+
+$$
+\begin{aligned}
+(f, Lg) &= \int d\Gamma f^* \left(i \sum_i \dot{z}_i \frac{\partial g}{\partial z_i}\right) \\
+(L, g) &= \int d\Gamma \left(i \sum_i \dot{z}_i \frac{\partial f}{\partial z_i}\right)^* g
+\end{aligned}
+$$
+
+となる。さて、$(f, Lg)$の式を部分積分すると、
+
+$$
+\begin{aligned}
+(f, Lg) &= \int d\Gamma f^* \left(i \sum_i \dot{z}_i \frac{\partial g}{\partial z_i}\right) \\
+&= -i \int d\Gamma g \sum_i  \frac{\partial }{\partial z_i}
+\left( \dot{z}_i f^*\right) \\
+&= -i \int d\Gamma f^* g \sum_i  \frac{\partial\dot{z}_i }{\partial z_i}
+-i \int d\Gamma  g \sum_i  \dot{z}_i \frac{\partial f^* }{\partial z_i} \\
+&= -i \beta \int d \Gamma f^* g \sum_i \frac{\partial H}{\partial z_i} + (Lf, g) \\
+&= \left(\left[L + i\beta \sum_i\frac{\partial H}{\partial z_i} \right]f, g \right) \\
+&\equiv (L^\dagger f, g)
+\end{aligned}
+$$
+
+ここから、以下の関係式が導かれる。
+
+$$
+L^\dagger = L + i\beta \sum_i \frac{\partial H}{\partial z_i}
+$$
+
+ハミルトンダイナミクスの場合には、Liouville演算子がエルミート、すなわち
+
+$$
+L^\dagger = L
+$$
+
+であったことを思い出そう。カノニカル分布を定常状態に保つ運動方程式に付随するLiouville演算子は必ず非エルミートとなり、その非エルミート部分のamplitudeに(逆)温度が現れる。
