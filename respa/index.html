@@ -199,7 +199,7 @@ U_T(h) p &amp;= \exp(iL_K) p\\
 <p>これにより、リュービル演算子を分解した4つの要素を指数関数の肩に乗せたものが全て厳密に評価できた。これを使ってシンプレクティック積分と同様に数値積分法を構築するのがRESPA (reference system propagator algorithm)である。特に時間反転対称にしたものをr-RESPAというが、現在では単にRESPAというと時間反転対称にしたものを指すと思われる。</p>
 <p>RESPAの構築方法には複数あるが、通常は二次の対称分解の形として、真ん中に最も計算が重い力の計算を持ってくることが多い。</p>
 <p><span class="math display">\[
-\tilde{U}(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+\tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
 \]</span></p>
 <p>この時間発展は</p>
 <ol style="list-style-type: decimal">
@@ -291,8 +291,69 @@ h - h^3/4 &amp; 1 - h^2/2
 \end{pmatrix}
 \]</span></p>
 <p>となり、これは<span class="math inline">\(\tilde{U}_2(-h)\)</span>に一致する。</p>
-<p>これがなぜかを演算子の形で考えよう。</p>
-<p>TODO： 演算子による時間反転対称性の説明</p>
+<p>これがなぜかは、演算子の形で考えると容易に理解できる。</p>
+<p>今、厳密な時間発展演算子<span class="math inline">\(U(h)\)</span>を、一次のシンプレクティック積分<span class="math inline">\(\tilde{U}_1(h)\)</span>で近似したとしよう。運動項の部分Liouville演算子を<span class="math inline">\(iL_K\)</span>、ポテンシャル項を<span class="math inline">\(iL_V\)</span>とすると、</p>
+<p><span class="math display">\[
+\tilde{U}_1(h) = \mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
+\]</span></p>
+<p>である。従って、この時間発展により<span class="math inline">\((p,q)\)</span>が<span class="math inline">\((P,Q)\)</span>に移ったのなら、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+&amp;= 
+\tilde{U}_1(h)
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix} \\
+&amp;= 
+\mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\end{aligned}
+\]</span></p>
+<p>これを<span class="math inline">\((p,q)\)</span>について逆に解くと、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+&amp;= 
+\mathrm{e}^{-ihL_V} \mathrm{e}^{-ihL_K}
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}\\
+&amp;\equiv
+\tilde{U}_1^{-1}(h)
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}\\
+\end{aligned}
+\]</span></p>
+<p>要するに、指数分解された項の左右が入れ替わってしまうため、<span class="math inline">\(\tilde{U}_1^{-1}(h) = \tilde{U}_1(-h)\)</span>が成り立たない。</p>
+<p>それに対して、二次の対称分解で構築した時間発展演算子<span class="math inline">\(\tilde{U}_2(h)\)</span>は</p>
+<p><span class="math display">\[
+\tilde{U}_2(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_K/2}
+\]</span></p>
+<p>と左右対称な形をしているため、右辺から左辺に移項しても形が変わらず、それにより<span class="math inline">\(\tilde{U}_2^{-1}(h) = \tilde{U}_2(-h)\)</span>が成立していることがわかる。</p>
+<p>全く同様にして、温度制御がある系にRESPAを適用して構築した時間発展演算子、</p>
+<p><span class="math display">\[
+\tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
+\]</span></p>
+<p>も左右対称な形になっているため、</p>
+<p><span class="math display">\[
+\tilde{U}(h)^{-1}_{\mathrm{RESPA}} = \tilde{U}(-h)_\mathrm{RESPA}
+\]</span></p>
+<p>が成立し、時間反転対称であることがわかる。</p>
+<p>しかし、ハミルトンダイナミクスの場合には、時間反転対称でない一次の公式であっても位相空間の体積が保存し、それに伴ってエネルギーが保存するというメリットがあったが、温度制御された系においては時間反転対称であることが数値計算上なにかメリットがあるかどうかは定かではない。</p>
 </article>
 </body>
 </html>
