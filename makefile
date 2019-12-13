@@ -2,7 +2,12 @@ INDEX=$(shell ls */README.md | sed 's/README.md/index.html/')
 TARGET=$(INDEX)
 PANDOCOPT=--mathjax -t html --template=template
 PANDOC_TEXOPT=--highlight-style tango --latex-engine=lualatex -V documentclass=ltjarticle -V geometry:margin=1in
+README=$(shell ls */README.md)
+PDF=$(README:.md=.pdf)
+
 all: $(TARGET) index.html
+
+pdf: $(PDF)
 
 index.md: README.md
 	sed 's/README.md/index.html/' $< > $@
@@ -18,7 +23,7 @@ index.html: index.md
 %/index.html: %/index.md
 	pandoc -s $< -o $@ $(PANDOCOPT)
 
-%/index.pdf: %/README.md
+%/README.pdf: %/README.md
 	cd $(dir $@);pandoc $(notdir $<) -s -o $(notdir $@) $(PANDOC_TEXOPT)
 
 
