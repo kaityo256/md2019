@@ -292,30 +292,6 @@ h - h^3/4 &amp; 1 - h^2/2
 \end{pmatrix}
 \]</span></p>
 <p>となり、これは<span class="math inline">\(\tilde{U}_2(-h)\)</span>に一致する。</p>
-<<<<<<< HEAD
-<p>これがなぜかは、演算子の形で考えると容易に理解できる。</p>
-<p>今、厳密な時間発展演算子<span class="math inline">\(U(h)\)</span>を、一次のシンプレクティック積分<span class="math inline">\(\tilde{U}_1(h)\)</span>で近似したとしよう。運動項の部分Liouville演算子を<span class="math inline">\(iL_K\)</span>、ポテンシャル項を<span class="math inline">\(iL_V\)</span>とすると、</p>
-<p><span class="math display">\[
-\tilde{U}_1(h) = \mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
-\]</span></p>
-<p>である。従って、この時間発展により<span class="math inline">\((p,q)\)</span>が<span class="math inline">\((P,Q)\)</span>に移ったのなら、</p>
-<p><span class="math display">\[
-\begin{aligned}
-\begin{pmatrix}
-P \\
-Q
-\end{pmatrix}
-&amp;= 
-\tilde{U}_1(h)
-\begin{pmatrix}
-p \\
-q
-\end{pmatrix} \\
-&amp;= 
-\mathrm{e}^{ihL_K} \mathrm{e}^{ihL_V}
-\begin{pmatrix}
-p \\
-=======
 <h3 id="operator-formulation">Operator Formulation</h3>
 <p>時間発展演算子を指数分解の形で書くと、時間反転対称性がわかりやすい。以下のハミルトンダイナミクスを考える。</p>
 <p><span class="math display">\[
@@ -371,50 +347,10 @@ Q
 &amp;\equiv U^{-1}(h) 
 \begin{pmatrix}
 p\\
->>>>>>> origin/master
 q
 \end{pmatrix}
 \end{aligned}
 \]</span></p>
-<<<<<<< HEAD
-<p>これを<span class="math inline">\((p,q)\)</span>について逆に解くと、</p>
-<p><span class="math display">\[
-\begin{aligned}
-\begin{pmatrix}
-p \\
-q
-\end{pmatrix}
-&amp;= 
-\mathrm{e}^{-ihL_V} \mathrm{e}^{-ihL_K}
-\begin{pmatrix}
-P \\
-Q
-\end{pmatrix}\\
-&amp;\equiv
-\tilde{U}_1^{-1}(h)
-\begin{pmatrix}
-P \\
-Q
-\end{pmatrix}\\
-\end{aligned}
-\]</span></p>
-<p>要するに、指数分解された項の左右が入れ替わってしまうため、<span class="math inline">\(\tilde{U}_1^{-1}(h) = \tilde{U}_1(-h)\)</span>が成り立たない。</p>
-<p>それに対して、二次の対称分解で構築した時間発展演算子<span class="math inline">\(\tilde{U}_2(h)\)</span>は</p>
-<p><span class="math display">\[
-\tilde{U}_2(h) = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_K/2}
-\]</span></p>
-<p>と左右対称な形をしているため、右辺から左辺に移項しても形が変わらず、それにより<span class="math inline">\(\tilde{U}_2^{-1}(h) = \tilde{U}_2(-h)\)</span>が成立していることがわかる。</p>
-<p>全く同様にして、温度制御がある系にRESPAを適用して構築した時間発展演算子、</p>
-<p><span class="math display">\[
-\tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
-\]</span></p>
-<p>も左右対称な形になっているため、</p>
-<p><span class="math display">\[
-\tilde{U}(h)^{-1}_{\mathrm{RESPA}} = \tilde{U}(-h)_\mathrm{RESPA}
-\]</span></p>
-<p>が成立し、時間反転対称であることがわかる。</p>
-<p>しかし、ハミルトンダイナミクスの場合には、時間反転対称でない一次の公式であっても位相空間の体積が保存し、それに伴ってエネルギーが保存するというメリットがあったが、温度制御された系においては時間反転対称であることが数値計算上なにかメリットがあるかどうかは定かではない。</p>
-=======
 <p>ここから、</p>
 <p><span class="math display">\[
 U^{-1}(h) = U(-h)
@@ -508,8 +444,10 @@ f_\mathrm{eq} = Z^{-1} \exp(-\beta H)
 \]</span></p>
 <p>が成り立つ必要がある。従って、</p>
 <p><span class="math display">\[
-\sum_i\frac{\partial \dot{z}_i}{\partial z_i} = \beta 
-\sum_i \frac{\partial H}{\partial z_i}
+\begin{aligned}
+\sum_i\frac{\partial \dot{z}_i}{\partial z_i} &amp;= \beta 
+\sum_i \frac{\partial H}{\partial z_i} 
+\end{aligned}
 \]</span></p>
 <p>が成り立つ必要がある。Nose-HooverでもKinetic-Momentsでも、Nose-Hoover-Chainでも、カノニカル分布を定常状態に持つ決定論的運動方程式は必ずこの関係式を満たしている。</p>
 <p>さて、この式の意味を見てみよう。この位相空間に住むスカラー関数<span class="math inline">\(f, g\)</span>に対して、内積<span class="math inline">\((f, g) \in \mathcal{R}\)</span>が定義されている時、リュービル演算子がエルミートであるとは、</p>
@@ -536,8 +474,15 @@ f_\mathrm{eq} = Z^{-1} \exp(-\beta H)
 &amp;\equiv (L^\dagger f, g)
 \end{aligned}
 \]</span></p>
-<p>TODO: 計算が怪しい。確認すること。</p>
->>>>>>> origin/master
+<p>ここから、以下の関係式が導かれる。</p>
+<p><span class="math display">\[
+L^\dagger = L + i\beta \sum_i \frac{\partial H}{\partial z_i}
+\]</span></p>
+<p>ハミルトンダイナミクスの場合には、Liouville演算子がエルミート、すなわち</p>
+<p><span class="math display">\[
+L^\dagger = L
+\]</span></p>
+<p>であったことを思い出そう。カノニカル分布を定常状態に保つ運動方程式に付随するLiouville演算子は必ず非エルミートとなり、その非エルミート部分のamplitudeに(逆)温度が現れる。</p>
 </article>
 </body>
 </html>
