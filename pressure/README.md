@@ -357,10 +357,10 @@ $$
 
 $$
 \begin{aligned}
-\dot{\pi} &= \underbrace{\frac{1}{\alpha} \sum_i \frac{\vec{p'}_i^2}{m}}_{2K} - \frac{1}{\alpha}\sum_{i < j} \underbrace{\Phi'(q'_{ij})}_{-F_{ij}} q'_{ij} - 3 \alpha^2 P_0 \\
-&= \frac{2K}{\alpha} + \sum_{i<j} \vec{F}_{ij} \cdot \vec{q'}_{ij} - 3 \alpha^2 P_0 \\
+\dot{\pi} &= \underbrace{\frac{1}{\alpha} \sum_i \frac{\vec{p'}_i^2}{m}}_{2K} - \frac{1}{\alpha}\sum_{i < j} \underbrace{\Phi'(q'_{ij})}_{-F_{ij}} q'_{ij} - 3 \underbrace{\alpha^2}_{V/\alpha} P_0 \\
+&= \frac{2K}{\alpha} + \frac{1}{\alpha}\sum_{i<j} \vec{f}_{ij} \cdot \vec{q'}_{ij} - \frac{3V}{\alpha}P_0 \\
 &= \frac{1}{\alpha}
-\left[2K + \sum_{i<j} \vec{F}_{ij} \cdot \vec{q'}_{ij} - 3 V P_0 \right]
+\left[2K + \sum_{i<j} \vec{f}_{ij} \cdot \vec{q'}_{ij} - 3 V P_0 \right]
 \end{aligned}
 $$
 
@@ -370,7 +370,13 @@ $$
 3PV = 2K +  \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}
 $$
 
-を見ると、Virialから求まる内圧が、目標圧力より大きければ$\dot{\pi}$は正、つまり、$\alpha$は大きくなる向きに動く。系が膨張するのだから、圧力は下がることになる。逆もまた然りである。目標圧力と内圧の関係を見て、サーモスタットのように系のサイズを変化させることで圧力が制御される(なのでValostatと呼ばれる)。ただし、圧力制御のためのサイズ変更は一定の時間遅れを伴う。その早さを決めるパラメータが$M$である。
+を使ってさらに整理すると、
+
+$$
+\dot{\pi} = \frac{3}{\alpha}(P-P_0)
+$$
+
+すなわち、Virialから求まる内圧$P$が、目標圧力$P_0$より大きければ$\dot{\pi}$は正、つまり、$\alpha$は大きくなる向きに動く。系が膨張するのだから、圧力は下がることになる。逆もまた然りである。目標圧力と内圧の関係を見て、サーモスタットのように系のサイズを変化させることで圧力が制御される(なのでValostatと呼ばれる)。ただし、圧力制御のためのサイズ変更は一定の時間遅れを伴う。その早さを決めるパラメータが$M$である。
 
 運動方程式を修正し、かつ「運動方程式に従う座標と運動量」と、「我々が観測する座標と運動量」を異なるものにする、というアイディアは、その後Noseの方法を始めとする拡張ハミルトニアンと呼ばれる多くの手法に発展していった。
 
