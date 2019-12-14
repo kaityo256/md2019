@@ -336,17 +336,21 @@ H = \sum_i \frac{\vec{p}_i^2}{2\alpha^2m} + \sum_{i &lt; j} \Phi(\alpha q_{ij}) 
 <p>すると、先ほどの運動方程式は、</p>
 <p><span class="math display">\[
 \begin{aligned}
-\dot{\pi} &amp;= \underbrace{\frac{1}{\alpha} \sum_i \frac{\vec{p&#39;}_i^2}{m}}_{2K} - \frac{1}{\alpha}\sum_{i &lt; j} \underbrace{\Phi&#39;(q&#39;_{ij})}_{-F_{ij}} q&#39;_{ij} - 3 \alpha^2 P_0 \\
-&amp;= \frac{2K}{\alpha} + \sum_{i&lt;j} \vec{F}_{ij} \cdot \vec{q&#39;}_{ij} - 3 \alpha^2 P_0 \\
+\dot{\pi} &amp;= \underbrace{\frac{1}{\alpha} \sum_i \frac{\vec{p&#39;}_i^2}{m}}_{2K} - \frac{1}{\alpha}\sum_{i &lt; j} \underbrace{\Phi&#39;(q&#39;_{ij})}_{-F_{ij}} q&#39;_{ij} - 3 \underbrace{\alpha^2}_{V/\alpha} P_0 \\
+&amp;= \frac{2K}{\alpha} + \frac{1}{\alpha}\sum_{i&lt;j} \vec{f}_{ij} \cdot \vec{q&#39;}_{ij} - \frac{3V}{\alpha}P_0 \\
 &amp;= \frac{1}{\alpha}
-\left[2K + \sum_{i&lt;j} \vec{F}_{ij} \cdot \vec{q&#39;}_{ij} - 3 V P_0 \right]
+\left[2K + \sum_{i&lt;j} \vec{f}_{ij} \cdot \vec{q&#39;}_{ij} - 3 V P_0 \right]
 \end{aligned}
 \]</span></p>
 <p>先ほどのVirial定理の式、</p>
 <p><span class="math display">\[
 3PV = 2K +  \sum_{i&lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij}
 \]</span></p>
-<p>を見ると、Virialから求まる内圧が、目標圧力より大きければ<span class="math inline">\(\dot{\pi}\)</span>は正、つまり、<span class="math inline">\(\alpha\)</span>は大きくなる向きに動く。系が膨張するのだから、圧力は下がることになる。逆もまた然りである。目標圧力と内圧の関係を見て、サーモスタットのように系のサイズを変化させることで圧力が制御される(なのでValostatと呼ばれる)。ただし、圧力制御のためのサイズ変更は一定の時間遅れを伴う。その早さを決めるパラメータが<span class="math inline">\(M\)</span>である。</p>
+<p>を使ってさらに整理すると、</p>
+<p><span class="math display">\[
+\dot{\pi} = \frac{3}{\alpha}(P-P_0)
+\]</span></p>
+<p>すなわち、Virialから求まる内圧<span class="math inline">\(P\)</span>が、目標圧力<span class="math inline">\(P_0\)</span>より大きければ<span class="math inline">\(\dot{\pi}\)</span>は正、つまり、<span class="math inline">\(\alpha\)</span>は大きくなる向きに動く。系が膨張するのだから、圧力は下がることになる。逆もまた然りである。目標圧力と内圧の関係を見て、サーモスタットのように系のサイズを変化させることで圧力が制御される(なのでValostatと呼ばれる)。ただし、圧力制御のためのサイズ変更は一定の時間遅れを伴う。その早さを決めるパラメータが<span class="math inline">\(M\)</span>である。</p>
 <p>運動方程式を修正し、かつ「運動方程式に従う座標と運動量」と、「我々が観測する座標と運動量」を異なるものにする、というアイディアは、その後Noseの方法を始めとする拡張ハミルトニアンと呼ばれる多くの手法に発展していった。</p>
 <h2 id="local-stress">Local Stress</h2>
 <p>さて、ビリアル定理にて全体的な圧力は定義できたが、MDシミュレーションをしていると局所圧力を知りたいことがある。例えばいま、直方体の領域で、気液の相分離が起きているとしよう。中央に気液界面があるとする。気液共存領域では、その温度、圧力、密度における気相と液相の自由エネルギー密度が一致するため、どちらの状態でも良い。しかし、気液界面付近にいる粒子はとても不幸な状態であるため、界面の面積を減らそうとする。</p>
