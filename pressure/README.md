@@ -1,12 +1,10 @@
-# 圧力
-
-## 圧力の定義
+# Pressure
 
 しつこいが、分子動力学法において規定されているのは全エネルギーのみである。それ以外の物理量は我々が定義しなければならない。ここでは、圧力について考えてみよう。以下、系全体が感じる大域的な圧力と、局所的な圧力の定義について論じる。
 
-## 大域圧力の導出
+## Global Pressure
 
-### 古典的なビリアル定理
+### Virial Theorem
 
 教科書によく書いてある古典的なビリアル定理から圧力を定義してみよう。天下りだが、以下のような量を考えよう。
 
@@ -133,7 +131,7 @@ $$
 
 これが古典的なビリアル定理による、粒子系の圧力の導出である。最初の$N k_B T$が理想気体からの寄与、つまり粒子の運動から圧力への寄与であり、右辺第二項が相互作用からの寄与である。
 
-### 分配関数からの導出
+### Derivation from Partition Funciton
 
 さて、先ほどのビリアル定理からの圧力の導出では、
 
@@ -206,10 +204,16 @@ $$
 
 さて、ハミルトニアンの体積微分を取るために、系のサイズを変化させることを考えよう。一辺$L$の立方体の系を考えると、$V=L^3$である。この系の長さを一様に$L \rightarrow \alpha L$と拡大することを考える。
 
-拡大された世界のハミルトニアンは
+空間を一辺$\alpha$倍にすると、$\vec{q}_i \rightarrow \alpha \vec{q}_i$となる。ここで、
 
 $$
-H(\alpha) = \sum_i \frac{\alpha^2 \vec{p}_i^2}{2m} + \sum_{i < j} \Phi(\alpha q_{ij})
+\vec{p}_i = \frac{\partial L}{\partial \dot{\vec{q}}_i}
+$$
+
+であったから、$\vec{p}_i \rightarrow \vec{p}_i / \alpha$となることに注意すると、拡大された世界のハミルトニアンは
+
+$$
+H(\alpha) = \sum_i \frac{\vec{p}_i^2}{2\alpha^2m} + \sum_{i < j} \Phi(\alpha q_{ij})
 $$
 
 となる。
@@ -230,18 +234,12 @@ $$
 
 以下、$\partial H/\partial \alpha$を計算しよう。
 
-まず、運動エネルギー部分を考える。空間を一辺$\alpha$倍にすると、$\vec{q}_i \rightarrow \alpha \vec{q}_i$となる。ここで、
-
-$$
-\vec{p}_i = \frac{\partial L}{\partial \dot{\vec{q}}_i}
-$$
-
-であったから、$\vec{p}_i \rightarrow \vec{p}_i / \alpha$となることに注意すると、
+まず、運動エネルギー部分を考える。
 
 $$
 \begin{aligned}
 \lim_{\alpha \rightarrow 1}\frac{\partial K(\alpha)}{\partial \alpha} &=
-\lim_{\alpha \rightarrow 1} \sum_i \frac{\partial}{\partial \alpha } \frac{\vec{p}_i^2}{2m \alpha^2} \\
+\lim_{\alpha \rightarrow 1} \sum_i \frac{\partial}{\partial \alpha } \frac{\vec{p}_i^2}{2\alpha^2 m} \\
 &= -2K \\
 &= -3 N k_B T
 \end{aligned}
@@ -298,7 +296,85 @@ $$
 
 分子動力学法では$\vec{q}_{ij} \cdot \vec{f}_{ij}$は容易に計算できるため、これで圧力が計算できることになる。
 
-## 局所圧力
+### Andersen Method
+
+先ほど、仮想的に体積を変化させることで圧力を計算した。これは、圧力$P$と体積$V$が共役の関係にあるからである。一般に、かけてエネルギーの関係にあり、かつ片方が示強性(Intensive)、もう一方が示量性(Extensive)な量である時、その二つの量をお互いに共役であると呼ぶ。
+
+この性質を使って、体積$V$を仮想的に変化させることで圧力を制御するのがAndersenの方法(Andersen Method、もしくはAndersen Valostat)である。
+
+先ほど求めたVirial定理を、後のために変形して置こう。煩雑なので$\left< \cdots \right>$のカッコを省略する。
+
+$$
+PV = N k_BT + \frac{1}{3} \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}
+$$
+
+両辺に$3$をかけて、さらに$N k_B T$を運動エネルギー$K$で表すと、
+
+$$
+3PV = 2K +  \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}
+$$
+
+となる。この式を覚えておこう。
+
+さて、先ほど、一辺の長さを$\alpha$倍したハミルトニアン$H(\alpha)$を考えた。
+
+$$
+H(\alpha) = \sum_i \frac{\vec{p}_i^2}{2\alpha^2m} + \sum_{i < j} \Phi(\alpha q_{ij})
+$$
+
+Andersenは、この$\alpha$を運動方程式に含めることで、圧力を制御する方法を考えた。拡張されたハミルトニアンは以下の通りとなる。
+
+$$
+H = \sum_i \frac{\vec{p}_i^2}{2\alpha^2m} + \sum_{i < j} \Phi(\alpha q_{ij}) + \frac{\pi^2}{2M} + P_0 \alpha^3
+$$
+
+ただし、$\pi$は$\alpha$を一般化座標とみなした時の共役な一般化運動量であり、$P_0$が目標圧力である。ここで、$\pi$と$\alpha$の運動を考える。$\alpha$の従う運動方程式は簡単で、
+
+$$
+\dot{\alpha} = \frac{\partial H}{\partial \pi} = \frac{\pi}{M}
+$$
+
+となる。$\pi$は、
+
+$$
+\begin{aligned}
+\dot{\pi} &= - \frac{\partial H}{\partial \alpha} \\
+&= \frac{1}{\alpha^3} \sum_i \frac{\vec{p}_i^2}{m}
+- \sum_{i<j} \Phi'(\alpha q_{ij}) q_{ij} - 3 \alpha^2 P_0
+\end{aligned}
+$$
+
+となる。ここで、$\alpha$でスケールされた運動量と座標を$\vec{p'}_i, \vec{q'}_i$とする。つまり、
+
+$$
+\begin{aligned}
+\vec{p'}_i &= \frac{\vec{p}_i}{\alpha} \\
+\vec{q'}_i &= \alpha q_i
+\end{aligned}
+$$
+
+すると、先ほどの運動方程式は、
+
+$$
+\begin{aligned}
+\dot{\pi} &= \underbrace{\frac{1}{\alpha} \sum_i \frac{\vec{p'}_i^2}{m}}_{2K} - \frac{1}{\alpha}\sum_{i < j} \underbrace{\Phi'(q'_{ij})}_{-F_{ij}} q'_{ij} - 3 \alpha^2 P_0 \\
+&= \frac{2K}{\alpha} + \sum_{i<j} \vec{F}_{ij} \cdot \vec{q'}_{ij} - 3 \alpha^2 P_0 \\
+&= \frac{1}{\alpha}
+\left[2K + \sum_{i<j} \vec{F}_{ij} \cdot \vec{q'}_{ij} - 3 V P_0 \right]
+\end{aligned}
+$$
+
+先ほどのVirial定理の式、
+
+$$
+3PV = 2K +  \sum_{i< j} \vec{q}_{ij} \cdot \vec{f}_{ij}
+$$
+
+を見ると、Virialから求まる内圧が、目標圧力より大きければ$\dot{\pi}$は正、つまり、$\alpha$は大きくなる向きに動く。系が膨張するのだから、圧力は下がることになる。逆もまた然りである。目標圧力と内圧の関係を見て、サーモスタットのように系のサイズを変化させることで圧力が制御される(なのでValostatと呼ばれる)。ただし、圧力制御のためのサイズ変更は一定の時間遅れを伴う。その早さを決めるパラメータが$M$である。
+
+運動方程式を修正し、かつ「運動方程式に従う座標と運動量」と、「我々が観測する座標と運動量」を異なるものにする、というアイディアは、その後Noseの方法を始めとする拡張ハミルトニアンと呼ばれる多くの手法に発展していった。
+
+## Local Stress
 
 さて、ビリアル定理にて全体的な圧力は定義できたが、MDシミュレーションをしていると局所圧力を知りたいことがある。例えばいま、直方体の領域で、気液の相分離が起きているとしよう。中央に気液界面があるとする。気液共存領域では、その温度、圧力、密度における気相と液相の自由エネルギー密度が一致するため、どちらの状態でも良い。しかし、気液界面付近にいる粒子はとても不幸な状態であるため、界面の面積を減らそうとする。
 
@@ -316,7 +392,7 @@ $$
 
 先に答えを言うと、「この人は粒子による圧力を感じる」と定義した方が良いことが知られている。以下、その局所圧力定義を導出してみよう。
 
-### 応力テンソルの定義
+### Local Stress Tensor
 
 系に含まれる粒子$i$の位置を$\vec{q}^i$、運動量を$\vec{p}^{i}$とする。後で座標の成分を明示したいので、粒子のインデックスは上付きにしておく。
 
@@ -455,7 +531,7 @@ $$
 
 と定義するのが妥当であることがわかった。これで、局所的な応力テンソル$\pi_{\alpha \beta}$が求まった。
 
-### 局所応力テンソルの意味
+### Physical Meaning of Irving-Kirkwood Gauge
 
 応力は二階のテンソルであり、三次元であれば3行3列の行列となる。その対角成分が垂直応力、非対角項がせん断応力に対応する。
 
@@ -492,7 +568,3 @@ Irving-Kirkwoodゲージの最終的な式はかなりごちゃごちゃした�
 * J. H. irving and J. G. Kirkwood, "The Statistical Mechanical Theory of Transport Processes. IV. The Equations of Hydrodynamics", [J. Chem. Phys. 18, 817 (1950)](https://doi.org/10.1063/1.1747782)
 * R. Goetz and R. Lipowsky, "Computer simulations of bilayer membranes: Self-assembly and interfacial tension", [J. Chem. Phys. 108, 7397 (1998)](https://doi.org/10.1063/1.476160) 
 * K. M. Nakagawa and H. Noguchi, "Nonuniqueness of local stress of three-body potentials in molecular simulations",  [Phys. Rev. E 94, 053304/1-11 (2016)](https://doi.org/10.1103/PhysRevE.94.053304)
-
-### Appendix:デルタ関数のdivergenceを用いた書き換え
-
-TODO: そのうち書く？ 少なくとも講義では触れない。
