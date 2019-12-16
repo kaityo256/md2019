@@ -8,6 +8,8 @@
 
 [HTML版はこちら](https://kaityo256.github.io/md2019/)
 
+[PDF版はこちら](https://kaityo256.github.io/md2019/md2019.pdf)
+
 ## 内容(予定)
 
 * 本講義の概要と目的
@@ -48,7 +50,7 @@
   * 4.1 Integration of ODE
   * 4.2 Integration of Equations of Motion
   * 4.3 Symplectic Integrator
-* [5. Nose-Hoover Method](tcontroll/README.md)
+* [5. Nose-Hoover Method](nosehoover/README.md)
   * 5.1 Temperature Controll
   * 5.2 Nose-Hoover Method
   * 5.3 Problems on Nose-Hoover method
