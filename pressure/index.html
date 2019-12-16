@@ -88,11 +88,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="pressure">Pressure</h1>
+<h1 id="pressure">2. Pressure</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
 <p>しつこいが、分子動力学法において規定されているのは全エネルギーのみである。それ以外の物理量は我々が定義しなければならない。ここでは、圧力について考えてみよう。以下、系全体が感じる大域的な圧力と、局所的な圧力の定義について論じる。</p>
-<h2 id="global-pressure">Global Pressure</h2>
-<h3 id="virial-theorem">Virial Theorem</h3>
+<h2 id="global-pressure">2.1 Global Pressure</h2>
+<h3 id="virial-theorem">2.1.1 Virial Theorem</h3>
 <p>教科書によく書いてある古典的なビリアル定理から圧力を定義してみよう。天下りだが、以下のような量を考えよう。</p>
 <p><span class="math display">\[
 G = \sum_i \vec{p}_i \cdot \vec{q}_i
@@ -182,7 +182,7 @@ G = \sum_i \vec{p}_i \cdot \vec{q}_i
 PV = N k_BT + \frac{1}{3} \left&lt; \sum_{i&lt; j} \vec{q}_{ij} \cdot \vec{f}_{ij}\right&gt;
 \]</span></p>
 <p>これが古典的なビリアル定理による、粒子系の圧力の導出である。最初の<span class="math inline">\(N k_B T\)</span>が理想気体からの寄与、つまり粒子の運動から圧力への寄与であり、右辺第二項が相互作用からの寄与である。</p>
-<h3 id="derivation-from-partition-funciton">Derivation from Partition Funciton</h3>
+<h3 id="derivation-from-partition-funciton">2.1.2 Derivation from Partition Funciton</h3>
 <p>さて、先ほどのビリアル定理からの圧力の導出では、</p>
 <ul>
 <li>いきなり<span class="math inline">\(G\)</span>という量を定義して時間微分する意味が不明瞭</li>
@@ -294,7 +294,7 @@ PV = N k_BT + \frac{1}{3} \left&lt; \sum_{i&lt; j} \vec{q}_{ij} \cdot \vec{f}_{i
 \]</span></p>
 <p>先程ビリアル定理で導かれた圧力が導出された。導出を見れば、分母の<span class="math inline">\(3V\)</span>は<span class="math inline">\(d\alpha /d V\)</span>から、<span class="math inline">\(Nk_B T\)</span>の項は運動エネルギー由来、ビリアル項は相互作用由来であることがわかるであろう。また、境界条件に依存しない導出であることもわかるであろう。</p>
 <p>分子動力学法では<span class="math inline">\(\vec{q}_{ij} \cdot \vec{f}_{ij}\)</span>は容易に計算できるため、これで圧力が計算できることになる。</p>
-<h3 id="andersen-method">Andersen Method</h3>
+<h3 id="andersen-method">2.1.3 Andersen Method</h3>
 <p>先ほど、仮想的に体積を変化させることで圧力を計算した。これは、圧力<span class="math inline">\(P\)</span>と体積<span class="math inline">\(V\)</span>が共役の関係にあるからである。一般に、かけてエネルギーの関係にあり、かつ片方が示強性(Intensive)、もう一方が示量性(Extensive)な量である時、その二つの量をお互いに共役であると呼ぶ。</p>
 <p>この性質を使って、体積<span class="math inline">\(V\)</span>を仮想的に変化させることで圧力を制御するのがAndersenの方法(Andersen Method、もしくはAndersen Valostat)である。</p>
 <p>先ほど求めたVirial定理を、後のために変形して置こう。煩雑なので<span class="math inline">\(\left&lt; \cdots \right&gt;\)</span>のカッコを省略する。</p>
@@ -352,7 +352,7 @@ H = \sum_i \frac{\vec{p}_i^2}{2\alpha^2m} + \sum_{i &lt; j} \Phi(\alpha q_{ij}) 
 \]</span></p>
 <p>すなわち、Virialから求まる内圧<span class="math inline">\(P\)</span>が、目標圧力<span class="math inline">\(P_0\)</span>より大きければ<span class="math inline">\(\dot{\pi}\)</span>は正、つまり、<span class="math inline">\(\alpha\)</span>は大きくなる向きに動く。系が膨張するのだから、圧力は下がることになる。逆もまた然りである。目標圧力と内圧の関係を見て、サーモスタットのように系のサイズを変化させることで圧力が制御される(なのでValostatと呼ばれる)。ただし、圧力制御のためのサイズ変更は一定の時間遅れを伴う。その早さを決めるパラメータが<span class="math inline">\(M\)</span>である。</p>
 <p>運動方程式を修正し、かつ「運動方程式に従う座標と運動量」と、「我々が観測する座標と運動量」を異なるものにする、というアイディアは、その後Noseの方法を始めとする拡張ハミルトニアンと呼ばれる多くの手法に発展していった。</p>
-<h2 id="local-stress">Local Stress</h2>
+<h2 id="local-stress">2.2 Local Stress</h2>
 <p>さて、ビリアル定理にて全体的な圧力は定義できたが、MDシミュレーションをしていると局所圧力を知りたいことがある。例えばいま、直方体の領域で、気液の相分離が起きているとしよう。中央に気液界面があるとする。気液共存領域では、その温度、圧力、密度における気相と液相の自由エネルギー密度が一致するため、どちらの状態でも良い。しかし、気液界面付近にいる粒子はとても不幸な状態であるため、界面の面積を減らそうとする。</p>
 <div class="figure">
 <img src="phaseboundary.png" alt="相共存する系には相界面が存在する" />
@@ -370,7 +370,7 @@ H = \sum_i \frac{\vec{p}_i^2}{2\alpha^2m} + \sum_{i &lt; j} \Phi(\alpha q_{ij}) 
 <p class="caption">局所圧力定義の問題</p>
 </div>
 <p>先に答えを言うと、「この人は粒子による圧力を感じる」と定義した方が良いことが知られている。以下、その局所圧力定義を導出してみよう。</p>
-<h3 id="local-stress-tensor">Local Stress Tensor</h3>
+<h3 id="local-stress-tensor">2.2.1 Local Stress Tensor</h3>
 <p>系に含まれる粒子<span class="math inline">\(i\)</span>の位置を<span class="math inline">\(\vec{q}^i\)</span>、運動量を<span class="math inline">\(\vec{p}^{i}\)</span>とする。後で座標の成分を明示したいので、粒子のインデックスは上付きにしておく。</p>
 <p>この系の密度分布関数は</p>
 <p><span class="math display">\[
@@ -472,7 +472,7 @@ B &amp; = \frac{\partial}{\partial x_\beta}
 \delta(\vec{q}^i - \vec{r} + \lambda(\vec{q^j} - \vec{q^i}))
 \]</span></p>
 <p>と定義するのが妥当であることがわかった。これで、局所的な応力テンソル<span class="math inline">\(\pi_{\alpha \beta}\)</span>が求まった。</p>
-<h3 id="physical-meaning-of-irving-kirkwood-gauge">Physical Meaning of Irving-Kirkwood Gauge</h3>
+<h3 id="physical-meaning-of-irving-kirkwood-gauge">2.2.2 Physical Meaning of Irving-Kirkwood Gauge</h3>
 <p>応力は二階のテンソルであり、三次元であれば3行3列の行列となる。その対角成分が垂直応力、非対角項がせん断応力に対応する。</p>
 <p>応力テンソルは、運動量に関する連続の式、つまり「運動量分布の時間微分が応力テンソルの発散となる」ことから、以下のように定義された。</p>
 <p><span class="math display">\[

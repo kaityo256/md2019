@@ -88,32 +88,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="分子動力学法における観測量">分子動力学法における観測量</h1>
+<h1 id="temperature">3. Temperature</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
-<h2 id="変数と観測量">変数と観測量</h2>
-<p>数値計算は、支配方程式を数値的に解く方法論だ。ここで重要となるのは、変数と観測量の区別である。変数(Variable)とは「我々がa prioriに認める量」であり、観測量(Observable)は、「変数から導かれる量」だ。何が変数で何が観測量かは支配方程式によって異なる。</p>
-<p>例えば、一次元熱伝導方程式を考えよう。</p>
-<p><span class="math display">\[
-\frac{\partial T}{\partial t} = \kappa \frac{\partial^2 T}{\partial x^2}
-\]</span></p>
-<p>この方程式では、温度<span class="math inline">\(T\)</span>は変数である。つまり、「この世界には温度という量がある」ということを無条件に認めている。</p>
-<p>また、ナビエ・ストークス方程式を考えてみよう。粘性率一定、非圧縮を仮定し、外場を<span class="math inline">\(\vec{F}\)</span>とすると以下のようになるだろう。</p>
-<p><span class="math display">\[
-\frac{\partial \vec{v}}{\partial t}
-+ \left(\vec{v}\cdot \nabla \right)
-= -\frac{1}{\rho} \nabla p + \nu \Delta \vec{v} + \vec{F}
-\]</span></p>
-<p>この方程式では、速度場<span class="math inline">\(v\)</span>に加えて、圧力場<span class="math inline">\(p\)</span>も変数である。</p>
-<p>さて、MDではどうだろうか？支配方程式としてハミルトンの運動方程式を採用するとこんな方程式となる。</p>
-<p><span class="math display">\[
-\begin{aligned}
-\dot{p_i} &amp;= -\frac{\partial H}{\partial q_i} \\
-\dot{q_i} &amp;= \frac{\partial H}{\partial p_i} 
-\end{aligned}
-\]</span></p>
-<p>変数は座標<span class="math inline">\(q_i\)</span>と運動量<span class="math inline">\(p_i\)</span>であり、ここには温度や圧力は表れない。したがって、温度や圧力は<span class="math inline">\(q_i\)</span>や<span class="math inline">\(p_i\)</span>から定義される観測量となる。熱伝導方程式においては、温度を変数にとっているから「温度とは何か」という問いは意味をもたない。しかし、分子動力学法においては温度は定義するものであるので、「私はこの量を温度と呼ぶ」と宣言することになる。そこには様々な温度の定義があり得る。もちろん平衡状態では熱力学と整合するように選ばれるべきだが、後で見るように、異なる温度の定義は非平衡状態では一致しない。MDにおいては「温度とは何か」という問いは本質的な問いとなる。同様にMDにおいては圧力も定義するものであり、その定義には複数の立場があり得る。特に界面がある系における圧力定義は微妙な問題となるので、後でそれにも触れる。</p>
-<h2 id="温度とは">温度とは</h2>
-<h3 id="マクスウェル分布と温度">マクスウェル分布と温度</h3>
+<h2 id="maxwell-distribution">3.1 Maxwell Distribution</h2>
 <p>温度とは何であろうか？我々は日常的に「熱い/冷たい」「暑い/寒い」と、温度を感じており、温度という量が自然に存在することに疑問を抱かない。しかし、以前に述べたように分子動力学法における変数は運動量<span class="math inline">\(p_i\)</span>と座標<span class="math inline">\(q_i\)</span>のみであるから、この変数の組<span class="math inline">\(\{p_i, q_i\}\)</span>で温度を定義しなければならない。</p>
 <p>広く受け入れられているのは「温度は運動エネルギーに比例する」という事実を利用した定義だ。三次元<span class="math inline">\(N\)</span>粒子系を考えると、分子動力学法における温度<span class="math inline">\(T\)</span>は運動エネルギーを<span class="math inline">\(K\)</span>として</p>
 <p><span class="math display">\[
@@ -123,7 +100,7 @@ T = \frac{2K}{3N k_\mathrm{B}}
 <p><span class="math display">\[
 K = \sum_i \frac{p_i^2}{2m}
 \]</span></p>
-<p>で与えられる。この量が温度と結びつくのは、運動量がマクスウェル分布に従うことから説明される。すなわち、温度<span class="math inline">\(T\)</span>の粒子系における運動量分布は、</p>
+<p>で与えられる。この量が温度と結びつくのは、運動量がマクスウェル分布に従うことから説明される。すなわち、温度<span class="math inline">\(T\)</span>の粒子系における運動量分布は、いわゆるMaxwell分布</p>
 <p><span class="math display">\[
 f(\{p_i \}) \propto \exp\left( \frac{\sum_i p_i^2}{2m k_\mathrm{B} T} \right)
 \]</span></p>
@@ -132,7 +109,7 @@ f(\{p_i \}) \propto \exp\left( \frac{\sum_i p_i^2}{2m k_\mathrm{B} T} \right)
 \left&lt; \frac{p_i^2}{2m}\right&gt; = \frac{1}{2} k_\mathrm{B} T
 \]</span></p>
 <p>が導かれる。これを認めれば運動エネルギーと温度が結びつく、というストーリーである。</p>
-<h3 id="カノニカル分布と温度">カノニカル分布と温度</h3>
+<h2 id="canonical-ditribution">3.2 Canonical Ditribution</h2>
 <p>さて、マクスウェル分布は観測事実であるが、これを別の基本原理から「導く」ことを考えてみよう。</p>
 <p>まず、ハミルトニアンを議論の出発点としよう。三次元<span class="math inline">\(N\)</span>粒子系で、全ての粒子の質量が等しい場合は、以下のようなハミルトニアンになるだろう。</p>
 <p><span class="math display">\[
@@ -201,7 +178,7 @@ dS = \frac{dU}{T}
 \beta = \frac{1}{k_\mathrm{B} T}
 \]</span></p>
 <p>と、温度と結びつく。このストーリーでは、「まず世の中にはエネルギー<span class="math inline">\(U\)</span>とエントロピー<span class="math inline">\(S\)</span>というものが存在し、<span class="math inline">\(U\)</span>一定の条件で<span class="math inline">\(S\)</span>を最大化しようとするとカノニカル分布が導かれ、エネルギーとエントロピーの熱力学関係式を要請すると、ラグランジュの未定定数<span class="math inline">\(\beta\)</span>が逆温度であることがわかる」という流れになっている。</p>
-<h3 id="一般化ビリアル">一般化ビリアル</h3>
+<h2 id="generarized-virial-theorem">3.3 Generarized Virial Theorem</h2>
 <p>さて、先程のような温度の導入をすると、運動エネルギー以外にも温度の定義ができることがわかる。</p>
 <p>カノニカル分布を持つ系において、ビリアルと呼ばれる量<span class="math inline">\(p_i \partial_{p_i} H\)</span>を考えてみよう。このビリアルについて、以下の関係が成り立つ。</p>
 <p><span class="math display">\[
@@ -251,10 +228,9 @@ p_i \frac{\partial H}{\partial p_i} = \frac{p_i}{m}
 \vec{B} = (p_1, p_2, \cdots, p_N, 0, \cdots, 0)
 \]</span></p>
 <p>の場合に導かれる温度は運動温度となり、いわゆるエネルギー等分配則を表す。逆に、<span class="math inline">\(\vec{B}\)</span>が座標成分しか含まない場合は、状態温度を導く。</p>
-<h3 id="温度の幾何学的定義">温度の幾何学的定義</h3>
+<h2 id="microcanonical-temperature">3.4 Microcanonical Temperature</h2>
 <p>先ほど、エントロピー最大化条件からカノニカル分布を導き、そこからビリアルによって温度を定義した。しかし、分子動力学法において、ハミルトンの運動方程式に従う時間発展を考えるとエネルギーが一定に保たれるのであるから、結果として得られる分布は(系がエルゴード的であれば)ミクロカノニカル分布となる。もちろん、系の自由度が大きくなれば分布がデルタ関数的になり、ミクロカノニカルとカノニカルの区別はほとんどなくなるのだが、ハミルトンの運動方程式が厳密にエネルギーを保存する以上、まずミクロカノニカルで温度を定義し、それが<span class="math inline">\(N \rightarrow \infty\)</span>の極限でカノニカル分布における温度と一致することを確認したくなる。</p>
 <p>以下では、「温度の幾何学的定義」により、ミクロカノニカル分布における温度を定義してみよう。</p>
-<p>TODO: 温度の幾何学的定義の説明</p>
 </article>
 </body>
 </html>

@@ -476,6 +476,28 @@ f^*\frac{\partial \dot{q}}{\partial q}
 <li>これはミクロカノニカル分布<span class="math inline">\(f=\mathrm{const.}\)</span>を意味する</li>
 </ul>
 <p>ただし、この結果からわかることは、運動方程式に伴う確率流れの密度が一定であるということであり、これがミクロカノニカル分布になるかどうかは、別途エルゴード性の議論が必要になる。</p>
+<h2 id="variables-and-observables">1.4 Variables and Observables</h2>
+<p>数値計算は、支配方程式を数値的に解く方法論だ。ここで重要となるのは、変数と観測量の区別である。変数(Variable)とは「我々がa prioriに認める量」であり、観測量(Observable)は、「変数から導かれる量」だ。何が変数で何が観測量かは支配方程式によって異なる。</p>
+<p>例えば、一次元熱伝導方程式を考えよう。</p>
+<p><span class="math display">\[
+\frac{\partial T}{\partial t} = \kappa \frac{\partial^2 T}{\partial x^2}
+\]</span></p>
+<p>この方程式では、温度<span class="math inline">\(T\)</span>は変数である。つまり、「この世界には温度という量がある」ということを無条件に認めている。</p>
+<p>また、ナビエ・ストークス方程式を考えてみよう。粘性率一定、非圧縮を仮定し、外場を<span class="math inline">\(\vec{F}\)</span>とすると以下のようになるだろう。</p>
+<p><span class="math display">\[
+\frac{\partial \vec{v}}{\partial t}
++ \left(\vec{v}\cdot \nabla \right)
+= -\frac{1}{\rho} \nabla p + \nu \Delta \vec{v} + \vec{F}
+\]</span></p>
+<p>この方程式では、速度場<span class="math inline">\(v\)</span>に加えて、圧力場<span class="math inline">\(p\)</span>も変数である。</p>
+<p>さて、MDではどうだろうか？支配方程式としてハミルトンの運動方程式を採用するとこんな方程式となる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p_i} &amp;= -\frac{\partial H}{\partial q_i} \\
+\dot{q_i} &amp;= \frac{\partial H}{\partial p_i} 
+\end{aligned}
+\]</span></p>
+<p>変数は座標<span class="math inline">\(q_i\)</span>と運動量<span class="math inline">\(p_i\)</span>であり、ここには温度や圧力は表れない。したがって、温度や圧力は<span class="math inline">\(q_i\)</span>や<span class="math inline">\(p_i\)</span>から定義される観測量となる。熱伝導方程式においては、温度を変数にとっているから「温度とは何か」という問いは意味をもたない。しかし、分子動力学法においては温度は定義するものであるので、「私はこの量を温度と呼ぶ」と宣言することになる。そこには様々な温度の定義があり得る。もちろん平衡状態では熱力学と整合するように選ばれるべきだが、後で見るように、異なる温度の定義は非平衡状態では一致しない。MDにおいては「温度とは何か」という問いは本質的な問いとなる。同様にMDにおいては圧力も定義するものであり、その定義には複数の立場があり得る。特に界面がある系における圧力定義は微妙な問題となるので、後でそれにも触れる。</p>
 </article>
 </body>
 </html>

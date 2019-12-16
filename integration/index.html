@@ -88,9 +88,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="分子動力学法における時間積分">分子動力学法における時間積分</h1>
+<h1 id="numerical-integration">4 Numerical Integration</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
-<h2 id="常微分方程式の数値積分">常微分方程式の数値積分</h2>
+<h2 id="integration-of-ode">4.1 Integration of ODE</h2>
 <p>何か物理系が、変数の組<span class="math inline">\(\vec{x} = (x_1, x_2, \cdots)\)</span>で記述されているとしよう。この変数が時間に依存しており、その時間微分<span class="math inline">\(\dot{\vec{x}}\)</span>が、<span class="math inline">\(\vec{x}\)</span>の関数として書かれている時、この系を <em>力学系(Dynamical System)</em> と呼ぶ。特に、外力がなく、系を記述する変数だけで方程式が閉じている時、この系を <em>自励的(autonomous)</em> と言う。以下、自励的な系のみを扱う。</p>
 <p>我々は、時刻<span class="math inline">\(t=0\)</span>における系の状態<span class="math inline">\(\vec{x}(0)\)</span>を指定した時、任意の時刻<span class="math inline">\(t\)</span>の系の状態<span class="math inline">\(\vec{x}(t)\)</span>を知りたい。このような問題設定を初期値問題と呼び、数値計算における基本課題となっている。以下、簡単のために一次元系で考えよう。方程式は以下のように表現されている。</p>
 <p><span class="math display">\[
@@ -147,8 +147,8 @@ x(t+h) &amp;= x(t) + f(x_m) h \\
 \end{aligned}
 \]</span> となり、<span class="math inline">\(x(t+h)\)</span>のテイラー展開と<span class="math inline">\(h\)</span>の二次まで一致する。ここでは中点を一つだけとったが、これを4点とるのが古典的なRunge-Kutta法であり、比較的実装が容易で4次精度と精度が高いために広く使われている。</p>
 <p>その他、これまでの軌跡を覚えておいて、そこから線形補完して場所を予測し、予測点を使って改めて将来の点を修正する、予測子-修正子法も広く使われている。</p>
-<h2 id="運動方程式の時間積分">運動方程式の時間積分</h2>
-<h3 id="オイラー法">オイラー法</h3>
+<h2 id="integration-of-equations-of-motion">4.2 Integration of Equations of Motion</h2>
+<h3 id="euler-method">4.2.1 Euler method</h3>
 <p>さて、分子動力学法の運動方程式を考えよう。簡単のために一次元系を考える。ハミルトニアン<span class="math inline">\(H(p,q)\)</span>に支配されている系の運動方程式は以下のように書けるのだった。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -180,7 +180,7 @@ q(t+h) &amp;= q + p h \\
 p(t+h)^2 + q(t+h)^2 = (p-qh)^2 + (q + ph)^2 = (1+h^2)(p^2+q^2)
 \]</span></p>
 <p>つまり、時刻<span class="math inline">\(t\)</span>においてエネルギーが<span class="math inline">\(p^2+q^2\)</span>であった系は、1ステップ後に<span class="math inline">\((1+h^2)\)</span>倍に、<span class="math inline">\(n\)</span>ステップ進むと<span class="math inline">\((1+h^2)^n\)</span>倍になる。「オイラー法が厳密解から指数関数的にずれる」という意味がわかるであろう。</p>
-<h3 id="velocity-verlet法">Velocity Verlet法</h3>
+<h3 id="velocity-verlet-method">4.2.2 Velocity Verlet method</h3>
 <p>さて、調和振動子の運動方程式をオイラー法で数値積分するとエネルギーがあっという間に発散することがわかった。そこで、Runge-Kuttaや予測子-修正子法のような高次の数値積分法を使っても良いのだが、より簡便で、かつ非常に安定な数値積分法が発見された。velocity Verlet (VV)法である。以下の運動方程式を考えよう。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -216,7 +216,6 @@ p(t+h) &amp;= p - \frac{q(t+h) + q(t)}{2} h\\
 p(t+h)^2 + q(t+h)^2 = p^2 + q^2
 \]</span></p>
 <p>となっており、VV法はステップが進んでもエネルギーが厳密に保存される。実はVV法は、シンプレクティック積分と呼ばれる手法の一種になっている。シンプレクティック積分は、軌道は厳密解からずれるものの、エネルギーが厳密に保存するために長時間の安定した計算を可能とするため、分子動力学法で広く使われている。</p>
-<h3 id="調和振動子の時間発展の行列表示">調和振動子の時間発展の行列表示</h3>
 <p>VV法でエネルギーが保存する理由をもう少し詳しく見てみよう。シミュレーションによる時間発展とは、次の時刻<span class="math inline">\(t+h\)</span>における<span class="math inline">\(p(t+h), q(t+h)\)</span>を、時刻<span class="math inline">\(t\)</span>の座標<span class="math inline">\(p(t),q(t)\)</span>で表現することである。簡単のため、以下では<span class="math inline">\(P = p(t+h), Q = q(t+h)\)</span>と表記することにすると、時間発展は<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((P,Q)\)</span>への座標変換とみなすことができる。一般のこの変換は非線形だが、調和振動子の場合にはこの変形が線形となり、行列で表現することができる。</p>
 <p>調和振動子にオイラー法を適用した場合を見てみよう。</p>
 <p><span class="math display">\[
@@ -262,10 +261,10 @@ U(h)
 \end{pmatrix}
 \]</span></p>
 <p>となり、明らかに<span class="math inline">\(|U(h)| = 1\)</span>となる。つまり、この行列による変換は、画像を歪めても、面積要素は保存する。実は、この時間発展行列の行列式が1であるということが、エネルギー、すなわちハミルトニアンが厳密に保存することと対応している。調和振動子におけるエネルギー(の2倍)<span class="math inline">\(p^2+q^2\)</span>は、円の面積に対応する。オイラー法に対応する変換では、面積要素が毎ステップ拡大してしまうため、エネルギーが増えていってしまうが、VV法に対応する変換では、空間は歪むものの面積要素は保存されるため、エネルギーも保存する、という仕組みになっている。</p>
-<h2 id="シンプレクティック積分">シンプレクティック積分</h2>
-<h3 id="リュービル演算子">リュービル演算子</h3>
-<p>VV法が調和振動子の場合にエネルギーを保存するのは、時間発展を記述する行列の行列式が1であることに対応していた。一般の系の場合は時間発展を記述するのが演算子ではなく演算子になる。ここでは、VV法がエネルギーを保存するシンプレクティック積分であることを示すそう。</p>
-<p>運動方程式が与えられればリュービル演算子の表式がわかる。そして、リュービル演算子がわかれば、それを指数の肩に乗せれば時間発展演算子が得られるのであった。この時間発展演算子の表式が厳密に求められれば、その系は「解けた」ことになる。その、厳密に解ける例として、調和振動子を考えよう。</p>
+<h2 id="symplectic-integrator">4.3 Symplectic Integrator</h2>
+<h3 id="matrix-form">4.3.1 Matrix Form</h3>
+<p>VV法が調和振動子の場合にエネルギーを保存するのは、時間発展を記述する行列の行列式が1であることに対応していた。実は、VV法は「Symplectic Integrator」と呼ばれる手法の一種になっており、Symplectic Integratorは指数分解公式から作られる。</p>
+<p>ここでは、まずは調和振動子において指数分解公式から時間発展演算子を構築する様子を見てみよう。</p>
 <p>運動方程式は行列の形で</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -280,22 +279,35 @@ q
 0 &amp; -1 \\
 1 &amp; 0
 \end{pmatrix}
-}_{iL}
+}_{L}
 \begin{pmatrix}
 p \\
 q
 \end{pmatrix} \\
 &amp;=
-iL
+L
 \begin{pmatrix}
 p \\
 q
 \end{pmatrix}
 \end{aligned}
 \]</span></p>
-<p>と書ける。いま、リュービル演算子が行列<span class="math inline">\(iL\)</span>で書けているので、これを指数の肩の上に乗せると時間発展行列(演算子)が得られる。</p>
+<p>と書ける。ここで<span class="math inline">\(L\)</span>は時間微分を表す行列だ。これを形式的に積分すると、</p>
 <p><span class="math display">\[
-U(h) = \exp(ihL)
+\begin{pmatrix}
+P \\
+Q
+\end{pmatrix}
+= 
+\underbrace{\mathrm{e}^{hL}}_{U(h)}
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\]</span></p>
+<p>つまり、時間微分行列を指数の肩の上に乗せると時間発展行列が得られる。</p>
+<p><span class="math display">\[
+U(h) = \exp(hL)
 \]</span></p>
 <p>線形代数の講義でやったように、<span class="math inline">\(L\)</span>を対角化するなどすれば厳密に計算できて、</p>
 <p><span class="math display">\[
@@ -325,12 +337,8 @@ U(h)
 \end{pmatrix}
 \]</span></p>
 <p>VV法による近似は、テイラー展開の二次まで正しい。ただし、三次の項をうまく付け加えることで、この行列の行列式を1にしているのがポイントである。</p>
-<p>さて、今回はある行列<span class="math inline">\(iL\)</span>を指数の肩に乗せた<span class="math inline">\(\exp(ihL)\)</span>の表式が厳密に求められたが、そのためには<span class="math inline">\(iL\)</span>を対角化する必要があり、もし対角化できたら問題は解けたと同義である。そこで、<span class="math inline">\(\exp(ihL)\)</span>を近似することを考えよう。</p>
-<p>いま、行列<span class="math inline">\(iL\)</span>が、<span class="math inline">\(iL = A + B\)</span>と二つの行列の和で書けるとしよう。</p>
-<blockquote>
-<p>詳しい人向けの注：きちんとやるなら<span class="math inline">\(A\)</span>や<span class="math inline">\(B\)</span>にも虚数単位<span class="math inline">\(i\)</span>をつけて<span class="math inline">\(A\)</span>や<span class="math inline">\(B\)</span>をエルミートにすべきだが、式が煩雑になるので以下では<span class="math inline">\(A\)</span>や<span class="math inline">\(B\)</span>には虚数単位をつけないことにする。そのため、<span class="math inline">\(A,B\)</span>がエルミートではなく歪エルミートになっていることに注意。</p>
-</blockquote>
-<p>TODO: 真面目に虚数単位つけたほうがいいかなぁ。</p>
+<p>さて、今回はある行列<span class="math inline">\(L\)</span>を指数の肩に乗せた<span class="math inline">\(\exp(hL)\)</span>の表式が厳密に求められたが、そのためには<span class="math inline">\(L\)</span>を対角化する必要があり、もし対角化できたら問題は解けたと同義である。そこで、<span class="math inline">\(\exp(ihL)\)</span>を近似することを考えよう。</p>
+<p>いま、行列<span class="math inline">\(L\)</span>が、iL = A + B$と二つの行列の和で書けるとしよう。</p>
 <p>一般に<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>は非可換であるので、</p>
 <p><span class="math display">\[
 \mathrm{e}^{A+B} \neq \mathrm{e}^{A} \mathrm{e}^{B}
@@ -342,7 +350,7 @@ U(h)
 \mathrm{e}^{A/n} \mathrm{e}^{B/n}
 \right)^n
 \]</span></p>
-<p>これをリー・トロッター公式と言う。この式は<span class="math inline">\(n\)</span>を無限に飛ばすと厳密だが、それを有限で止めることで、以下のように近似できる。</p>
+<p>これをLie-Trotter公式と言う。この式は<span class="math inline">\(n\)</span>を無限に飛ばすと厳密だが、それを有限で止めることで、以下のように近似できる。</p>
 <p><span class="math display">\[
 \begin{aligned}
 \exp(h L) &amp;= \exp(h A) \exp(h B) + O(h^2) \\
@@ -561,17 +569,28 @@ A =
 <p>行列の積の行列式は、行列式の積になるから、<span class="math inline">\(\mathrm{e}^A\)</span>と<span class="math inline">\(\mathrm{e}^B\)</span>の積で作られる行列はかならず行列式が1となる。つまり、変換の面積要素が保存される。これが指数分解公式がシンプレクティック積分を作る理由となる。</p>
 <p>以上を行列の言葉でまとめておこう。</p>
 <ul>
-<li>ハミルトンの運動方程式に対応する時間微分行列(リュービル演算子)<span class="math inline">\(L\)</span>はエルミート行列となる</li>
-<li>エルミート行列<span class="math inline">\(L\)</span>に虚数単位をつけた<span class="math inline">\(iL\)</span>は歪エルミート行列となる</li>
-<li>時間発展行列<span class="math inline">\(U=\mathrm{e}^{iL}\)</span>は、歪エルミート行列<span class="math inline">\(iL\)</span>を指数関数の肩に乗せたものなので、ユニタリ行列になる</li>
+<li>ハミルトンの運動方程式に対応する時間微分行列<span class="math inline">\(L\)</span>は歪エルミート行列となる(これを嫌って、通常は時間微分演算子を<span class="math inline">\(iL\)</span>として、<span class="math inline">\(L\)</span>をエルミートに取る)</li>
+<li>時間発展行列<span class="math inline">\(U=\mathrm{e}^{L}\)</span>は、歪エルミート行列<span class="math inline">\(L\)</span>を指数関数の肩に乗せたものなので、ユニタリ行列になる</li>
 <li>ユニタリ行列の行列式は1となる。</li>
 <li>行列式が1となる行列による変換は、面積要素を保存する。これによりエネルギーが保存する。</li>
-<li>指数分解公式は、時間微分行列<span class="math inline">\(iL\)</span>を冪零行列の和<span class="math inline">\(A+B\)</span>で表し、時間発展演算子を冪零行列を指数の肩に乗せたもので表現する方法である。</li>
+<li>指数分解公式は、時間微分行列<span class="math inline">\(L\)</span>を冪零行列の和<span class="math inline">\(A+B\)</span>で表し、時間発展演算子を冪零行列を指数の肩に乗せたもので表現する方法である。</li>
 <li>冪零行列を指数の肩に乗せると行列式が1となるので、<span class="math inline">\(|\exp(h A)|=|\exp(h B)|=1\)</span>である。以上からこの積で作られた行列の行列式が1となり、時間発展がシンプレクティックとなる</li>
 </ul>
-<h2 id="微分演算子による表現">微分演算子による表現</h2>
-<p>調和振動子の場合は、リュービル演算子、時間発展演算子が行列で書けた。しかし、一般に時刻<span class="math inline">\(t\)</span>の座標<span class="math inline">\((p,q)\)</span>から時刻<span class="math inline">\(t+h\)</span>の座標<span class="math inline">\((P,Q)\)</span>への写像は非線形となり、それぞれの演算子が行列では書けない。この場合の指数分解公式と、シンプレクティック性について見てみよう。</p>
-<p>ハミルトンの運動方程式におけるリュービル演算子は以下のように書けるのであった。</p>
+<h3 id="liouville-operator">4.3.2 Liouville Operator</h3>
+<p>調和振動子の場合は、時間微分演算子、時間発展演算子が行列で書けた。しかし、一般に時刻<span class="math inline">\(t\)</span>の座標<span class="math inline">\((p,q)\)</span>から時刻<span class="math inline">\(t+h\)</span>の座標<span class="math inline">\((P,Q)\)</span>への写像は非線形となり、それぞれの演算子が行列では書けない。この場合の指数分解公式と、シンプレクティック性について見てみよう。</p>
+<p>一般の時間微分演算子を考える。</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+\dot{p} \\
+\dot{q}
+\end{pmatrix}
+= iL 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+\]</span></p>
+<p>ここに現れる演算子<span class="math inline">\(iL\)</span>を、Liouville Operatorと呼ぶ。ハミルトンの運動方程式におけるリュービル演算子は以下のように書ける。</p>
 <p><span class="math display">\[
 i \mathcal{L} = \underbrace{\frac{\partial H}{\partial p} \frac{\partial}{\partial q}}_{i\mathcal{L}_K} + \underbrace{ \left(-
 \frac{\partial H}{\partial q} \frac{\partial}{\partial p}\right)}_{i\mathcal{L}_V}
@@ -648,7 +667,7 @@ q
 <li>最後に更新された座標における力が<span class="math inline">\(h/2\)</span>だけ持続した場合の力積変化を計算する</li>
 </ol>
 <p>というアルゴリズムになっている。指数分解公式を使うというと難しく感じるが、要するに座標と運動量を更新する際、どちらかが止まっている(定数である)と思って、片方を更新するのを繰り返しているだけである。</p>
-<h2 id="velocity-velret法がシンプレクティックである証明">Velocity Velret法がシンプレクティックである証明</h2>
+<h3 id="symplecity-of-velocity-verlet-algorithm">4.3.3. Symplecity of Velocity Verlet Algorithm</h3>
 <p>では、最後にVV法が二次のシンプレクティック積分になっていることを示そう。自然ハミルトニアン</p>
 <p><span class="math display">\[
 H = p^2 + V(q)
