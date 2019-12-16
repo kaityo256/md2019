@@ -88,19 +88,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="運動方程式とリュービル演算子のエルミート性">運動方程式とリュービル演算子のエルミート性</h1>
+<h1 id="classical-mechanics">1 Classical Mechanics</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
 <p>ハミルトンの運動方程式が、位相空間にどのような「流れ」を作り、それがどのような意味を持つかを説明する。</p>
-<h2 id="運動方程式とは何か">運動方程式とは何か</h2>
-<p>簡単のため、一次元系を考えよう。単位質量の物体が位置<span class="math inline">\(x\)</span>にいて、力<span class="math inline">\(f\)</span>が働いている。すると、運動方程式は</p>
+<h2 id="euler-lagrange-equation">1.1 Euler-Lagrange equation</h2>
+<p>運動方程式とは、要するに<span class="math inline">\(F=ma\)</span>である。この性質を見ていこう。簡単のため、一次元系を考えよう。質量<span class="math inline">\(m\)</span>の物体が位置<span class="math inline">\(x\)</span>にいて、力<span class="math inline">\(f\)</span>が働いている。すると、運動方程式は</p>
 <p><span class="math display">\[
-\ddot{x} = f
+m\ddot{x} = f
 \]</span></p>
 <p>である。これは時間に関する二階微分方程式になっているが、<span class="math inline">\(\dot{x} = v\)</span>を導入し、一階の連立微分方程式にしたほうが後々都合が良いのでそうしよう。</p>
 <p><span class="math display">\[
 \begin{aligned}
 \dot{x} &amp;= v\\
-\dot{v} &amp;= f
+m\dot{v} &amp;= f
 \end{aligned}
 \]</span></p>
 <p>さて、この式の意味を考えてみよう。一階の連立微分方程式にしたことで、この系の状態は<span class="math inline">\((x,v)\)</span>を指定することで一意に定まる。逆に言えば<span class="math inline">\((x,v)\)</span>がこの系を記述する空間を張っている。この空間を位相空間と呼ぶ。</p>
@@ -116,15 +116,82 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \end{aligned}
 \]</span></p>
 <p>となる。図に書いてみるとわかるが、これは原点を中心とする、反時計周りのベクトル場を作っている。そういう意味において、運動方程式は位相空間に速度場を作る。</p>
-<p>さて、講義では詳細に触れないが、ラグランジアン<span class="math inline">\(L\)</span>を導入し、その時間積分を作用と呼ぶとき、その作用を最小にせよ、という要請(最小作用の原理)からオイラー・ラグランジュ方程式が導かれるのであった。さらに変数をからルジャンドル変換をすることによりハミルトニアンが導かれ、より対称性の高い運動方程式、ハミルトンの運動方程式が導かれる。以下では、ルジャンドル変換後の一般化座標<span class="math inline">\(q_i\)</span>と一般化運動量<span class="math inline">\(p_i\)</span>が張る位相空間を考える。</p>
-<p>いま、3次元<span class="math inline">\(N\)</span>粒子系を考える。すると座標<span class="math inline">\(q_i\)</span>,運動量<span class="math inline">\(q_i\)</span>がそれぞれ<span class="math inline">\(3N\)</span>個あるため、位相空間<span class="math inline">\(\vec{\Gamma} = (q_1, q_2, \cdots, q_{3N}, p_1, p_2, \cdots, p_{3N})\)</span>は<span class="math inline">\(6N\)</span>次元となる。この空間に 速度場<span class="math inline">\(\vec{\Gamma}\)</span>を定めるには、それぞれの成分<span class="math inline">\(\dot{q}_1, \cdots, \dot{p}_{3N}\)</span>全てを<span class="math inline">\(\{p_i, q_i\}\)</span>の関数として指定しなければならないから、合計<span class="math inline">\(6N\)</span>個の関数が必要になる。しかし、変分原理を使うと、その<span class="math inline">\(6N\)</span>個の関数がたった一つのスカラー関数から決まるのであった。そのスカラー関数をハミルトニアン<span class="math inline">\(H\)</span>と呼び、速度場は</p>
+<p>今、力がポテンシャル力<span class="math inline">\(V(x)\)</span>で記述されているとしよう。すると、運動方程式は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{x} &amp;= v\\
+m\dot{v} &amp;= -V&#39;(x)
+\end{aligned}
+\]</span></p>
+<p>ここで、以下のラグランジアンという量を導入する。</p>
+<p><span class="math display">\[
+\mathcal{L} = \frac{m\dot{x}^2}{2} - V(x)
+\]</span></p>
+<p>そして、ラグランジアンを時間積分した量を作用(Action)と呼ぼう。</p>
+<p><span class="math display">\[
+I = \int \mathcal{L} dt
+\]</span></p>
+<p>この時、作用が最小になるように運動が決まることを主張するのが最小作用の原理 (Least Action Principle)である。ラグランジアンの変分を取ろう。</p>
+<p><span class="math display">\[
+\delta \mathcal{L} = \frac{\partial \mathcal{L}}{\partial{\dot{x}}} \delta \dot{x} +\frac{\partial \mathcal{L}}{\partial{x}} \delta x
+\]</span></p>
+<p>これを積分すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\delta I &amp;= \int  \delta \mathcal{L}dt \\
+&amp;= \int \left(\frac{\partial \mathcal{L}}{\partial{\dot{x}}} \delta \dot{x} 
++ \frac{\partial \mathcal{L}}{\partial{x}} \delta x
+\right)dt \\
+&amp;= \int dt\left[-\frac{d}{dt}\left( \frac{\partial \mathcal{L}}{\partial{\dot{x}}}\right) + \frac{\partial \mathcal{L}}{\partial{x}}  \right]\delta xdt
+\end{aligned}
+\]</span></p>
+<p>これがいかなる変分<span class="math inline">\(\delta x\)</span>についても極値を取るという条件から、</p>
+<p><span class="math display">\[
+-\frac{d}{dt}\left( \frac{\partial \mathcal{L}}{\partial{\dot{x}}}\right) + \frac{\partial \mathcal{L}}{\partial{x}} = 0
+\]</span></p>
+<p>これがEuler-Lagrange 方程式である。これに</p>
+<p><span class="math display">\[
+\mathcal{L} = \frac{m \dot{x}^2}{2} - V(x)
+\]</span></p>
+<p>を代入すると、</p>
+<p><span class="math display">\[
+m\ddot{x} = -V&#39;(x)
+\]</span></p>
+<p>となり、これは<span class="math inline">\(F=ma\)</span>に他ならない。</p>
+<h2 id="hamiltonians-equation">1.2 Hamiltonian's equation</h2>
+<h3 id="energy-conservation">1.2.1 Energy Conservation</h3>
+<p>まず、<span class="math inline">\(x\)</span>の代わりに<span class="math inline">\(q\)</span>を用いることにしよう。そして、</p>
+<p><span class="math display">\[
+p = \frac{\partial \mathcal{L}}{\partial \dot{q}}
+\]</span></p>
+<p>により一般化運動量<span class="math inline">\(p\)</span>を導入し、LagrangianからLegendre変換によってハミルトンの運動方程式に移る。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= - \frac{\partial H}{\partial q} \\
+\dot{q} &amp;= \frac{\partial H}{\partial p} 
+\end{aligned}
+\]</span></p>
+<p>例えば、調和振動子であれば</p>
+<p><span class="math display">\[
+H = \frac{p^2}{2} + \frac{q^2}{2}
+\]</span></p>
+<p>というハミルトニアンを考えると、運動方程式は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= - q \\
+\dot{q} &amp;= p 
+\end{aligned}
+\]</span></p>
+<p>となる。この式の意味をもう少し見てみよう。</p>
+<p>今、世界(位相空間)は<span class="math inline">\((p,q)\)</span>で張られている。そのうちの一点を決めると、運動方程式により「次にどこに動くべきか」の「向き」が与えられる。先程の式は、位相空間の全てに「向き」を定めるので、どこかに「トレーサー」を置くと、あとはその「流れ」に従って動いていく。この点の軌跡が運動であった。すなわち運動方程式は、位相空間の点に対して「速度ベクトル場」を定義している。ハミルトニアンによって作られたベクトル場を「ハミルトンベクトル場(Hamiltonian Vector Field)」と呼ぶ。</p>
+<p>以下では、3次元<span class="math inline">\(N\)</span>粒子系を考える。座標<span class="math inline">\(q_i\)</span>,運動量<span class="math inline">\(q_i\)</span>がそれぞれ<span class="math inline">\(3N\)</span>個あるため、位相空間<span class="math inline">\(\vec{\Gamma} = (q_1, q_2, \cdots, q_{3N}, p_1, p_2, \cdots, p_{3N})\)</span>は<span class="math inline">\(6N\)</span>次元となる。この空間に速度場<span class="math inline">\(\vec{\Gamma}\)</span>を定めるには、それぞれの成分<span class="math inline">\(\dot{q}_1, \cdots, \dot{p}_{3N}\)</span>全てを<span class="math inline">\(\{p_i, q_i\}\)</span>の関数として指定しなければならないから、合計<span class="math inline">\(6N\)</span>個の関数が必要になる。しかし、変分原理を使うと、その<span class="math inline">\(6N\)</span>個の関数がたった一つのスカラー関数から決まるのであった。そのスカラー関数をハミルトニアン<span class="math inline">\(H\)</span>と呼び、速度場は</p>
 <p><span class="math display">\[
 \begin{aligned}
 \dot{p}_i &amp;= -\frac{\partial H}{\partial q_i}\\
 \dot{q}_i &amp;= \frac{\partial H}{\partial p_i}
 \end{aligned}
 \]</span></p>
-<p>と決まる。これをハミルトンの運動方程式と呼ぶ。繰り返しになるが、位相空間に一つスカラー関数を定めるだけで、全空間に流れ場を定めている。そう考えると不思議な気がしてくる。</p>
+<p>と決まる。繰り返しになるが、位相空間に一つスカラー関数を定めるだけで、全空間に流れ場を定めている。そう考えると不思議な気がしてくる。</p>
 <p>さて、この式を見るとただちにわかることがいくつかある。それは<span class="math inline">\(H\)</span>が時間不変量になることだ(ただし<span class="math inline">\(H\)</span>は時間に陽に依存しないとする)。</p>
 <p><span class="math inline">\(H\)</span>の時間微分を計算してみると、</p>
 <p><span class="math display">\[
@@ -145,8 +212,56 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 = 0
 \end{aligned}
 \]</span></p>
-<p>こうして<span class="math inline">\(H\)</span>が時間不変量になることがわかる。これはエネルギー保存則に対応している。これはよく知られているであろう。</p>
-<p>実は、もう一つ重要な性質がある。それは</p>
+<p>こうして<span class="math inline">\(H\)</span>が時間不変量になることがわかる。これはエネルギー保存則に対応している。これをもう少し見てみよう。</p>
+<p>また一次元調和振動子を考えよう。ハミルトニアンは</p>
+<p><span class="math display">\[
+H = \frac{p^2}{2} + \frac{q^2}{2}
+\]</span></p>
+<p>である。これは位相空間全体にわたって定義されたスカラー場である。この勾配を調べてみよう。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla H &amp;=
+\begin{pmatrix}
+\partial_p H \\
+\partial_q H \\
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}\\
+\end{aligned}
+\]</span></p>
+<p>これは、原点から放射状に伸びるベクトル場である。</p>
+<p>この勾配を用いると、運動方程式は</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+\dot{p} \\
+\dot{q}
+\end{pmatrix}
+&amp;= 
+\begin{pmatrix}
+- \partial_q H\\
+\partial_p H
+\end{pmatrix}\\
+&amp;= 
+\begin{pmatrix}
+0 &amp; -1 \\
+1 &amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+\partial_p H \\
+\partial_q H \\
+\end{pmatrix}\\
+&amp;= 
+\Omega \nabla H
+\end{aligned}
+\]</span></p>
+<p>ただし<span class="math inline">\(\Omega\)</span>は反対称行列である。これを見ると、ハミルトニアンの勾配を反時計回りに90度回したものがハミルトニアンベクトル場であることがわかる。必ずハミルトニアンの勾配の向きに直交した向きに進むのであるから、エネルギーが保存される。</p>
+<p>また、この式から、ハミルトンの運動方程式が本質的に回転であり、ハミルトニアン、すなわちエネルギーが回転半径にあたることもわかる。つまり、分子動力学法は、超巨大な位相空間における回転を計算しているに過ぎない。それを「薄目で見ると」タンパク質が動いたり、気泡が生成したりしているように見えるところが面白い。</p>
+<h3 id="flow-of-hamilton-dynamics">1.2.2 Flow of Hamilton Dynamics</h3>
+<p>ハミルトンの運動方程式にはもう一つ重要な性質がある。それは</p>
 <p><span class="math display">\[
 \sum_i 
 \left(
@@ -188,7 +303,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \frac{Df}{Dt} = 0
 \]</span></p>
 <p>となった。ここで<span class="math inline">\(D/Dt\)</span>はラグランジュ微分であり、流れに沿って見た物理量の変化である。流れに沿って見ると密度が変化しない、と言っているのだから、これは非圧縮流であることを意味する。</p>
-<h2 id="リュービル演算子と時間発展演算子">リュービル演算子と時間発展演算子</h2>
+<h2 id="liouville-operator">1.3 Liouville Operator</h2>
+<h3 id="liouville-operator-and-propagator">1.3.1 Liouville Operator and Propagator</h3>
 <p>ハミルトンの運動方程式は位相空間に非圧縮流を作ることがわかった。それが、演算子の言葉ではどう見えるかを見てみよう。そのために、時間発展演算子とリュービル演算子を定義する。</p>
 <p>以下簡単のため一自由度系を考える。ハミルトニアン<span class="math inline">\(H(p,q)\)</span>で記述される系の運動を考えよう。ここで、ハミルトニアンは時間に陽に依存しないものとする。運動方程式は以下のように記述される。</p>
 <p><span class="math display">\[
@@ -282,7 +398,7 @@ q
 U(h) = \exp\left(-i h L\right)
 \]</span></p>
 <p>という結果と同じである。</p>
-<h2 id="リュービル演算子のエルミート性">リュービル演算子のエルミート性</h2>
+<h3 id="hermiticity-of-liouville-operator">1.3.2 Hermiticity of Liouville Operator</h3>
 <p>さて、やや唐突だが、演算子エルミート性について考えてみよう。何か線形空間があり、その要素<span class="math inline">\(f\)</span>と<span class="math inline">\(g\)</span>の組に対してスカラー量を定める写像<span class="math inline">\((f,g)\)</span>を、<span class="math inline">\(f\)</span>と<span class="math inline">\(g\)</span>の内積と呼ぶのであった。この要素に作用する演算子<span class="math inline">\(X\)</span>がエルミートであるとは、<span class="math inline">\((Xf, g) = (f, Xg)\)</span>が成り立つことである。以下では、リュービル演算子がエルミートであることを示す。</p>
 <p>簡単のため、1自由度系を考える。位相空間は<span class="math inline">\(\vec{\Gamma}=(p,q)\)</span>で張られている。この空間に住む関数<span class="math inline">\(f(p,q), g(p,q)\)</span>を考え、その内積を以下のように定める。</p>
 <p><span class="math display">\[
