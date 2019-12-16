@@ -4,10 +4,22 @@ PANDOCOPT=--mathjax -t html --template=template
 PANDOC_TEXOPT=--highlight-style tango --latex-engine=lualatex -V documentclass=ltjarticle -V geometry:margin=1in
 README=$(shell ls */README.md)
 PDF=$(README:.md=.pdf)
+CATFILES= basic/README.pdf
+CATFILES+=pressure/README.pdf
+CATFILES+=temperature/README.pdf
+CATFILES+=integration/README.pdf
+CATFILES+=nosehoover/README.pdf
+CATFILES+=langevin/README.pdf
+CATFILES+=respa/README.pdf
+CATFILES+=liouville/README.pdf
+
 
 all: $(TARGET) index.html
 
 pdf: $(PDF)
+
+cat: $(PDF)
+	pdftk $(CATFILES) cat output md2019.pdf
 
 index.md: README.md
 	sed 's/README.md/index.html/' $< > $@
