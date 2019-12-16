@@ -1,4 +1,4 @@
-# Generalized Liouville's Theorem of non-Hamiltonian systems
+# 8. Generalized Liouville's Theorem of non-Hamiltonian systems
 
 ハミルトンの運動方程式に付随するLiouville演算子は必ずエルミートとなり、エルミートなリュービル演算子が位相空間に作る「流れ」は非圧縮となることを見た。分布関数は位相空間における流れの「密度場」に対応するため、非圧縮な流れ場では密度は一定、すなわち、分布関数が不変に保たれることがわかる(Liouvilleの定理)。
 
@@ -27,7 +27,7 @@ $$
 
 以下では、一般化された形でのLiouvilleの定理を導き、温度制御された系においてLiouville演算子がどのような性質を持つか議論する。
 
-## Jacobi's Formula
+## 8.1 Jacobi's Formula
 
 まず、位相空間$(p_i, q_i)$をまとめて$\vec{z} = (p_1, p_2, \cdots, p_{3N}, q_1, q_2, \cdots, q_{3N})=(z_1, \cdots, z_{6N})$と記述しよう。この系が時刻$t$から$t+h$まで時間発展発展し、$\vec{z}(t)$から$\vec{z}(t+h)$になったとしよう。
 
@@ -104,7 +104,7 @@ $$
 
 これが求めたい式であった。
 
-## Dynamics of Jacobian
+## 8.2 Dynamics of Jacobian
 
 さて、位相空間$\vec{z}$上に、ダイナミクス$\vec{z}$が与えられているとしよう。時刻$0$から時刻$t$への時間発展
 
@@ -205,7 +205,7 @@ $$
 
 となる。
 
-## Generalized Liouvllie's Theorem
+## 8.3 Generalized Liouvllie's Theorem
 
 今、位相空間が$\vec{z}$で張られており、ダイナミクス$\dot{\vec{z}}$が与えられているとする。そして、時刻$t=0$で$\vec{z}(0)$であった状態が、時間発展により時刻$t$で$\vec{z}(t)$になったとしよう。
 
@@ -278,13 +278,5 @@ d \vec{z}(t) =  d \vec{z}(0)
 $$
 
 通常のLiouvilleの定理が導かれた。先程の一般化Liouvilleの定理が、通常のLiouvilleの定理の自然な一般化になっていることがわかるであろう。
-
-シンプレクティック積分においては、時間積分スキームが位相空間体積を変化させないことが本質的であった。一般のダイナミクス、特に温度制御された系においても、同様に位相空間体積に関してある種の制約を課す数値積分法は構築可能であろうか。この問題については後ほど触れる。
-
-## Liouville's operator for thermostated dynamics
-
-TODO: 書く
-
-## 参考文献
 
 * M. E. Tuckerman et al. "On the classical statistical mechanics of non-Hamiltonian systems", Europhys. Lett. 45, 149 (1999).

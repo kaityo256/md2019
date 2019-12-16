@@ -411,7 +411,19 @@ $$
 
 ### 1.3.2 Hermiticity of Liouville Operator
 
-さて、やや唐突だが、演算子エルミート性について考えてみよう。何か線形空間があり、その要素$f$と$g$の組に対してスカラー量を定める写像$(f,g)$を、$f$と$g$の内積と呼ぶのであった。この要素に作用する演算子$X$がエルミートであるとは、$(Xf, g) = (f, Xg)$が成り立つことである。以下では、リュービル演算子がエルミートであることを示す。
+さて、やや唐突だが、演算子エルミート性について考えてみよう。何か線形空間があり、その要素$f$と$g$の組に対してスカラー量を定める写像$(f,g)$を、$f$と$g$の内積と呼ぶのであった。さて、この空間の要素に作用する演算子$X$について、
+
+$$
+(f, Xg) = (X^\dagger f, g)
+$$
+
+を満たす演算子$X^\dagger$を、$X$の随伴作用素(Adjoint Operator)と呼ぶ。もし随伴作用素が自分自身と等しい場合、すなわち、
+
+$$
+X^\dagger = X
+$$
+
+が成り立つ場合、この演算子$X$はエルミート演算子(Hermitian Operator)と呼ばれる。演算子$X$がエルミートである場合、$(Xf, g) = (f, Xg)$が成り立つ。以下では、リュービル演算子がエルミートであることを示す。
 
 簡単のため、1自由度系を考える。位相空間は$\vec{\Gamma}=(p,q)$で張られている。この空間に住む関数$f(p,q), g(p,q)$を考え、その内積を以下のように定める。
 
@@ -426,14 +438,14 @@ $$
 リュービル演算子は
 
 $$
-- i L = \dot{q} \frac{\partial }{\partial q}
+i L = \dot{q} \frac{\partial }{\partial q}
 +\dot{p} \frac{\partial }{\partial p}
 $$
 
 であったから、両辺に$i$をかけて、
 
 $$
-L = i \left(
+L = -i \left(
 \dot{p} \frac{\partial }{\partial p}
 +\dot{q} \frac{\partial }{\partial q}
 \right)
@@ -444,7 +456,7 @@ $$
 $$
 \begin{aligned}
 (f, Lg) &= \int d\Gamma f^* Lg \\
-&= \int d\Gamma f^*
+&= -\int d\Gamma f^*
 i \left(
 \dot{p} \frac{\partial }{\partial p}
 +\dot{q} \frac{\partial }{\partial q}
@@ -456,14 +468,14 @@ $$
 
 $$
 \begin{aligned}
-(f, Lg) &= \int d\Gamma f^* Lg \\
-&= -\int d\Gamma 
-i
+(f, Lg) 
+&= -\int d\Gamma f^* Lg \\
+&= \int d\Gamma i
 \left(
 \frac{\partial}{\partial p} \left(f^*  \dot{p} \right)g
 +  \frac{\partial}{\partial q} \left(f^* \dot{q} \right)g
 \right) \\
-&= -\int d\Gamma 
+&= \int d\Gamma 
 i 
 \left(
 \dot{p} \frac{\partial f^*}{\partial p} + \dot{q}\frac{\partial f^*}{\partial q}
