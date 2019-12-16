@@ -49,8 +49,10 @@
   * 5.1 Temperature Controll
   * 5.2 Nose-Hoover Method
   * 5.3 Problems on Nose-Hoover method
-* [Problems on Nose-Hoover method](ergodic/README.md)
-* [ランジュバン熱浴とH定理](langevin/README.md)
+* [6. Langevin Thermostat](langevin/README.md)
+  * 6.1 Langevin Equation
+  * 6.2 Euler-Maruyama Method
+  * 6.3 H Theorem
 * [Generalized Liouville's Theorem of non-Hamiltonian systems](liouville/README.md)
 * [Integration scheme for non-Hamliton systems](respa/README.md)
 
