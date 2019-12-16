@@ -88,24 +88,45 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="分子動力学法における温度制御">分子動力学法における温度制御</h1>
+<h1 id="nose-hoover-method">5. Nose-Hoover Method</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
+<h2 id="temperature-controll">5.1 Temperature Controll</h2>
 <p>熱力学における自然な変数には、内部エネルギーや圧力、体積、温度やエントロピーなどがある。これらの変数は示量性の量と示強性の量にわけることができる。さて、「お互いにかけてエネルギーになる示量性の量と示強性の量の組」は共役な量と呼ばれる。</p>
 <p>例えば体積<span class="math inline">\(V\)</span>と圧力<span class="math inline">\(P\)</span>、エントロピー<span class="math inline">\(S\)</span>と温度<span class="math inline">\(T\)</span>、粒子数<span class="math inline">\(N\)</span>と化学ポテンシャル<span class="math inline">\(\mu\)</span>が互いに共役であり、それぞれ前者が示量性、後者が示強性の量である。</p>
 <p>さて、世の中の量は「a priori」に認める量と、その量から導かれる量の二種類があるのであった。我々は一般に示量性の量をa prioriに認めることが多い。例えば「長さ」は知っているものとするから、体積<span class="math inline">\(V\)</span>はa prioriに認め、共役な量である圧力<span class="math inline">\(P\)</span>はそこから導かれる量とする。個数<span class="math inline">\(N\)</span>も基本的な量として、相方である化学ポテンシャル<span class="math inline">\(\mu\)</span>はそこから定義される量である。</p>
 <p>分子動力学法では、示強性の量を制御したい場合がある。先ほど、圧力<span class="math inline">\(P\)</span>を制御するのに、共役な量の相方である体積<span class="math inline">\(V\)</span>をコントロールした。これはわかりやすい。</p>
-<p>では、温度<span class="math inline">\(T\)</span>を制御するにはどうすればよいだろうか？圧力制御からの類推では、エントロピーをコントロールすることになるが、エントロピーとはどうやってコントロールすればよいのだろうか。そもそもエントロピーと温度、どちらが基本的な量であり、どちらを従属的な量であろうか？</p>
-<p>この問いへの回答は筆者の能力を超える。ここでは「両方の立場があり得る」とだけコメントしておく。例えば田崎さんの熱力学の教科書は温度を基本的な量に取ってエントロピーを導く形式であり、清水さんの教科書はエントロピーを基本的な量に取って温度を導く形式である。</p>
-<h2 id="nose-hoover法以外の方法">Nose-Hoover法以外の方法</h2>
+<p>では、温度<span class="math inline">\(T\)</span>を制御するにはどうすればよいだろうか？圧力制御からの類推では、エントロピーをコントロールすることになるが、エントロピーとはどうやってコントロールすればよいのだろうか。そもそもエントロピーと温度、どちらが基本的な量であり、どちらを従属的な量であろうか？この問いへの回答は筆者の能力を超える。ここでは「両方の立場があり得る」とだけコメントしておく。例えば田崎さんの熱力学の教科書は温度を基本的な量に取ってエントロピーを導く形式であり、清水さんの教科書はエントロピーを基本的な量に取って温度を導く形式である。</p>
+<p>いずれにせよ、「温度の制御」は、何を制御した結果が温度が制御されているのか、あまり自明でないことは指摘しておきたい。</p>
+<p>さて、熱力学、統計力学などで、系のサイズが大きくなると、ミクロカノニカルとカノニカルの差が小さくなることを学んだであろう。従って、もし事前に所望の温度<span class="math inline">\(T\)</span>に対応する全エネルギーの期待値<span class="math inline">\(\left&lt;H\right&gt;_T\)</span>がわかっていたなら、エネルギー<span class="math inline">\(E= \left&lt;H\right&gt;_T\)</span>を与えて時間発展させれば、所望の温度における物理量の期待値が得られる。</p>
+<p>しかし、そのためには、任意の温度におけるエネルギーの期待値がわかっていなければならない。</p>
+<p>温度とエネルギーの関係は、比熱(specific heat)<span class="math inline">\(C\)</span>を用いて</p>
+<p><span class="math display">\[
+C= \frac{\partial E}{\partial T}
+\]</span></p>
+<p>で表される。したがって、温度<span class="math inline">\(T\)</span>における全系のエネルギー<span class="math inline">\(E\)</span>は、</p>
+<p><span class="math display">\[
+E = \left&lt;H\right&gt; = \int_0^T C dT
+\]</span></p>
+<p>で与えられる。</p>
+<p>さて、エネルギーの期待値は分配関数<span class="math inline">\(Z\)</span>を用いて</p>
+<p><span class="math display">\[
+\left&lt;H\right&gt; = -\frac{\partial \ln Z}{\partial \beta}
+= k_B T^2 \frac{\partial \ln Z}{\partial T}
+\]</span></p>
+<p>で与えられる。すなわち、比熱の温度依存性<span class="math inline">\(C(T)\)</span>がわかる、ということは、その系の分配関数<span class="math inline">\(Z(T)\)</span>がわかる、ということと同義である。分配関数がわかるということは、その問題が解けているということになる。</p>
+<p>もちろん、通常は分配関数をあらかじめ求めることは困難であるから、比熱の温度依存性もシミュレーションを行う前にはわからない。従って、ある温度<span class="math inline">\(T\)</span>におけるエネルギーの期待値も事前にはわからないために、温度制御が必要になるのである。</p>
+<p>これまで、多くの温度制御法が提案されてきた。</p>
 <ul>
 <li>Velocity Scaling</li>
 <li>Gaussian Thermostat</li>
 <li>Berendsen Thermostat</li>
+<li>Nose-Hoover Thermostat</li>
+<li>Langevin Thermostat</li>
 </ul>
-<p>TODO: 書く</p>
-<h2 id="能勢の方法">能勢の方法</h2>
-<p>TODO: 書く？さらっと流すだけ？</p>
-<h2 id="能勢のハミルトニアンからnosehoover法へ">能勢のハミルトニアンからNoseHoover法へ</h2>
+<p>このうち、現在でも広く用いられているのはBerendsen、Nose-Hoover、そしてLangevinであろう。以下では、Nose-Hoover法について説明する。</p>
+<h2 id="nose-hoover-method-1">5.2 Nose-Hoover Method</h2>
+<h3 id="noses-hamiltonian-to-nose-hoover-method">5.2.1 Nose's Hamiltonian to Nose-Hoover Method</h3>
+<p>Andersenの方法では、系のサイズパラメタをスケールすることで圧力を制御した。同様に、能勢は時間をスケールすることで温度を制御する方法を考案した。</p>
 <p>能勢のハミルトニアンは以下で与えられる。</p>
 <p><span class="math display">\[
 H_\mathrm{Nose} = H(p/s, q) + \frac{p_s^2}{2Q} + \frac{\ln s}{\beta}
@@ -120,6 +141,7 @@ H_\mathrm{Nose} = H(p/s, q) + \frac{p_s^2}{2Q} + \frac{\ln s}{\beta}
 \end{aligned}
 \]</span></p>
 <p>ただし、<span class="math inline">\(\partial_1\)</span>は多変数関数の一つ目の変数に関する微分という意味である。</p>
+<p>能勢の方法は、スケール変換された現実の系が指定温度のカノニカル分布に従うというものだが、時間のスケーリングが煩雑であった。そこで、HooverはNoseの運動方程式を変形し、簡単な形にした。</p>
 <p>ここで、<span class="math inline">\(p/s = p&#39;\)</span>、<span class="math inline">\(dt&#39; = dt/s\)</span>という変換を考える。</p>
 <p>まず、<span class="math inline">\(q\)</span>について、<span class="math inline">\(p/s = p&#39;\)</span>を考えると、</p>
 <p><span class="math display">\[
@@ -171,7 +193,7 @@ p \frac{\partial H}{\partial p} - \frac{1}{\beta}
 \right)
 \end{aligned}
 \]</span> となり、これをNose-Hoover法と呼ぶ。この方程式が定常状態として指定の温度のカノニカル分布を持つことは後で証明する。</p>
-<h2 id="能勢の保存量">能勢の保存量</h2>
+<h3 id="noses-conserved-quantity">5.2.2 Nose's Conserved Quantity</h3>
 <p>先程の運動方程式は<span class="math inline">\((p,q,\zeta)\)</span>で閉じてしまい、<span class="math inline">\(s\)</span>に関する式が含まれていなかった。これについて見てみよう。</p>
 <p>もともと能勢のハミルトニアンはこのような形であった。</p>
 <p><span class="math display">\[
@@ -206,7 +228,7 @@ H_\mathrm{Nose} = H(p/s, q) + \frac{p_s^2}{2Q} + \eta
 \]</span></p>
 <p>が時間不変量になっていることがわかる。もともと能勢の方法では、ハミルトンの運動方程式に従うために、能勢のハミルトニアンが保存量となっていたのだが、変数変換を行ってハミルトンの運動方程式でなくなった今でも、これは時間不変量のままとなっている。この量を能勢の保存量、もしくはNose-Hoover保存量と呼ぶことがある。</p>
 <p><span class="math inline">\(\eta\)</span>そのものは時間発展には不必要だが、Nose-Hoover保存量を見ることで時間発展の精度を確認するために計算される場合がある。</p>
-<h2 id="nose-hoover法の別導出">Nose-Hoover法の別導出</h2>
+<h3 id="different-way-to-derive-nose-hoover-method">5.2.3 Different way to derive Nose-Hoover method</h3>
 <p>先程は能勢のハミルトニアンから導出された運動方程式を、変数変換することでNose-Hoover法が導出された。以下では逆に、「定常状態として指定の温度のカノニカル分布が実現するとしたら、運動方程式はどのような形でなければならないか」を考えてみよう。以下、簡単のために一自由度系を考える。</p>
 <p>今、カノニカル分布を実現したいハミルトニアン<span class="math inline">\(H_0(p,q)\)</span>があるとする。実現したい分布は</p>
 <p><span class="math display">\[
@@ -305,7 +327,7 @@ p\frac{\partial H}{\partial p} - \frac{1}{\beta}
 <li>自由度を追加した世界でのカノニカル分布を実現するように運動方程式を修正したもの</li>
 </ul>
 <p>に過ぎない。そこになんらかの物理的な意味を認めるかどうかは、研究者の間で意見が別れている。</p>
-<h2 id="nose-hooverの保存量">Nose-Hooverの保存量</h2>
+<h3 id="nose-hoover-conserved-quantity">5.2.4 Nose-Hoover Conserved Quantity</h3>
 <p>さて、Nose-Hoover法には、Noseのハミルトニアンに由来する保存量がある。この量を知らないものとして、導出してみよう。</p>
 <p>まず、Nose-Hoover法が実現する、拡張された空間におけるカノニカル分布は以下のように書かれる。</p>
 <p><span class="math display">\[
@@ -331,7 +353,150 @@ H_\mathrm{ex} = H + \frac{Q \zeta^2}{2}
 \dot{\eta} = \frac{\zeta}{\beta}
 \]</span></p>
 <p>定義から自明だが、<span class="math inline">\(H_\mathrm{ex} + \eta\)</span>は時間保存量となる。これは、Nose-Hoover保存量と一致する。能勢のハミルトニアンからNose-Hoover法を導出した時には、Nose-Hoover保存量は能勢のハミルトニアン由来という意味があったが、「分布関数がカノニカル分布になるべし」という立場からNose-Hoover法を導くと、拡張されたハミルトニアンの時間微分のゴミをキャンセルしただけのように見える。その物理的解釈については読者に委ねる。</p>
-<p>TODO: Nose-Hooverの一般化、Nose-Hoover-Family</p>
+<h2 id="problems-on-nose-hoover-method">5.3 Problems on Nose-Hoover method</h2>
+<p>Nose-Hoover法は実装が容易であり、他の熱浴(例えばVelocity Scaling法やBerendsenの方法)と違って厳密にカノニカル分布を定常状態に持つことから広く使われている。しかし、Nose-Hoover法で温度制御された系が、意図する状態にならない場合がある。広く知られているのは調和振動子にNose-Hoover法を適用するとエルゴード性が破れる例だが、他にもいくつか問題がある。以下ではNose-Hoover法を使う上での注意点について述べる。</p>
+<h3 id="ergodicity-of-the-nose-hoover-method">5.3.1 Ergodicity of the Nose-Hoover Method</h3>
+<p>Nose-Hoover法が保証するのは「位相空間をボルツマン重みに比例して走る」ということだけである。さらに「軌道が位相空間をくまなく走る」という条件が満たされて初めて、定常状態が指定温度のカノニカル分布となる。この条件をエルゴード性と呼ぶ。</p>
+<p>エルゴード性の定義は難しい。一般的には、時間平均とアンサンブル平均が等しいことを持ってエルゴード的であると定義する。逆に、時間平均とアンサンブル平均が一致しない場合、「エルゴード性が破れている」と表現する。厳密さを犠牲にした表現をすれば、力学系において「長時間極限で到達可能性のある領域全てに到達可能」であればエルゴード的、そうでなければ非エルゴード的と呼ぶ。</p>
+<p>さて、Nose-Hoover法は条件によってはエルゴード性を失うことが知られている。以下では、エルゴード性を失うとはどういうことか、エルゴード性はなぜ失われるか、どうすればエルゴード性を回復するかを見てみよう。</p>
+<p>一次元調和振動子系にNose-Hoover法を適用してみよう。質量を<span class="math inline">\(1\)</span>、目標温度を<span class="math inline">\(1\)</span>とすると、運動方程式は以下のようになる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= -q - p \zeta \\
+\dot{q} &amp;= p \\
+\dot{\zeta} &amp;= \frac{1}{Q}(p^2-1)
+\end{aligned}
+\]</span></p>
+<p>さて、この運動方程式が、<span class="math inline">\((p,q,\zeta)\)</span>空間でどのような流れを作っているか見てみよう。</p>
+<p>まず、ハミルトンの運動方程式由来の流れは以下の通り。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= -q \\
+\dot{q} &amp;= p 
+\end{aligned}
+\]</span></p>
+<p>この系は<span class="math inline">\(C = p^2 + q^2\)</span>、すなわち原点を中心とした円軌道を時間不変量に持つ。従って、この運動方程式は<span class="math inline">\((p,q)\)</span>空間において、原点を中心として反時計回りに回転する流れを作っている。</p>
+<p>Nose-Hoover法として追加された流れ場は以下の通り。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{dp}{dt} &amp;= -p\zeta \\
+\frac{d\zeta}{dt} &amp;= \frac{1}{Q}(p^2-1)
+\end{aligned}
+\]</span></p>
+<p>よく見ると、この微分方程式は変数分離形になっているために求積できる。</p>
+<p><span class="math display">\[
+\frac{dp}{d\zeta} = \frac{Q p\zeta}{(p^2-1)}
+\]</span></p>
+<p><span class="math display">\[
+\left(p - \frac{1}{p} \right)dp = -Q \zeta d\zeta
+\]</span></p>
+<p>ここから、以下の時間不変量を得る。</p>
+<p><span class="math display">\[
+C = \frac{p^2}{2} - \ln p + \frac{Q\zeta^2}{2}
+\]</span></p>
+<p>これは<span class="math inline">\((p,\zeta)\)</span>空間において閉曲線を作っており、先程の運動方程式はその閉曲線上を走る、やはり回転する流れを作っている。</p>
+<p>以上をまとめると、調和振動子+Nose-Hoover系は位相空間に以下のような流れ場を作っている。</p>
+<div class="figure">
+<img src="nhflow.png" alt="調和振動子+Nose-Hoover法の流れ" />
+<p class="caption">調和振動子+Nose-Hoover法の流れ</p>
+</div>
+<p>さて、調和振動子系のハミルトニアンは<span class="math inline">\(H=p^2/2 + q^2/2\)</span>である。この系においてカノニカル分布が実現するとは、分布関数<span class="math inline">\(f(p,q)\)</span>が、ボルツマン重み</p>
+<p><span class="math display">\[
+f \sim \exp(-\beta H)
+\]</span></p>
+<p>に従うことだ。ここで、エネルギーが高ければ高いほど、その分布の実現確率は指数関数的に低くなるが、ゼロではないことに注意したい。これから、調和振動子系にNose-Hoover法を適用すると、系に非自明な保存量が構築され、その結果としてエネルギーに下限、上限ができるためにカノニカル分布が実現しないことを示す。</p>
+<p>まず、<span class="math inline">\((p,q)\)</span>空間において回転しているので、極座標を取るのが自然であろう。以下のように<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((r, \zeta)\)</span>に変数変換する。</p>
+<p><span class="math display">\[
+\begin{aligned}
+p &amp;= r \cos \theta \\
+q &amp;= r \sin \theta \\
+\end{aligned}
+\]</span></p>
+<p>ここから<span class="math inline">\((r,\zeta, \zeta)\)</span>の運動方程式を導こう。</p>
+<p>まず、<span class="math inline">\(r^2/2 = p^2/2 + q^2/2\)</span>であるから、両辺を時間で微分すると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+r\dot{r} &amp;= p \dot{p} + q \dot{q} \\
+&amp;= p (-q-p\zeta) + pq \\
+&amp;= -p^2 \zeta \\
+&amp;= - r^2 \zeta \cos^2 \theta
+\end{aligned}
+\]</span></p>
+<p>以上から、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{r} &amp;= -r \zeta \cos^2 \theta \\
+\dot{\zeta} &amp;= \frac{1}{Q}(r^2 \cos^2 \theta - 1)
+\end{aligned}
+\]</span></p>
+<p>ここで、<span class="math inline">\(Q\)</span>が十分に大きい場合、<span class="math inline">\(r, \zeta\)</span>の運動は<span class="math inline">\(\theta\)</span>に比べて非常に遅くなるであろう。そこで、<span class="math inline">\(\theta\)</span>について平均を取る(断熱近似)。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d r}{dt} &amp;= - \frac{r \zeta}{2} \\
+\frac{d\zeta}{dt} &amp;= \frac{1}{Q}\left(\frac{r^2}{2} - 1\right)
+\end{aligned}
+\]</span></p>
+<p>これは<span class="math inline">\(r,\zeta\)</span>に関して変数分離形になっている。</p>
+<p><span class="math display">\[
+\frac{d r}{d \zeta} = - \frac{r\zeta}{2} \frac{Q}{\left(r^2/2 - 1\right)}
+\]</span></p>
+<p><span class="math display">\[
+\left(\frac{r}{2} - \frac{1}{r}\right) dr = -\frac{Q\zeta}{2} d\zeta
+\]</span></p>
+<p>ここから直ちに以下の時間不変量(第一積分)を得る。</p>
+<p><span class="math display">\[
+C = r^2 - \ln r + Q\zeta^2
+\]</span></p>
+<p>さて、<span class="math inline">\(Q \zeta^2\)</span>はゼロより大きいので、</p>
+<p><span class="math display">\[
+r^2 - \ln r \le C
+\]</span></p>
+<p>ここで<span class="math inline">\(r^2 - \ln r\)</span>は<span class="math inline">\(r\rightarrow 0\)</span>もしくは<span class="math inline">\(r\rightarrow \infty\)</span>で無限大となり、その間に最小値を取るような下に凸な関数である。それがある閾値以下に制限されているということは、<span class="math inline">\(r\)</span>のとり得る値に下限と上限が存在する、ということを意味する。</p>
+<div class="figure">
+<img src="r_range.png" alt="断熱近似によるエルゴード性の破れ" />
+<p class="caption">断熱近似によるエルゴード性の破れ</p>
+</div>
+<p>もともと<span class="math inline">\(H = r^2/2\)</span>であったから、これはエネルギーに非自明な下限と上限が設けられた、すなわち軌道が位相空間全体を埋め尽くさず、結果としてエルゴード性を失うことがわかる。</p>
+<p>ここでは<span class="math inline">\(Q\)</span>が大きいとして断熱近似を行ったが、実際にやってみると<span class="math inline">\(Q\)</span>がある程度小さくても実効的に変数分離が起きて、エルゴード性が破れることがわかる。</p>
+<p>たまに、エルゴード性が破れるのは系が単自由度である場合であり、多自由度系であれば問題ない、といった誤解を見かける。しかし、エルゴード性が破れるのは追加自由度<span class="math inline">\(\zeta\)</span>が系の部分自由度と強く結合して非自明な保存量を構築するからであった。従って、多自由度系であっても同様なことが起き得るので注意が必要である。</p>
+<p>この問題は早くから認識され、エルゴード性を回復する手法が提案された。最も簡単には、熱浴自由度を追加してしまう方法が考えられる。</p>
+<p>代表的なものの一つはKinetic-Moments法で、これは<span class="math inline">\(p\)</span>の高次のモーメントも制御する方法である。もう一つはNose-Hoover-Chain法で、追加自由度<span class="math inline">\(\zeta\)</span>も、別の自由度で温度制御しよう、という方法だ。いずれも自由度が追加されているため、断熱近似しても変数分離形にならず、結果としてエルゴード性が破れない。</p>
+<h3 id="non-uniform-steady-state">5.3.2 Non-uniform Steady State</h3>
+<p>Nose-Hoover法の問題として調和振動子でエルゴード性が破れる現象が有名であるが、実用上では他の現象が問題となることの方が多い。そのうちの一つは、「系の温度が非一様のまま定常状態となる」問題だ。</p>
+<p>Nose-Hoover法が制御するのは「系全体の温度」つまり平均温度である。従って、平均温度が指定の温度になっていればNose-Hoover法から見れば温度が制御できているように見える。しかし、なんらかの原因により高温の領域と低温領域にわかれてしまい、それが定常化する場合がある。</p>
+<p>典型例は相分離する系である。例えば液滴と気相の共存状態を作ろうとして、最初に真空中に液滴を置いて蒸発させることで定常状態を作ろうとすると、液滴は気化熱により温度が下がり、その分Nose-Hoover法は全体の温度を上げて対応しようとするため、低温の液滴と高温の蒸気に分かれて安定化してしまう。液滴と蒸気の相互作用は非常に弱いため、現実的な時間では温度が一様にならない。</p>
+<div class="figure">
+<img src="phase_separation.png" alt="温度が非一様のまま定常化" />
+<p class="caption">温度が非一様のまま定常化</p>
+</div>
+<p>上図は、二種の合金が相分離した例だ。Nose-Hoover法は全体だけを見て温度を制御した気になっているが、実はA原子とB原子それぞれの温度を見ると、異なる温度で固定されてしまっている。Langevin系では、全体も、A、B原子個別に見ても同じ温度に緩和していることがわかる。</p>
+<p>この問題は、Nose-Hoover系のみならず、系全体の平均運動エネルギーを制御する熱浴(Velocity-Scaling, Berendsen, Kinetic-Momentsその他の他自由度熱浴)全てで起きる可能性がある。なお、Langevin熱浴は各自由度ごとに制御がかかるため、このような問題は生じない。</p>
+<h3 id="non-trivial-oscillation">5.3.3 Non-trivial Oscillation</h3>
+<p>Nose-Hoover法は、新たに追加した自由度<span class="math inline">\(\zeta\)</span>が、<span class="math inline">\((p,\zeta)\)</span>空間に回転流れを作ることは既に述べた。Nose-Hoover法を用いると、この回転に由来する「振動」が系に導入される。</p>
+<div class="figure">
+<img src="spectra.png" alt="熱浴による振動" />
+<p class="caption">熱浴による振動</p>
+</div>
+<p>上左図は、熱浴をつけてない場合とつけた場合の系の温度の時間発展だ。熱浴をつけていない系はおよそ1.3の温度を持つが、熱浴で<span class="math inline">\(T=1\)</span>に制御した系は、意図通り温度が1付近で揺らいでいるように見える。</p>
+<p>この温度の時間変化をフーリエ変換し、パワースペクトルを見てみよう。熱浴をつけていない場合は、原点に強いピークが立つが、それ以外の成分はほとんどゼロ、すなわちこの系の温度ゆらぎは、ほぼホワイトノイズとみなすことができる。</p>
+<p>しかし、熱浴をつけた場合は、スペクトルに熱浴由来のピークが立つ。静的な性質を調べている場合はあまり問題とならないが、何かのゆらぎやスペクトルを調べている場合には、熱浴由来の振動と干渉しないように十分に注意しなければならない。この問題は温度を一階の遅れで制御するNose-Hoover系特有の問題であり、Velocity-Scaling法やBerendsen法では起きない。</p>
+<h3 id="slow-relaxation-of-configuration-temperature">5.3.4 Slow relaxation of Configuration Temperature</h3>
+<p>温度には「運動温度(Kinetic Tempearture)」と「状態温度(Configuration Temperature)」があることは既に述べた。それぞれ</p>
+<p><span class="math display">\[
+\left&lt;p \frac{\partial H}{\partial p} \right&gt; = k_B T
+\]</span></p>
+<p><span class="math display">\[
+\left&lt;q \frac{\partial H}{\partial q} \right&gt; = k_B T
+\]</span></p>
+<p>と定義され、カノニカル分布について部分積分すると上記の式が証明できる。これらは平衡状態では一致するが、非平衡状態では一般に一致しない。</p>
+<p>我々が温度依存性を知りたいのは、運動エネルギー部分ではなく、状態部分であることが多い。Nose-Hoover法を始めとする多くの熱浴は、運動温度を制御することで、「そのうち状態温度も指定の温度に緩和するだろう」ということを期待するが、一般に運動温度に比べて状態温度の緩和は遅い。</p>
+<div class="figure">
+<img src="two_t.png" alt="二つの温度" />
+<p class="caption">二つの温度</p>
+</div>
+<p>上図は、FCCに組んだLJ原子系の運動温度と状態温度の緩和を見たものだ。なお、温度制御はしておらず、純粋にハミルトンの運動方程式を解いている(そのため、運動温度が振動していない)。二つの温度は最終的に一致するが、二つの温度が異なることがわかるであろう。</p>
+<p>特に系が相分離する場合や、ガラス系に見られるような遅い構造緩和を持つ場合は、状態温度の緩和は非常に遅くなる。このような時、運動温度しかモニターしていないと、自分が意図する温度とはずれた状態温度における振る舞いを観測してしまうので注意が必要である。</p>
+<p>この問題は、決定論熱浴だけでなく、Langevin法などの確率的熱浴でも起こり得る。</p>
 </article>
 </body>
 </html>

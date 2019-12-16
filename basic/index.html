@@ -399,7 +399,15 @@ U(h) = \exp\left(-i h L\right)
 \]</span></p>
 <p>という結果と同じである。</p>
 <h3 id="hermiticity-of-liouville-operator">1.3.2 Hermiticity of Liouville Operator</h3>
-<p>さて、やや唐突だが、演算子エルミート性について考えてみよう。何か線形空間があり、その要素<span class="math inline">\(f\)</span>と<span class="math inline">\(g\)</span>の組に対してスカラー量を定める写像<span class="math inline">\((f,g)\)</span>を、<span class="math inline">\(f\)</span>と<span class="math inline">\(g\)</span>の内積と呼ぶのであった。この要素に作用する演算子<span class="math inline">\(X\)</span>がエルミートであるとは、<span class="math inline">\((Xf, g) = (f, Xg)\)</span>が成り立つことである。以下では、リュービル演算子がエルミートであることを示す。</p>
+<p>さて、やや唐突だが、演算子エルミート性について考えてみよう。何か線形空間があり、その要素<span class="math inline">\(f\)</span>と<span class="math inline">\(g\)</span>の組に対してスカラー量を定める写像<span class="math inline">\((f,g)\)</span>を、<span class="math inline">\(f\)</span>と<span class="math inline">\(g\)</span>の内積と呼ぶのであった。さて、この空間の要素に作用する演算子<span class="math inline">\(X\)</span>について、</p>
+<p><span class="math display">\[
+(f, Xg) = (X^\dagger f, g)
+\]</span></p>
+<p>を満たす演算子<span class="math inline">\(X^\dagger\)</span>を、<span class="math inline">\(X\)</span>の随伴作用素(Adjoint Operator)と呼ぶ。もし随伴作用素が自分自身と等しい場合、すなわち、</p>
+<p><span class="math display">\[
+X^\dagger = X
+\]</span></p>
+<p>が成り立つ場合、この演算子<span class="math inline">\(X\)</span>はエルミート演算子(Hermitian Operator)と呼ばれる。演算子<span class="math inline">\(X\)</span>がエルミートである場合、<span class="math inline">\((Xf, g) = (f, Xg)\)</span>が成り立つ。以下では、リュービル演算子がエルミートであることを示す。</p>
 <p>簡単のため、1自由度系を考える。位相空間は<span class="math inline">\(\vec{\Gamma}=(p,q)\)</span>で張られている。この空間に住む関数<span class="math inline">\(f(p,q), g(p,q)\)</span>を考え、その内積を以下のように定める。</p>
 <p><span class="math display">\[
 (f,g) \equiv \int d \Gamma f^* g 
@@ -408,12 +416,12 @@ U(h) = \exp\left(-i h L\right)
 <p>さて、リュービル演算子がエルミートであることを示すには、<span class="math inline">\(L\)</span>に対して、<span class="math inline">\((Lf,g) = (f, Lg)\)</span>を示せば良い。</p>
 <p>リュービル演算子は</p>
 <p><span class="math display">\[
-- i L = \dot{q} \frac{\partial }{\partial q}
+i L = \dot{q} \frac{\partial }{\partial q}
 +\dot{p} \frac{\partial }{\partial p}
 \]</span></p>
 <p>であったから、両辺に<span class="math inline">\(i\)</span>をかけて、</p>
 <p><span class="math display">\[
-L = i \left(
+L = -i \left(
 \dot{p} \frac{\partial }{\partial p}
 +\dot{q} \frac{\partial }{\partial q}
 \right)
@@ -422,7 +430,7 @@ L = i \left(
 <p><span class="math display">\[
 \begin{aligned}
 (f, Lg) &amp;= \int d\Gamma f^* Lg \\
-&amp;= \int d\Gamma f^*
+&amp;= -\int d\Gamma f^*
 i \left(
 \dot{p} \frac{\partial }{\partial p}
 +\dot{q} \frac{\partial }{\partial q}
@@ -432,14 +440,14 @@ i \left(
 <p>ここで、部分積分をすることで、<span class="math inline">\(g\)</span>にかかっている微分を<span class="math inline">\(f\)</span>に移す。</p>
 <p><span class="math display">\[
 \begin{aligned}
-(f, Lg) &amp;= \int d\Gamma f^* Lg \\
-&amp;= -\int d\Gamma 
-i
+(f, Lg) 
+&amp;= -\int d\Gamma f^* Lg \\
+&amp;= \int d\Gamma i
 \left(
 \frac{\partial}{\partial p} \left(f^*  \dot{p} \right)g
 +  \frac{\partial}{\partial q} \left(f^* \dot{q} \right)g
 \right) \\
-&amp;= -\int d\Gamma 
+&amp;= \int d\Gamma 
 i 
 \left(
 \dot{p} \frac{\partial f^*}{\partial p} + \dot{q}\frac{\partial f^*}{\partial q}

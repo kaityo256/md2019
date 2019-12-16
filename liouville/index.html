@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="generalized-liouvilles-theorem-of-non-hamiltonian-systems">Generalized Liouville's Theorem of non-Hamiltonian systems</h1>
+<h1 id="generalized-liouvilles-theorem-of-non-hamiltonian-systems">8. Generalized Liouville's Theorem of non-Hamiltonian systems</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
 <p>ハミルトンの運動方程式に付随するLiouville演算子は必ずエルミートとなり、エルミートなリュービル演算子が位相空間に作る「流れ」は非圧縮となることを見た。分布関数は位相空間における流れの「密度場」に対応するため、非圧縮な流れ場では密度は一定、すなわち、分布関数が不変に保たれることがわかる(Liouvilleの定理)。</p>
 <p>Liouvilleの定理は、時間発展に伴って位相空間体積が変化しないことを主張する。例えば一自由度系<span class="math inline">\((p,q)\)</span>において、時間<span class="math inline">\(h\)</span>後に<span class="math inline">\((P,Q)\)</span>に系が変化した時、その前後で位相空間体積が変化しないとは、</p>
@@ -109,7 +109,7 @@ dpdq
 <p>である。ただし、<span class="math inline">\(J\)</span>は<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((P,Q)\)</span>への変換のヤコビアンである。<span class="math inline">\(dPdQ = dpdq\)</span>が成り立つのであるから、Liouvilleの定理は力学系に付随するヤコビアンが常に1となることを主張する。</p>
 <p>では、熱浴をつけ、定常状態がカノニカル分布となる場合はどうだろうか？当然、分布関数が時間変化するため、位相空間体積も一定ではなく、ヤコビアンも時間変化する。この時、Liouvilleの定理と同様なことが言えないだろうか？</p>
 <p>以下では、一般化された形でのLiouvilleの定理を導き、温度制御された系においてLiouville演算子がどのような性質を持つか議論する。</p>
-<h2 id="jacobis-formula">Jacobi's Formula</h2>
+<h2 id="jacobis-formula">8.1 Jacobi's Formula</h2>
 <p>まず、位相空間<span class="math inline">\((p_i, q_i)\)</span>をまとめて<span class="math inline">\(\vec{z} = (p_1, p_2, \cdots, p_{3N}, q_1, q_2, \cdots, q_{3N})=(z_1, \cdots, z_{6N})\)</span>と記述しよう。この系が時刻<span class="math inline">\(t\)</span>から<span class="math inline">\(t+h\)</span>まで時間発展発展し、<span class="math inline">\(\vec{z}(t)\)</span>から<span class="math inline">\(\vec{z}(t+h)\)</span>になったとしよう。</p>
 <p><span class="math display">\[
 \vec{z}(t) \xrightarrow{h} \vec{z}(t+h)
@@ -163,7 +163,7 @@ J(t+h|t) \equiv \frac{\partial \vec{z}(t+h)}{\partial \vec{z}(t)}
 \frac{d}{dt}\det A = \det A \mathrm{Tr} \left(A^{-1} \frac{d A}{dt} \right)
 \]</span></p>
 <p>これが求めたい式であった。</p>
-<h2 id="dynamics-of-jacobian">Dynamics of Jacobian</h2>
+<h2 id="dynamics-of-jacobian">8.2 Dynamics of Jacobian</h2>
 <p>さて、位相空間<span class="math inline">\(\vec{z}\)</span>上に、ダイナミクス<span class="math inline">\(\vec{z}\)</span>が与えられているとしよう。時刻<span class="math inline">\(0\)</span>から時刻<span class="math inline">\(t\)</span>への時間発展</p>
 <p><span class="math display">\[
 \vec{z}(0) \xrightarrow{h} \vec{z}(t)
@@ -233,7 +233,7 @@ X_{ij} = \frac{\partial \dot{z_t^i}}{\partial z_t^j}
 \frac{dJ}{dt} = J  \nabla \cdot  \dot{\vec{z}}
 \]</span></p>
 <p>となる。</p>
-<h2 id="generalized-liouvllies-theorem">Generalized Liouvllie's Theorem</h2>
+<h2 id="generalized-liouvllies-theorem">8.3 Generalized Liouvllie's Theorem</h2>
 <p>今、位相空間が<span class="math inline">\(\vec{z}\)</span>で張られており、ダイナミクス<span class="math inline">\(\dot{\vec{z}}\)</span>が与えられているとする。そして、時刻<span class="math inline">\(t=0\)</span>で<span class="math inline">\(\vec{z}(0)\)</span>であった状態が、時間発展により時刻<span class="math inline">\(t\)</span>で<span class="math inline">\(\vec{z}(t)\)</span>になったとしよう。</p>
 <p>この系がハミルトンダイナミクスであった場合は、時間発展の前後で位相空間体積が保存する、すなわち</p>
 <p><span class="math display">\[
@@ -280,10 +280,6 @@ d \vec{z}(t) =  \exp\left(\omega(t) - \omega(0)  \right) d \vec{z}(0)
 d \vec{z}(t) =  d \vec{z}(0)
 \]</span></p>
 <p>通常のLiouvilleの定理が導かれた。先程の一般化Liouvilleの定理が、通常のLiouvilleの定理の自然な一般化になっていることがわかるであろう。</p>
-<p>シンプレクティック積分においては、時間積分スキームが位相空間体積を変化させないことが本質的であった。一般のダイナミクス、特に温度制御された系においても、同様に位相空間体積に関してある種の制約を課す数値積分法は構築可能であろうか。この問題については後ほど触れる。</p>
-<h2 id="liouvilles-operator-for-thermostated-dynamics">Liouville's operator for thermostated dynamics</h2>
-<p>TODO: 書く</p>
-<h2 id="参考文献">参考文献</h2>
 <ul>
 <li>M. E. Tuckerman et al. &quot;On the classical statistical mechanics of non-Hamiltonian systems&quot;, Europhys. Lett. 45, 149 (1999).</li>
 </ul>
