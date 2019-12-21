@@ -4,7 +4,7 @@
 
 ## この文書について
 
-これは金沢大学で行われる集中講義の講義ノートにする予定。
+これは2019年12月18日から20日にかけて金沢大学で行われた集中講義「分子動力学法の理論と実装」の講義ノートです。
 
 [HTML版はこちら](https://kaityo256.github.io/md2019/)
 
@@ -18,7 +18,7 @@
 
 以上から、本講義は、分子動力学法の理論的側面と実装の両面について扱う。分子動力学法には様々な種類があるが、ここでは短距離相互作用をする古典系のみ考慮する。分子動力学法は長い歴史があり、「枯れた技術」と思われがちだが、中身は意外に奥が深い。本講義を通じて、少しでも分子動力学法は面白いな、と思ってもらえたら幸いである。
 
-* 0\. Introduction
+* 0\. Introduction [Slides](https://speakerdeck.com/kaityo256/md2019-introduction)
     * What is MD?
     * Questions about MD
     * Purpose of this lecture
@@ -54,11 +54,11 @@
     * 8.1 Jacobi's Formula
     * 8.2 Dynamics of Jacobian
     * 8.3 Generalized Liouvllie's Theorem
-* 9\. Implementations and Optimization
+* 9\. Implementations and Optimization [Slides](https://speakerdeck.com/kaityo256/md2019-implementations-and-optimization)
     * 9.1 Architecture of Computer
     * 9.2 Memory Optimization
     * 9.3 Architecture Dependent Optimization
-* 10\. Programming Design
+* 10\. Programming Design [Slides](https://speakerdeck.com/kaityo256/md2019-programming-design)
     * 10.1 Module Coupling
     * 10.2 Design for Parallelization
 
