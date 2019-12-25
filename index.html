@@ -87,22 +87,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="分子動力学法の理論と実装">分子動力学法の理論と実装</h1>
+<h1 id="molecular-dynamics-method-theory-and-implementation">Molecular Dynamics Method: Theory and Implementation</h1>
 <a href="https://github.com/kaityo256/md2019">
 <div class="btn-square">
 <i class="fab fa-github"></i> View on GitHub
 </div>
 <p></a></p>
-<h2 id="この文書について">この文書について</h2>
-<p>これは2019年12月18日から20日にかけて金沢大学で行われた集中講義「分子動力学法の理論と実装」の講義ノートです。</p>
-<p><a href="https://kaityo256.github.io/md2019/">HTML版はこちら</a></p>
-<p><a href="https://kaityo256.github.io/md2019/md2019.pdf">PDF版はこちら</a></p>
-<h2 id="本講義の概要と目的">本講義の概要と目的</h2>
-<p>分子動力学法(Moleclar Dynamics method, MD)とは、ニュートンもしくはハミルトンの運動方程式を数値的に解くことで粒子系を時間発展させる手法である。原子や分子、あるいはそれを粗視化した「つぶつぶ」の間にかかる力を計算し、その力によって速度を更新し、その速度によって位置を更新する、というプロセスを繰り返す。MDの基礎方程式が運動方程式という身近なものであることから、なんとなく「とっつきやすい」「わかりやすい」手法のように見える。しかし、MDという手法を突き詰めて考えてみるとだんだんよくわからなくなってくる。ここで温度と言っているのはどういう量なのか？圧力とは何か？そもそもMDにおける時間発展とはなんなのか？</p>
-<p>とりあえず分子動力学法の物理的な意味はさておこう。実際に使うにはプログラムを書かなければならない。LAMMPSなど既存のコードを使うにしても、「温度制御」や「圧力制御」が実際に何をやっているのかわからなければ、何か間違った結果を得たとしてもそれに気づくことは難しいであろう。また、完全にブラックボックスにするよりも、裏で使われている高速化手法等について知っておくのは有用であろう。</p>
-<p>以上から、本講義は、分子動力学法の理論的側面と実装の両面について扱う。分子動力学法には様々な種類があるが、ここでは短距離相互作用をする古典系のみ考慮する。分子動力学法は長い歴史があり、「枯れた技術」と思われがちだが、中身は意外に奥が深い。本講義を通じて、少しでも分子動力学法は面白いな、と思ってもらえたら幸いである。</p>
+<h2 id="about-this-document">About this document</h2>
+<p>This is a lecture note for an intensive lecture at Kanazawa University (from Dec. 18 to 20, 2019).</p>
+<p><a href="https://kaityo256.github.io/md2019/">HTML</a></p>
+<p><a href="https://kaityo256.github.io/md2019/md2019.pdf">PDF (Written in Japanese)</a></p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<p>All notes are written in Japanese and slides are written in English.</p>
 <ul>
-<li>0. Introduction <a href="https://speakerdeck.com/kaityo256/md2019-introduction">Slides</a>
+<li>0. <a href="about/index.html">Introduction</a> <a href="https://speakerdeck.com/kaityo256/md2019-introduction">[Slides]</a>
 <ul>
 <li>What is MD?</li>
 <li>Questions about MD</li>
@@ -156,13 +154,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>8.2 Dynamics of Jacobian</li>
 <li>8.3 Generalized Liouvllie's Theorem</li>
 </ul></li>
-<li>9. Implementations and Optimization <a href="https://speakerdeck.com/kaityo256/md2019-implementations-and-optimization">Slides</a>
+<li>9. Implementations and Optimization <a href="https://speakerdeck.com/kaityo256/md2019-implementations-and-optimization">[Slides]</a>
 <ul>
 <li>9.1 Architecture of Computer</li>
 <li>9.2 Memory Optimization</li>
 <li>9.3 Architecture Dependent Optimization</li>
 </ul></li>
-<li>10. Programming Design <a href="https://speakerdeck.com/kaityo256/md2019-programming-design">Slides</a>
+<li>10. Programming Design <a href="https://speakerdeck.com/kaityo256/md2019-programming-design">[Slides]</a>
 <ul>
 <li>10.1 Module Coupling</li>
 <li>10.2 Design for Parallelization</li>
