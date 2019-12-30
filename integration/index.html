@@ -213,9 +213,13 @@ p(t+h) &amp;= p - \frac{q(t+h) + q(t)}{2} h\\
 \]</span></p>
 <p>エネルギーの保存を確認すると、</p>
 <p><span class="math display">\[
-p(t+h)^2 + q(t+h)^2 = p^2 + q^2
+p(t+h)^2 + \left(1-\frac{h^2}{4}\right)q(t+h)^2 = p^2 + \left(1-\frac{h^2}{4}\right)q^2
 \]</span></p>
-<p>となっており、VV法はステップが進んでもエネルギーが厳密に保存される。実はVV法は、シンプレクティック積分と呼ばれる手法の一種になっている。シンプレクティック積分は、軌道は厳密解からずれるものの、エネルギーが厳密に保存するために長時間の安定した計算を可能とするため、分子動力学法で広く使われている。</p>
+<p>となっている。つまり、<span class="math inline">\(H = (p^2+q^2)/2\)</span>の代わりに、</p>
+<p><span class="math display">\[
+\tilde{H} = \frac{p^2}{2} + \left(1-\frac{h^2}{4}\right)\frac{q^2}{2}
+\]</span></p>
+<p>が厳密に保存される。<span class="math inline">\(h\rightarrow 0\)</span>で、<span class="math inline">\(\tilde{H} \rightarrow H\)</span>になることに注意しよう。VV法はステップが進んでも、もとのエネルギーからややずれた量が厳密に保存される。実はVV法は、シンプレクティック積分と呼ばれる手法の一種になっている。シンプレクティック積分は、軌道は厳密解からずれるものの、ずれたエネルギーが厳密に保存するため、長時間計算してもエネルギーが一方的にずれたりせず、安定した計算を可能となる。この、シンプレクティック積分が厳密に保存する「少しずれたハミルトニアン」を、「影のハミルトニアン」と呼んだりする。「影のハミルトニアン」の厳密な形が知られているのは線形の時のみである。これについては後述する。</p>
 <p>VV法でエネルギーが保存する理由をもう少し詳しく見てみよう。シミュレーションによる時間発展とは、次の時刻<span class="math inline">\(t+h\)</span>における<span class="math inline">\(p(t+h), q(t+h)\)</span>を、時刻<span class="math inline">\(t\)</span>の座標<span class="math inline">\(p(t),q(t)\)</span>で表現することである。簡単のため、以下では<span class="math inline">\(P = p(t+h), Q = q(t+h)\)</span>と表記することにすると、時間発展は<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((P,Q)\)</span>への座標変換とみなすことができる。一般のこの変換は非線形だが、調和振動子の場合にはこの変形が線形となり、行列で表現することができる。</p>
 <p>調和振動子にオイラー法を適用した場合を見てみよう。</p>
 <p><span class="math display">\[
@@ -721,6 +725,217 @@ P &amp;= p + \frac{f(t) + f(t+h)}{2} h
 </ol>
 <p>というステップを繰り返しつつ、もし座標の情報が欲しい場合は時刻を<span class="math inline">\(h/2\)</span>だけずらす、という方法が考えられた。これは座標と運動量が時間<span class="math inline">\(h/2\)</span>だけずれて交互に更新されるように見えることからLeap-frog法と呼ばれる。</p>
 <p>やっている計算は一次のシンプレクティック積分と変わらないのだが、観測のタイミングが異なると二次になるのが面白い点である。</p>
+<h3 id="shadow-hamiltonian">4.3.4 Shadow Hamiltonian</h3>
+<p>シンプレクティック積分は、元のハミルトニアンから少しだけずれた「影のハミルトニアン」を厳密に保存する。一般に影のハミルトニアンが存在するか、存在するとして時間刻みに対する収束半径はどれくらいかは知られていないが、系が線形の場合は影のハミルトニアンを厳密に求めることができる。</p>
+<p>以下、一次元調和振動子系において影のハミルトニアンを求めてみよう。</p>
+<p>運動方程式は以下の通り。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{p} &amp;= -q\\
+\dot{q} &amp;= p
+\end{aligned}
+\]</span></p>
+<p>リュービル演算子に対応する時間微分行列は</p>
+<p><span class="math display">\[
+L =
+\begin{pmatrix}
+0 &amp; -1\\
+1 &amp; 0
+\end{pmatrix}
+\]</span></p>
+<p>となる。これを</p>
+<p><span class="math display">\[
+\begin{aligned}
+L &amp;= L_A + A_B \\
+&amp;=
+\begin{pmatrix}
+0 &amp; -1\\
+0 &amp; 0
+\end{pmatrix}
++
+\begin{pmatrix}
+0 &amp; 0\\
+1 &amp; 0
+\end{pmatrix}
+\end{aligned}
+\]</span></p>
+<p>と分離しよう。時間発展行列<span class="math inline">\(U\)</span>は</p>
+<p><span class="math display">\[
+U(h) = \mathrm{e}^{h(L_A+L_B)}
+\]</span></p>
+<p>であるが、これを</p>
+<p><span class="math display">\[
+\begin{aligned}
+A &amp;\equiv \mathrm{e}^{hL_A} =  
+\begin{pmatrix}
+0 &amp; -h\\
+0 &amp; 0
+\end{pmatrix} \\
+B &amp;\equiv \mathrm{e}^{hL_B} =  
+\begin{pmatrix}
+0 &amp; 0\\
+h &amp; 0
+\end{pmatrix} 
+\end{aligned}
+\]</span></p>
+<p>で近似することを考えよう。</p>
+<p>もともと、<span class="math inline">\(p^2+q^2\)</span>が保存量であったことから、影のハミルトニアンが、二次形式</p>
+<p><span class="math display">\[
+\tilde{H} = 
+\begin{pmatrix}
+p &amp; q
+\end{pmatrix}
+X
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+\]</span></p>
+<p>という形を仮定しよう(煩雑になるので1/2のファクターは除いてある)。厳密な保存量は<span class="math inline">\(X=I\)</span>である。</p>
+<p>さて、時間発展演算子として、一次の近似、</p>
+<p><span class="math display">\[
+\tilde{U}_1(h) = BA
+\]</span></p>
+<p>を考えよう。これにより<span class="math inline">\((p,q)\)</span>が<span class="math inline">\((P,Q)\)</span>になったとすると、</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix}
+=
+\tilde{U}_1(h)
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+\]</span></p>
+<p>影のハミルトニアンが保存することを要請すると、</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+P &amp; Q
+\end{pmatrix}
+X
+\begin{pmatrix}
+P\\
+Q
+\end{pmatrix}
+=
+\begin{pmatrix}
+p &amp; q
+\end{pmatrix}
+X
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix}
+\]</span></p>
+<p>ここから、</p>
+<p><span class="math display">\[
+\tilde{U}_1^t X \tilde{U}_1 = X
+\]</span></p>
+<p>であるから、</p>
+<p><span class="math display">\[
+A^t B^t X BA = X
+\]</span></p>
+<p>となる。ここで、<span class="math inline">\(BA^t = AB^t = I\)</span>であることから、両辺に左から<span class="math inline">\(AB\)</span>をかけると、</p>
+<p><span class="math display">\[
+XBA = ABX
+\]</span></p>
+<p>この<span class="math inline">\(X\)</span>は一意には決まらないが、例えば<span class="math inline">\(X=A\)</span>と取れば良いことがわかる。ここから、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\tilde{H}_1 &amp;= 
+\begin{pmatrix}
+p &amp; q
+\end{pmatrix}
+X
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} \\
+&amp;=
+p^2 - h pq + q^2
+\end{aligned}
+\]</span></p>
+<p>これが一次の指数分解公式で作られたシンプレクティック積分の「影のハミルトニアン」である。もとのハミルトニアンから<span class="math inline">\(h\)</span>の一次でずれていることがわかる。</p>
+<p>二次の場合も同様に計算できる。計算の便利のために、以下の行列を定義する。</p>
+<p><span class="math display">\[
+\begin{aligned}
+A_\mathrm{h} &amp;= 
+\begin{pmatrix}
+0 &amp; -h/2\\
+0 &amp; 0
+\end{pmatrix} \\
+B_\mathrm{h} &amp;= 
+\begin{pmatrix}
+0 &amp; 0\\
+h/2 &amp; 0
+\end{pmatrix} \\
+\end{aligned}
+\]</span></p>
+<p>ちょっとややこしいが、<span class="math inline">\(A_\mathrm{h}\)</span>の添え字はHalfを表す。ここで、</p>
+<p><span class="math display">\[
+\begin{aligned}
+A_\mathrm{h}^2 &amp;= A\\
+B_\mathrm{h}^2 &amp;= B\\
+\end{aligned}
+\]</span></p>
+<p>であることに注意。</p>
+<p>VV法の時間発展演算子は</p>
+<p><span class="math display">\[
+\tilde{U}_2(h) = A_\mathrm{h} B A_\mathrm{h}
+\]</span></p>
+<p>であるから、</p>
+<p><span class="math display">\[
+A_\mathrm{h}^t B^t A_\mathrm{h}^t X A_\mathrm{h} B A_\mathrm{h} = X
+\]</span></p>
+<p>を満たす行列<span class="math inline">\(X\)</span>を見つければ良い。</p>
+<p>ここで、</p>
+<p><span class="math display">\[
+\begin{aligned}
+B_\mathrm{h} A_\mathrm{h}^t &amp;= I\\
+A_\mathrm{h} B_\mathrm{h}^t &amp;= I\\
+A_\mathrm{h}^2 &amp;= A\\
+B_\mathrm{h}^2 &amp;= B
+\end{aligned}
+\]</span></p>
+<p>であることを使って、両辺に左から<span class="math inline">\(B_\mathrm{h} A_\mathrm{h}^2 B_\mathrm{h}\)</span>をかけると、</p>
+<p><span class="math display">\[
+X A_\mathrm{h} B_\mathrm{h} B_\mathrm{h} A_\mathrm{h}
+= B_\mathrm{h} A_\mathrm{h} A_\mathrm{h} B_\mathrm{h} X
+\]</span></p>
+<p>両辺が等しくなるような<span class="math inline">\(X\)</span>は、例えば</p>
+<p><span class="math display">\[
+X = B_\mathrm{h} A_\mathrm{h}
+\]</span></p>
+<p>とすれば良い。この時、影のハミルトニアンは</p>
+<p><span class="math display">\[
+\begin{aligned}
+\tilde{H}_2 &amp;= 
+\begin{pmatrix}
+p &amp; q
+\end{pmatrix}
+B_\mathrm{h} A_\mathrm{h}
+\begin{pmatrix}
+p\\
+q
+\end{pmatrix} \\
+&amp;=
+p^2 + \left(1 - \frac{h^2}{4} \right)q^2
+\end{aligned}
+\]</span></p>
+<p>と求まる。</p>
+<p>影のハミルトニアンの形</p>
+<p><span class="math display">\[
+\begin{aligned}
+\tilde{H}_1 &amp;= p^2 - hpq + q^2\\
+\tilde{H}_2 &amp;= p^2 + \left(1-\frac{h^2}{4}\right)q^2
+\end{aligned}
+\]</span></p>
+<p>の形を見ると、<span class="math inline">\(h\)</span>が<span class="math inline">\(2\)</span>より大きくなると、形が楕円型から双曲型に変化し、数値計算が破綻することが予想される。</p>
+<p>実際、調和振動子の場合には収束半径まで含めて影のハミルトニアンが厳密に計算できることが知られている(Kobayasih 2007)。</p>
+<p>ここでは、影のハミルトニアンが<span class="math inline">\(p,q\)</span>の二次形式であることを仮定して発見法的に求めたが、一般の場合において影のハミルトニアンが厳密に求められた例や、時間刻みに対する収束半径が求められた例を筆者は知らない。</p>
+<p>[1] H. Kobayashi, Phys. Lett. A, Vol. 371, Issues 5–6, 26 November 2007, Pages 360-362, [doi:10.1016/j.physleta.2007.06.037](https://doi.org/10.1016/j.physleta.2007.06.037}</p>
 </article>
 </body>
 </html>
