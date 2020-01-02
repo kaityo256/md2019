@@ -889,13 +889,13 @@ $$
 \begin{aligned}
 A &\equiv \mathrm{e}^{hL_A} =  
 \begin{pmatrix}
-0 & -h\\
-0 & 0
+1 & -h\\
+0 & 1
 \end{pmatrix} \\
 B &\equiv \mathrm{e}^{hL_B} =  
 \begin{pmatrix}
-0 & 0\\
-h & 0
+1 & 0\\
+h & 1
 \end{pmatrix} 
 \end{aligned}
 $$
