@@ -131,7 +131,7 @@ $$
 
 これが古典的なビリアル定理による、粒子系の圧力の導出である。最初の$N k_B T$が理想気体からの寄与、つまり粒子の運動から圧力への寄与であり、右辺第二項が相互作用からの寄与である。
 
-### 2.1.2 Derivation from Partition Funciton
+### 2.1.2 Derivation from Partition Function
 
 さて、先ほどのビリアル定理からの圧力の導出では、
 
