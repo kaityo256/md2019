@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
+  <title>index</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
@@ -80,7 +80,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -348,27 +348,24 @@ H = \sum_i \frac{\vec{p}_i^2}{2\alpha^2m} + \sum_{i &lt; j} \Phi(\alpha q_{ij}) 
 \]</span></p>
 <p>を使ってさらに整理すると、</p>
 <p><span class="math display">\[
-\dot{\pi} = \frac{3}{\alpha}(P-P_0)
+\dot{\pi} = \frac{3V}{\alpha}(P-P_0)
 \]</span></p>
 <p>すなわち、Virialから求まる内圧<span class="math inline">\(P\)</span>が、目標圧力<span class="math inline">\(P_0\)</span>より大きければ<span class="math inline">\(\dot{\pi}\)</span>は正、つまり、<span class="math inline">\(\alpha\)</span>は大きくなる向きに動く。系が膨張するのだから、圧力は下がることになる。逆もまた然りである。目標圧力と内圧の関係を見て、サーモスタットのように系のサイズを変化させることで圧力が制御される(なのでValostatと呼ばれる)。ただし、圧力制御のためのサイズ変更は一定の時間遅れを伴う。その早さを決めるパラメータが<span class="math inline">\(M\)</span>である。</p>
 <p>運動方程式を修正し、かつ「運動方程式に従う座標と運動量」と、「我々が観測する座標と運動量」を異なるものにする、というアイディアは、その後Noseの方法を始めとする拡張ハミルトニアンと呼ばれる多くの手法に発展していった。</p>
 <h2 id="local-stress">2.2 Local Stress</h2>
 <p>さて、ビリアル定理にて全体的な圧力は定義できたが、MDシミュレーションをしていると局所圧力を知りたいことがある。例えばいま、直方体の領域で、気液の相分離が起きているとしよう。中央に気液界面があるとする。気液共存領域では、その温度、圧力、密度における気相と液相の自由エネルギー密度が一致するため、どちらの状態でも良い。しかし、気液界面付近にいる粒子はとても不幸な状態であるため、界面の面積を減らそうとする。</p>
-<div class="figure">
-<img src="phaseboundary.png" alt="相共存する系には相界面が存在する" />
-<p class="caption">相共存する系には相界面が存在する</p>
-</div>
+<figure>
+<img src="phaseboundary.png" alt="相共存する系には相界面が存在する" /><figcaption>相共存する系には相界面が存在する</figcaption>
+</figure>
 <p>この、面積を減らそうとする熱力学的力が界面張力である。界面張力により、界面付近では圧力異常が起きる。具体的には、圧力の界面に垂直方向には何も異常が起きない(一定圧力)であるが、界面に並行な方向では圧力が下がるように見える。直感的には、水平方向は界面張力があるため、界面張力と一緒に圧力を支える分、粒子からの寄与が下がるのが原因である。</p>
 <p>この、界面付近の圧力構造を可視化したいとする。とりあえず系をビンに区切って、そのビン内の平均圧力を定義することで局所圧力を可視化することを考えよう。当然、界面の構造がわかる程度の解像度で局所圧力を定義しなければならない。以下は、ある温度<span class="math inline">\(T=0.7\)</span>におけるLennard-Jones粒子系の気液共存状態の密度プロファイルだ。</p>
-<div class="figure">
-<img src="density.png" alt="気液共存状態の密度プロファイル" />
-<p class="caption">気液共存状態の密度プロファイル</p>
-</div>
+<figure>
+<img src="density.png" alt="気液共存状態の密度プロファイル" /><figcaption>気液共存状態の密度プロファイル</figcaption>
+</figure>
 <p>左にある高密度状態が液相、右側が気相である。気液界面は、<span class="math inline">\(\tanh((x_c-x)/\lambda)\)</span>でよくフィットできることが知られている。ここで<span class="math inline">\(x_c\)</span>が界面位置、<span class="math inline">\(\lambda\)</span>は界面厚さである。例えばLJ単位系で<span class="math inline">\(T=0.7\)</span>の時の厚さは<span class="math inline">\(\lambda = 1.1\)</span>程度である。LJ系のカットオフは2.5〜3.5程度に取るため、カットオフ距離よりも小さいビンに切って圧力を定義する必要がある。すなわち、粒子が二つ以上離れたビンに存在する時、間に挟まれた(粒子のいない)ビンは、その粒子間の相互作用に起因する圧力を感じるべきかを決めなければならない。</p>
-<div class="figure">
-<img src="local_pressure.png" alt="局所圧力定義の問題" />
-<p class="caption">局所圧力定義の問題</p>
-</div>
+<figure>
+<img src="local_pressure.png" alt="局所圧力定義の問題" /><figcaption>局所圧力定義の問題</figcaption>
+</figure>
 <p>先に答えを言うと、「この人は粒子による圧力を感じる」と定義した方が良いことが知られている。以下、その局所圧力定義を導出してみよう。</p>
 <h3 id="local-stress-tensor">2.2.1 Local Stress Tensor</h3>
 <p>系に含まれる粒子<span class="math inline">\(i\)</span>の位置を<span class="math inline">\(\vec{q}^i\)</span>、運動量を<span class="math inline">\(\vec{p}^{i}\)</span>とする。後で座標の成分を明示したいので、粒子のインデックスは上付きにしておく。</p>
@@ -488,17 +485,16 @@ B &amp; = \frac{\partial}{\partial x_\beta}
 \]</span></p>
 <p>であるから、元の式が変わらない。従って、応力テンソルには任意のベクトル場<span class="math inline">\(\vec{A}\)</span>について<span class="math inline">\(\mathrm{rot} A\)</span>のゲージ不定性がある。ひらたく言うと、応力テンソルが微分の形で定義されているから、積分定数の不定性が生じる。分子シミュレーションで局所圧力を計算するためには、何かしらゲージを決めなければならない。ここで、先程の計算のように決める方法をIrving-Kirkwoodゲージと呼ぶ。</p>
 <p>Irving-Kirkwoodゲージの最終的な式はかなりごちゃごちゃしたが、とにかく場の関数として応力テンソルが決まった。流体であれば応力テンソルの対角項しか存在しないので、静水圧の<span class="math inline">\(x,y,z\)</span>成分のみに落ちる。シミュレーションでは、局所圧力は計算する系をセルもしくはビンに分割し、その内部について応力テンソルを全て積分したものとして決まる。運動項は一体分布関数なので、そのセルに入っている粒子の分を数えるだけである。問題は粒子間相互作用のあるポテンシャル由来の項だが、Irving-Kirkwoodの式を積分すると、「粒子対の持つビリアルを、観測するスライスにまたがる割合に応じて分配せよ」ということになる。</p>
-<div class="figure">
-<img src="irving-kirkwood.png" alt="Irving-Kirkwoodゲージによる圧力の分配" />
-<p class="caption">Irving-Kirkwoodゲージによる圧力の分配</p>
-</div>
+<figure>
+<img src="irving-kirkwood.png" alt="Irving-Kirkwoodゲージによる圧力の分配" /><figcaption>Irving-Kirkwoodゲージによる圧力の分配</figcaption>
+</figure>
 <p>すなわち、Irving-Kirkwoodゲージでは、粒子が含まれないビンにいる観測者にも、粒子の相互作用からくる圧力を感じる、という解釈を取る。</p>
 <p>ここでは二体相互作用の場合を考えたが、三体以上の相互作用があるとかなり面倒になる。この時にどのように圧力を決めるべきかは未だに議論があるようだ。</p>
 <p>参考文献：</p>
 <ul>
-<li>J. H. irving and J. G. Kirkwood, &quot;The Statistical Mechanical Theory of Transport Processes. IV. The Equations of Hydrodynamics&quot;, <a href="https://doi.org/10.1063/1.1747782">J. Chem. Phys. 18, 817 (1950)</a></li>
-<li>R. Goetz and R. Lipowsky, &quot;Computer simulations of bilayer membranes: Self-assembly and interfacial tension&quot;, <a href="https://doi.org/10.1063/1.476160">J. Chem. Phys. 108, 7397 (1998)</a></li>
-<li>K. M. Nakagawa and H. Noguchi, &quot;Nonuniqueness of local stress of three-body potentials in molecular simulations&quot;, <a href="https://doi.org/10.1103/PhysRevE.94.053304">Phys. Rev. E 94, 053304/1-11 (2016)</a></li>
+<li>J. H. irving and J. G. Kirkwood, “The Statistical Mechanical Theory of Transport Processes. IV. The Equations of Hydrodynamics”, <a href="https://doi.org/10.1063/1.1747782">J. Chem. Phys. 18, 817 (1950)</a></li>
+<li>R. Goetz and R. Lipowsky, “Computer simulations of bilayer membranes: Self-assembly and interfacial tension”, <a href="https://doi.org/10.1063/1.476160">J. Chem. Phys. 108, 7397 (1998)</a></li>
+<li>K. M. Nakagawa and H. Noguchi, “Nonuniqueness of local stress of three-body potentials in molecular simulations”, <a href="https://doi.org/10.1103/PhysRevE.94.053304">Phys. Rev. E 94, 053304/1-11 (2016)</a></li>
 </ul>
 </article>
 </body>
