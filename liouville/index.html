@@ -1,94 +1,255 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+    <head>
+        <meta charset="utf-8">
+        <meta name="generator" content="pandoc">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                                <title>liouville/index.md</title>
+        <style type="text/css">
+            code {
+                white-space: pre;
+            }
+        </style>
+                <style type="text/css">
+            div.sourceCode {
+                overflow-x: auto;
+            }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+            table.sourceCode,
+            tr.sourceCode,
+            td.lineNumbers,
+            td.sourceCode {
+                margin: 0;
+                padding: 0;
+                vertical-align: baseline;
+                border: none;
+            }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
+            table.sourceCode {
+                width: 100%;
+                line-height: 100%;
+            }
+
+            td.lineNumbers {
+                text-align: right;
+                padding-right: 4px;
+                padding-left: 4px;
+                color: #aaaaaa;
+                border-right: 1px solid #aaaaaa;
+            }
+
+            td.sourceCode {
+                padding-left: 5px;
+            }
+
+            code>span.kw {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* Keyword */
+            code>span.dt {
+                color: #902000;
+            }
+
+            /* DataType */
+            code>span.dv {
+                color: #40a070;
+            }
+
+            /* DecVal */
+            code>span.bn {
+                color: #40a070;
+            }
+
+            /* BaseN */
+            code>span.fl {
+                color: #40a070;
+            }
+
+            /* Float */
+            code>span.ch {
+                color: #4070a0;
+            }
+
+            /* Char */
+            code>span.st {
+                color: #4070a0;
+            }
+
+            /* String */
+            code>span.co {
+                color: #60a0b0;
+                font-style: italic;
+            }
+
+            /* Comment */
+            code>span.ot {
+                color: #007020;
+            }
+
+            /* Other */
+            code>span.al {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Alert */
+            code>span.fu {
+                color: #06287e;
+            }
+
+            /* Function */
+            code>span.er {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Error */
+            code>span.wa {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Warning */
+            code>span.cn {
+                color: #880000;
+            }
+
+            /* Constant */
+            code>span.sc {
+                color: #4070a0;
+            }
+
+            /* SpecialChar */
+            code>span.vs {
+                color: #4070a0;
+            }
+
+            /* VerbatimString */
+            code>span.ss {
+                color: #bb6688;
+            }
+
+            /* SpecialString */
+            code>span.im {}
+
+            /* Import */
+            code>span.va {
+                color: #19177c;
+            }
+
+            /* Variable */
+            code>span.cf {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* ControlFlow */
+            code>span.op {
+                color: #666666;
+            }
+
+            /* Operator */
+            code>span.bu {}
+
+            /* BuiltIn */
+            code>span.ex {}
+
+            /* Extension */
+            code>span.pp {
+                color: #bc7a00;
+            }
+
+            /* Preprocessor */
+            code>span.at {
+                color: #7d9029;
+            }
+
+            /* Attribute */
+            code>span.do {
+                color: #ba2121;
+                font-style: italic;
+            }
+
+            /* Documentation */
+            code>span.an {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Annotation */
+            code>span.cv {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* CommentVar */
+            code>span.in {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Information */
+        </style>
+
+        <style>
+            .btn-square {
+                display: inline-block;
+                padding: 0.5em 0.5em;
+                text-decoration: none;
+                background: #668ad8;
+                color: #FFF;
+                border-bottom: solid 4px #626295;
+                border-radius: 5px;
+            }
+
+            .btn-square:active {
+                -webkit-transform: translateY(4px);
+                transform: translateY(4px);
+                border-bottom: none;
+            }
+
+            .markdown-body {
+                box-sizing: border-box;
+                min-width: 200px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+            }
+
+            p.caption {
+                display: none;
+            }
+
+            img {
+                width: 100%
+            }
+
+            @media (max-width: 767px) {
+                .markdown-body {
+                    padding: 15px;
+                }
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="generalized-liouvilles-theorem-of-non-hamiltonian-systems">8. Generalized Liouville's Theorem of non-Hamiltonian systems</h1>
+                <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <article class="markdown-body">
+                                                <h1 id="generalized-liouvilles-theorem-of-non-hamiltonian-systems">8. Generalized Liouville’s Theorem of non-Hamiltonian systems</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
 <p>ハミルトンの運動方程式に付随するLiouville演算子は必ずエルミートとなり、エルミートなリュービル演算子が位相空間に作る「流れ」は非圧縮となることを見た。分布関数は位相空間における流れの「密度場」に対応するため、非圧縮な流れ場では密度は一定、すなわち、分布関数が不変に保たれることがわかる(Liouvilleの定理)。</p>
 <p>Liouvilleの定理は、時間発展に伴って位相空間体積が変化しないことを主張する。例えば一自由度系<span class="math inline">\((p,q)\)</span>において、時間<span class="math inline">\(h\)</span>後に<span class="math inline">\((P,Q)\)</span>に系が変化した時、その前後で位相空間体積が変化しないとは、</p>
@@ -109,7 +270,7 @@ dpdq
 <p>である。ただし、<span class="math inline">\(J\)</span>は<span class="math inline">\((p,q)\)</span>から<span class="math inline">\((P,Q)\)</span>への変換のヤコビアンである。<span class="math inline">\(dPdQ = dpdq\)</span>が成り立つのであるから、Liouvilleの定理は力学系に付随するヤコビアンが常に1となることを主張する。</p>
 <p>では、熱浴をつけ、定常状態がカノニカル分布となる場合はどうだろうか？当然、分布関数が時間変化するため、位相空間体積も一定ではなく、ヤコビアンも時間変化する。この時、Liouvilleの定理と同様なことが言えないだろうか？</p>
 <p>以下では、一般化された形でのLiouvilleの定理を導き、温度制御された系においてLiouville演算子がどのような性質を持つか議論する。</p>
-<h2 id="jacobis-formula">8.1 Jacobi's Formula</h2>
+<h2 id="jacobis-formula">8.1 Jacobi’s Formula</h2>
 <p>まず、位相空間<span class="math inline">\((p_i, q_i)\)</span>をまとめて<span class="math inline">\(\vec{z} = (p_1, p_2, \cdots, p_{3N}, q_1, q_2, \cdots, q_{3N})=(z_1, \cdots, z_{6N})\)</span>と記述しよう。この系が時刻<span class="math inline">\(t\)</span>から<span class="math inline">\(t+h\)</span>まで時間発展発展し、<span class="math inline">\(\vec{z}(t)\)</span>から<span class="math inline">\(\vec{z}(t+h)\)</span>になったとしよう。</p>
 <p><span class="math display">\[
 \vec{z}(t) \xrightarrow{h} \vec{z}(t+h)
@@ -233,7 +394,7 @@ X_{ij} = \frac{\partial \dot{z_t^i}}{\partial z_t^j}
 \frac{dJ}{dt} = J  \nabla \cdot  \dot{\vec{z}}
 \]</span></p>
 <p>となる。</p>
-<h2 id="generalized-liouvllies-theorem">8.3 Generalized Liouvllie's Theorem</h2>
+<h2 id="generalized-liouvllies-theorem">8.3 Generalized Liouvllie’s Theorem</h2>
 <p>今、位相空間が<span class="math inline">\(\vec{z}\)</span>で張られており、ダイナミクス<span class="math inline">\(\dot{\vec{z}}\)</span>が与えられているとする。そして、時刻<span class="math inline">\(t=0\)</span>で<span class="math inline">\(\vec{z}(0)\)</span>であった状態が、時間発展により時刻<span class="math inline">\(t\)</span>で<span class="math inline">\(\vec{z}(t)\)</span>になったとしよう。</p>
 <p>この系がハミルトンダイナミクスであった場合は、時間発展の前後で位相空間体積が保存する、すなわち</p>
 <p><span class="math display">\[
@@ -269,7 +430,7 @@ d \vec{z}(t) =  \exp\left(\omega(t) - \omega(0)  \right) d \vec{z}(0)
 <p><span class="math display">\[
 \mathrm{e}^{-w(t)}d \vec{z}(t) = \mathrm{e}^{-w(0)} d \vec{z}(0)
 \]</span></p>
-<p>上式が時刻に寄らず成立する。これを一般化Liouvilleの定理(Generalized Liouville's Theorem)と呼ぶ。</p>
+<p>上式が時刻に寄らず成立する。これを一般化Liouvilleの定理(Generalized Liouville’s Theorem)と呼ぶ。</p>
 <p>これは、<span class="math inline">\(\mathrm{e}^{-w}d\vec{z}\)</span>という量が不変計量(invariant measure)になっていることを意味する。</p>
 <p>ハミルトンダイナミクスでは、速度場が非圧縮流、すなわち</p>
 <p><span class="math display">\[
@@ -281,8 +442,9 @@ d \vec{z}(t) =  d \vec{z}(0)
 \]</span></p>
 <p>通常のLiouvilleの定理が導かれた。先程の一般化Liouvilleの定理が、通常のLiouvilleの定理の自然な一般化になっていることがわかるであろう。</p>
 <ul>
-<li>M. E. Tuckerman et al. &quot;On the classical statistical mechanics of non-Hamiltonian systems&quot;, Europhys. Lett. 45, 149 (1999).</li>
+<li>M. E. Tuckerman et al. “On the classical statistical mechanics of non-Hamiltonian systems”, Europhys. Lett. 45, 149 (1999).</li>
 </ul>
-</article>
-</body>
-</html>
+                    </article>
+    </body>
+
+    </html>

@@ -25,7 +25,7 @@ index.md: README.md
 	sed 's/README.md/index.html/' $< > $@
 
 index.html: index.md
-	pandoc -s $< -o $@ --mathjax -t html --template=template
+	pandoc -s $< -o $@ --mathjax -t html --template=template --template=template --metadata pagetitle="$<"
 	rm -f index.md
 
 %/index.md: %/README.md
@@ -33,7 +33,7 @@ index.html: index.md
 	sed -i '3a [[Repository]](https://github.com/kaityo256/md2019)\n' $@
 
 %/index.html: %/index.md
-	pandoc -s $< -o $@ $(PANDOCOPT)
+	pandoc -s $< -o $@ $(PANDOCOPT) --template=template --metadata pagetitle="$<"
 
 %/README.pdf: %/README.md
 	cd $(dir $@);pandoc $(notdir $<) -s -o $(notdir $@) $(PANDOC_TEXOPT)

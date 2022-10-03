@@ -1,94 +1,255 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+    <head>
+        <meta charset="utf-8">
+        <meta name="generator" content="pandoc">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                                <title>ergodic/index.md</title>
+        <style type="text/css">
+            code {
+                white-space: pre;
+            }
+        </style>
+                <style type="text/css">
+            div.sourceCode {
+                overflow-x: auto;
+            }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+            table.sourceCode,
+            tr.sourceCode,
+            td.lineNumbers,
+            td.sourceCode {
+                margin: 0;
+                padding: 0;
+                vertical-align: baseline;
+                border: none;
+            }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
+            table.sourceCode {
+                width: 100%;
+                line-height: 100%;
+            }
+
+            td.lineNumbers {
+                text-align: right;
+                padding-right: 4px;
+                padding-left: 4px;
+                color: #aaaaaa;
+                border-right: 1px solid #aaaaaa;
+            }
+
+            td.sourceCode {
+                padding-left: 5px;
+            }
+
+            code>span.kw {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* Keyword */
+            code>span.dt {
+                color: #902000;
+            }
+
+            /* DataType */
+            code>span.dv {
+                color: #40a070;
+            }
+
+            /* DecVal */
+            code>span.bn {
+                color: #40a070;
+            }
+
+            /* BaseN */
+            code>span.fl {
+                color: #40a070;
+            }
+
+            /* Float */
+            code>span.ch {
+                color: #4070a0;
+            }
+
+            /* Char */
+            code>span.st {
+                color: #4070a0;
+            }
+
+            /* String */
+            code>span.co {
+                color: #60a0b0;
+                font-style: italic;
+            }
+
+            /* Comment */
+            code>span.ot {
+                color: #007020;
+            }
+
+            /* Other */
+            code>span.al {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Alert */
+            code>span.fu {
+                color: #06287e;
+            }
+
+            /* Function */
+            code>span.er {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Error */
+            code>span.wa {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Warning */
+            code>span.cn {
+                color: #880000;
+            }
+
+            /* Constant */
+            code>span.sc {
+                color: #4070a0;
+            }
+
+            /* SpecialChar */
+            code>span.vs {
+                color: #4070a0;
+            }
+
+            /* VerbatimString */
+            code>span.ss {
+                color: #bb6688;
+            }
+
+            /* SpecialString */
+            code>span.im {}
+
+            /* Import */
+            code>span.va {
+                color: #19177c;
+            }
+
+            /* Variable */
+            code>span.cf {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* ControlFlow */
+            code>span.op {
+                color: #666666;
+            }
+
+            /* Operator */
+            code>span.bu {}
+
+            /* BuiltIn */
+            code>span.ex {}
+
+            /* Extension */
+            code>span.pp {
+                color: #bc7a00;
+            }
+
+            /* Preprocessor */
+            code>span.at {
+                color: #7d9029;
+            }
+
+            /* Attribute */
+            code>span.do {
+                color: #ba2121;
+                font-style: italic;
+            }
+
+            /* Documentation */
+            code>span.an {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Annotation */
+            code>span.cv {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* CommentVar */
+            code>span.in {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Information */
+        </style>
+
+        <style>
+            .btn-square {
+                display: inline-block;
+                padding: 0.5em 0.5em;
+                text-decoration: none;
+                background: #668ad8;
+                color: #FFF;
+                border-bottom: solid 4px #626295;
+                border-radius: 5px;
+            }
+
+            .btn-square:active {
+                -webkit-transform: translateY(4px);
+                transform: translateY(4px);
+                border-bottom: none;
+            }
+
+            .markdown-body {
+                box-sizing: border-box;
+                min-width: 200px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+            }
+
+            p.caption {
+                display: none;
+            }
+
+            img {
+                width: 100%
+            }
+
+            @media (max-width: 767px) {
+                .markdown-body {
+                    padding: 15px;
+                }
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="problems-on-nose-hoover-method">Problems on Nose-Hoover method</h1>
+                <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <article class="markdown-body">
+                                                <h1 id="problems-on-nose-hoover-method">Problems on Nose-Hoover method</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
 <p>Nose-Hoover法は実装が容易であり、他の熱浴(例えばVelocity Scaling法やBerendsenの方法)と違って厳密にカノニカル分布を定常状態に持つことから広く使われている。しかし、Nose-Hoover法で温度制御された系が、意図する状態にならない場合がある。広く知られているのは調和振動子にNose-Hoover法を適用するとエルゴード性が破れる例だが、他にもいくつか問題がある。以下ではNose-Hoover法を使う上での注意点について述べる。</p>
 <h2 id="ergodicity-of-the-nose-hoover-method">Ergodicity of the Nose-Hoover Method</h2>
@@ -132,10 +293,9 @@ C = \frac{p^2}{2} - \ln p + \frac{Q\zeta^2}{2}
 \]</span></p>
 <p>これは<span class="math inline">\((p,\zeta)\)</span>空間において閉曲線を作っており、先程の運動方程式はその閉曲線上を走る、やはり回転する流れを作っている。</p>
 <p>以上をまとめると、調和振動子+Nose-Hoover系は位相空間に以下のような流れ場を作っている。</p>
-<div class="figure">
-<img src="nhflow.png" alt="調和振動子+Nose-Hoover法の流れ" />
-<p class="caption">調和振動子+Nose-Hoover法の流れ</p>
-</div>
+<figure>
+<img src="nhflow.png" alt="調和振動子+Nose-Hoover法の流れ" /><figcaption>調和振動子+Nose-Hoover法の流れ</figcaption>
+</figure>
 <p>さて、調和振動子系のハミルトニアンは<span class="math inline">\(H=p^2/2 + q^2/2\)</span>である。この系においてカノニカル分布が実現するとは、分布関数<span class="math inline">\(f(p,q)\)</span>が、ボルツマン重み</p>
 <p><span class="math display">\[
 f \sim \exp(-\beta H)
@@ -188,10 +348,9 @@ C = r^2 - \ln r + Q\zeta^2
 r^2 - \ln r \le C
 \]</span></p>
 <p>ここで<span class="math inline">\(r^2 - \ln r\)</span>は<span class="math inline">\(r\rightarrow 0\)</span>もしくは<span class="math inline">\(r\rightarrow \infty\)</span>で無限大となり、その間に最小値を取るような下に凸な関数である。それがある閾値以下に制限されているということは、<span class="math inline">\(r\)</span>のとり得る値に下限と上限が存在する、ということを意味する。</p>
-<div class="figure">
-<img src="r_range.png" alt="断熱近似によるエルゴード性の破れ" />
-<p class="caption">断熱近似によるエルゴード性の破れ</p>
-</div>
+<figure>
+<img src="r_range.png" alt="断熱近似によるエルゴード性の破れ" /><figcaption>断熱近似によるエルゴード性の破れ</figcaption>
+</figure>
 <p>もともと<span class="math inline">\(H = r^2/2\)</span>であったから、これはエネルギーに非自明な下限と上限が設けられた、すなわち軌道が位相空間全体を埋め尽くさず、結果としてエルゴード性を失うことがわかる。</p>
 <p>ここでは<span class="math inline">\(Q\)</span>が大きいとして断熱近似を行ったが、実際にやってみると<span class="math inline">\(Q\)</span>がある程度小さくても実効的に変数分離が起きて、エルゴード性が破れることがわかる。</p>
 <p>たまに、エルゴード性が破れるのは系が単自由度である場合であり、多自由度系であれば問題ない、といった誤解を見かける。しかし、エルゴード性が破れるのは追加自由度<span class="math inline">\(\zeta\)</span>が系の部分自由度と強く結合して非自明な保存量を構築するからであった。従って、多自由度系であっても同様なことが起き得るので注意が必要である。</p>
@@ -202,18 +361,16 @@ r^2 - \ln r \le C
 <p>Nose-Hoover法の問題として調和振動子でエルゴード性が破れる現象が有名であるが、実用上では他の現象が問題となることの方が多い。そのうちの一つは、「系の温度が非一様のまま定常状態となる」問題だ。</p>
 <p>Nose-Hoover法が制御するのは「系全体の温度」つまり平均温度である。従って、平均温度が指定の温度になっていればNose-Hoover法から見れば温度が制御できているように見える。しかし、なんらかの原因により高温の領域と低温領域にわかれてしまい、それが定常化する場合がある。</p>
 <p>典型例は相分離する系である。例えば液滴と気相の共存状態を作ろうとして、最初に真空中に液滴を置いて蒸発させることで定常状態を作ろうとすると、液滴は気化熱により温度が下がり、その分Nose-Hoover法は全体の温度を上げて対応しようとするため、低温の液滴と高温の蒸気に分かれて安定化してしまう。液滴と蒸気の相互作用は非常に弱いため、現実的な時間では温度が一様にならない。</p>
-<div class="figure">
-<img src="phase_separation.png" alt="温度が非一様のまま定常化" />
-<p class="caption">温度が非一様のまま定常化</p>
-</div>
+<figure>
+<img src="phase_separation.png" alt="温度が非一様のまま定常化" /><figcaption>温度が非一様のまま定常化</figcaption>
+</figure>
 <p>上図は、二種の合金が相分離した例だ。Nose-Hoover法は全体だけを見て温度を制御した気になっているが、実はA原子とB原子それぞれの温度を見ると、異なる温度で固定されてしまっている。Langevin系では、全体も、A、B原子個別に見ても同じ温度に緩和していることがわかる。</p>
 <p>この問題は、Nose-Hoover系のみならず、系全体の平均運動エネルギーを制御する熱浴(Velocity-Scaling, Berendsen, Kinetic-Momentsその他の他自由度熱浴)全てで起きる可能性がある。なお、Langevin熱浴は各自由度ごとに制御がかかるため、このような問題は生じない。</p>
 <h3 id="non-trivial-oscillation">Non-trivial Oscillation</h3>
 <p>Nose-Hoover法は、新たに追加した自由度<span class="math inline">\(\zeta\)</span>が、<span class="math inline">\((p,\zeta)\)</span>空間に回転流れを作ることは既に述べた。Nose-Hoover法を用いると、この回転に由来する「振動」が系に導入される。</p>
-<div class="figure">
-<img src="spectra.png" alt="熱浴による振動" />
-<p class="caption">熱浴による振動</p>
-</div>
+<figure>
+<img src="spectra.png" alt="熱浴による振動" /><figcaption>熱浴による振動</figcaption>
+</figure>
 <p>上左図は、熱浴をつけてない場合とつけた場合の系の温度の時間発展だ。熱浴をつけていない系はおよそ1.3の温度を持つが、熱浴で<span class="math inline">\(T=1\)</span>に制御した系は、意図通り温度が1付近で揺らいでいるように見える。</p>
 <p>この温度の時間変化をフーリエ変換し、パワースペクトルを見てみよう。熱浴をつけていない場合は、原点に強いピークが立つが、それ以外の成分はほとんどゼロ、すなわちこの系の温度ゆらぎは、ほぼホワイトノイズとみなすことができる。</p>
 <p>しかし、熱浴をつけた場合は、スペクトルに熱浴由来のピークが立つ。静的な性質を調べている場合はあまり問題とならないが、何かのゆらぎやスペクトルを調べている場合には、熱浴由来の振動と干渉しないように十分に注意しなければならない。この問題は温度を一階の遅れで制御するNose-Hoover系特有の問題であり、Velocity-Scaling法やBerendsen法では起きない。</p>
@@ -227,13 +384,13 @@ r^2 - \ln r \le C
 \]</span></p>
 <p>と定義され、カノニカル分布について部分積分すると上記の式が証明できる。これらは平衡状態では一致するが、非平衡状態では一般に一致しない。</p>
 <p>我々が温度依存性を知りたいのは、運動エネルギー部分ではなく、状態部分であることが多い。Nose-Hoover法を始めとする多くの熱浴は、運動温度を制御することで、「そのうち状態温度も指定の温度に緩和するだろう」ということを期待するが、一般に運動温度に比べて状態温度の緩和は遅い。</p>
-<div class="figure">
-<img src="two_t.png" alt="二つの温度" />
-<p class="caption">二つの温度</p>
-</div>
+<figure>
+<img src="two_t.png" alt="二つの温度" /><figcaption>二つの温度</figcaption>
+</figure>
 <p>上図は、FCCに組んだLJ原子系の運動温度と状態温度の緩和を見たものだ。なお、温度制御はしておらず、純粋にハミルトンの運動方程式を解いている(そのため、運動温度が振動していない)。二つの温度は最終的に一致するが、二つの温度が異なることがわかるであろう。</p>
 <p>特に系が相分離する場合や、ガラス系に見られるような遅い構造緩和を持つ場合は、状態温度の緩和は非常に遅くなる。このような時、運動温度しかモニターしていないと、自分が意図する温度とはずれた状態温度における振る舞いを観測してしまうので注意が必要である。</p>
 <p>この問題は、決定論熱浴だけでなく、Langevin法などの確率的熱浴でも起こり得る。</p>
-</article>
-</body>
-</html>
+                    </article>
+    </body>
+
+    </html>

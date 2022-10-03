@@ -1,94 +1,255 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+    <head>
+        <meta charset="utf-8">
+        <meta name="generator" content="pandoc">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                                <title>respa/index.md</title>
+        <style type="text/css">
+            code {
+                white-space: pre;
+            }
+        </style>
+                <style type="text/css">
+            div.sourceCode {
+                overflow-x: auto;
+            }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+            table.sourceCode,
+            tr.sourceCode,
+            td.lineNumbers,
+            td.sourceCode {
+                margin: 0;
+                padding: 0;
+                vertical-align: baseline;
+                border: none;
+            }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
+            table.sourceCode {
+                width: 100%;
+                line-height: 100%;
+            }
+
+            td.lineNumbers {
+                text-align: right;
+                padding-right: 4px;
+                padding-left: 4px;
+                color: #aaaaaa;
+                border-right: 1px solid #aaaaaa;
+            }
+
+            td.sourceCode {
+                padding-left: 5px;
+            }
+
+            code>span.kw {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* Keyword */
+            code>span.dt {
+                color: #902000;
+            }
+
+            /* DataType */
+            code>span.dv {
+                color: #40a070;
+            }
+
+            /* DecVal */
+            code>span.bn {
+                color: #40a070;
+            }
+
+            /* BaseN */
+            code>span.fl {
+                color: #40a070;
+            }
+
+            /* Float */
+            code>span.ch {
+                color: #4070a0;
+            }
+
+            /* Char */
+            code>span.st {
+                color: #4070a0;
+            }
+
+            /* String */
+            code>span.co {
+                color: #60a0b0;
+                font-style: italic;
+            }
+
+            /* Comment */
+            code>span.ot {
+                color: #007020;
+            }
+
+            /* Other */
+            code>span.al {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Alert */
+            code>span.fu {
+                color: #06287e;
+            }
+
+            /* Function */
+            code>span.er {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Error */
+            code>span.wa {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Warning */
+            code>span.cn {
+                color: #880000;
+            }
+
+            /* Constant */
+            code>span.sc {
+                color: #4070a0;
+            }
+
+            /* SpecialChar */
+            code>span.vs {
+                color: #4070a0;
+            }
+
+            /* VerbatimString */
+            code>span.ss {
+                color: #bb6688;
+            }
+
+            /* SpecialString */
+            code>span.im {}
+
+            /* Import */
+            code>span.va {
+                color: #19177c;
+            }
+
+            /* Variable */
+            code>span.cf {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* ControlFlow */
+            code>span.op {
+                color: #666666;
+            }
+
+            /* Operator */
+            code>span.bu {}
+
+            /* BuiltIn */
+            code>span.ex {}
+
+            /* Extension */
+            code>span.pp {
+                color: #bc7a00;
+            }
+
+            /* Preprocessor */
+            code>span.at {
+                color: #7d9029;
+            }
+
+            /* Attribute */
+            code>span.do {
+                color: #ba2121;
+                font-style: italic;
+            }
+
+            /* Documentation */
+            code>span.an {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Annotation */
+            code>span.cv {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* CommentVar */
+            code>span.in {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Information */
+        </style>
+
+        <style>
+            .btn-square {
+                display: inline-block;
+                padding: 0.5em 0.5em;
+                text-decoration: none;
+                background: #668ad8;
+                color: #FFF;
+                border-bottom: solid 4px #626295;
+                border-radius: 5px;
+            }
+
+            .btn-square:active {
+                -webkit-transform: translateY(4px);
+                transform: translateY(4px);
+                border-bottom: none;
+            }
+
+            .markdown-body {
+                box-sizing: border-box;
+                min-width: 200px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+            }
+
+            p.caption {
+                display: none;
+            }
+
+            img {
+                width: 100%
+            }
+
+            @media (max-width: 767px) {
+                .markdown-body {
+                    padding: 15px;
+                }
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="integration-scheme-for-non-hamliton-systems">7. Integration scheme for non-Hamliton systems</h1>
+                <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <article class="markdown-body">
+                                                <h1 id="integration-scheme-for-non-hamliton-systems">7. Integration scheme for non-Hamliton systems</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
 <p>常微分方程式の数値積分には多数の方法があるが、分子動力学法、すなわちハミルトンの運動方程式の積分には、ほとんどの場合においてシンプレクティック積分が用いられている。その理由は、シンプレクティック積分が軌道には誤差を持ちつつも、エネルギーを厳密に保存するからであった。シンプレクティック積分は</p>
 <ul>
@@ -270,7 +431,7 @@ U_T(h) p &amp;= \exp(iL_K) p\\
 \tilde{U}(h)_\mathrm{RESPA} = \mathrm{e}^{ihL_K/2} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_V} \mathrm{e}^{ihL_T/2} \mathrm{e}^{ihL_K/2}
 \]</span></p>
 <p>この時間発展は</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>位置を現在の速度で<span class="math inline">\(h/2\)</span>だけ進める</li>
 <li>運動量を<span class="math inline">\(\zeta\)</span>を使って<span class="math inline">\(p \rightarrow p \mathrm{e}^{-h\zeta/2}\)</span>とスケールする</li>
 <li>現在の位置において力を計算し、運動量を<span class="math inline">\(h\)</span>だけ更新する</li>
@@ -486,6 +647,7 @@ Q
 <p>となるのであった。二次の対称分解の場合と同様に、これが時間反転対称性を持っていることは明らかであろう。しかし、途中で非ユニタリな項<span class="math inline">\(\mathrm{e}^{ihL_T/2}\)</span>を含むため、全体としても非ユニタリになっている。</p>
 <p>以上見てきた通り、シンプレクティック積分においては、一次の場合は時間反転対称ではなく、二次の対称分解の場合は時間反転対称であった。そして、どちらもシンプレクティックであった。ハミルトンダイナミクスにシンプレクティック積分を適用するとエネルギーが保存するのだが、それと時間反転対称性は関係がない(時間反転対称でなくてもシンプレクティックであり得る)。</p>
 <p>二次のシンプレクティック積分と同様に、Nose-Hoover熱浴がついた系にRESPAを適用すると、時間反転対称な時間発展を得ることができる。しかし、温度制御された系において時間発展が時間反転対称性を持つことがどれだけうれしいかは、さほど自明ではない。</p>
-</article>
-</body>
-</html>
+                    </article>
+    </body>
+
+    </html>

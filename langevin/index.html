@@ -1,94 +1,255 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+    <head>
+        <meta charset="utf-8">
+        <meta name="generator" content="pandoc">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                                <title>langevin/index.md</title>
+        <style type="text/css">
+            code {
+                white-space: pre;
+            }
+        </style>
+                <style type="text/css">
+            div.sourceCode {
+                overflow-x: auto;
+            }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+            table.sourceCode,
+            tr.sourceCode,
+            td.lineNumbers,
+            td.sourceCode {
+                margin: 0;
+                padding: 0;
+                vertical-align: baseline;
+                border: none;
+            }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
+            table.sourceCode {
+                width: 100%;
+                line-height: 100%;
+            }
+
+            td.lineNumbers {
+                text-align: right;
+                padding-right: 4px;
+                padding-left: 4px;
+                color: #aaaaaa;
+                border-right: 1px solid #aaaaaa;
+            }
+
+            td.sourceCode {
+                padding-left: 5px;
+            }
+
+            code>span.kw {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* Keyword */
+            code>span.dt {
+                color: #902000;
+            }
+
+            /* DataType */
+            code>span.dv {
+                color: #40a070;
+            }
+
+            /* DecVal */
+            code>span.bn {
+                color: #40a070;
+            }
+
+            /* BaseN */
+            code>span.fl {
+                color: #40a070;
+            }
+
+            /* Float */
+            code>span.ch {
+                color: #4070a0;
+            }
+
+            /* Char */
+            code>span.st {
+                color: #4070a0;
+            }
+
+            /* String */
+            code>span.co {
+                color: #60a0b0;
+                font-style: italic;
+            }
+
+            /* Comment */
+            code>span.ot {
+                color: #007020;
+            }
+
+            /* Other */
+            code>span.al {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Alert */
+            code>span.fu {
+                color: #06287e;
+            }
+
+            /* Function */
+            code>span.er {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            /* Error */
+            code>span.wa {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Warning */
+            code>span.cn {
+                color: #880000;
+            }
+
+            /* Constant */
+            code>span.sc {
+                color: #4070a0;
+            }
+
+            /* SpecialChar */
+            code>span.vs {
+                color: #4070a0;
+            }
+
+            /* VerbatimString */
+            code>span.ss {
+                color: #bb6688;
+            }
+
+            /* SpecialString */
+            code>span.im {}
+
+            /* Import */
+            code>span.va {
+                color: #19177c;
+            }
+
+            /* Variable */
+            code>span.cf {
+                color: #007020;
+                font-weight: bold;
+            }
+
+            /* ControlFlow */
+            code>span.op {
+                color: #666666;
+            }
+
+            /* Operator */
+            code>span.bu {}
+
+            /* BuiltIn */
+            code>span.ex {}
+
+            /* Extension */
+            code>span.pp {
+                color: #bc7a00;
+            }
+
+            /* Preprocessor */
+            code>span.at {
+                color: #7d9029;
+            }
+
+            /* Attribute */
+            code>span.do {
+                color: #ba2121;
+                font-style: italic;
+            }
+
+            /* Documentation */
+            code>span.an {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Annotation */
+            code>span.cv {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* CommentVar */
+            code>span.in {
+                color: #60a0b0;
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            /* Information */
+        </style>
+
+        <style>
+            .btn-square {
+                display: inline-block;
+                padding: 0.5em 0.5em;
+                text-decoration: none;
+                background: #668ad8;
+                color: #FFF;
+                border-bottom: solid 4px #626295;
+                border-radius: 5px;
+            }
+
+            .btn-square:active {
+                -webkit-transform: translateY(4px);
+                transform: translateY(4px);
+                border-bottom: none;
+            }
+
+            .markdown-body {
+                box-sizing: border-box;
+                min-width: 200px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+            }
+
+            p.caption {
+                display: none;
+            }
+
+            img {
+                width: 100%
+            }
+
+            @media (max-width: 767px) {
+                .markdown-body {
+                    padding: 15px;
+                }
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="langevin-thermostat">6. Langevin Thermostat</h1>
+                <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <article class="markdown-body">
+                                                <h1 id="langevin-thermostat">6. Langevin Thermostat</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/md2019">[Repository]</a></p>
 <p>Nose-Hoover法は決定論的な熱浴であったが、次は確率的な熱浴であるランジュバン熱浴を考えてみよう。</p>
 <h2 id="langevin-equation">6.1 Langevin Equation</h2>
@@ -206,9 +367,9 @@ f(p, t+h) = \mathcal{N}(p_0, 2 \gamma T h)
 p(t+h) = p(t) - \gamma p(t)h + \hat{w}
 \]</span></p>
 <p>とすることが多い。ただし、<span class="math inline">\(\hat{w}\)</span>は平均<span class="math inline">\(0\)</span>、分散<span class="math inline">\(2\gamma T h\)</span>のガウス分布に従う乱数であり、例えばC++を使うなら、</p>
-<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="bu">std::</span>normal_distribution&lt;<span class="dt">double</span>&gt; nd(<span class="fl">0.0</span>, <span class="fl">2.0</span> * gamma * T * h);
-<span class="bu">std::</span>mt19937 mt;
-<span class="dt">double</span> w = nd(mt);</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">std::</span>normal_distribution&lt;<span class="dt">double</span>&gt; nd(<span class="fl">0.0</span>, <span class="fl">2.0</span> * gamma * T * h);</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="bu">std::</span>mt19937 mt;</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="dt">double</span> w = nd(mt);</a></code></pre></div>
 <p>などとして生成することができる。なお、この手法をEuler-Maruyamaの方法と呼ぶ。</p>
 <h2 id="h-theorem">6.3 H Theorem</h2>
 <p>Nose-Hoover法が保証するのは、「位相空間をボルツマン重みに比例する確率で走る」ということのみであり、さらに運動がエルゴード的であって初めてカノニカル分布が達成される。先ほど、Langevin方程式もカノニカル分布を定常状態に持つことを示したが、Langevin系の場合はNose-Hoover系よりもう少し強いことが言える。すなわち、Langevin系では、いかなる初期条件から初めても、必ずカノニカル分布に収束することを示すことができる。以下、それを見てみよう。簡単のため、一自由度系を考え、位相空間<span class="math inline">\((p,q)\)</span>上に、ハミルトニアン<span class="math inline">\(H(p,q)\)</span>が定義されているとしよう。</p>
@@ -279,6 +440,7 @@ D_{KL}(f | f_\mathrm{eq} ) &amp;\equiv \int f \ln \frac{f}{f_\mathrm{eq}} dpdq \
 \end{aligned}
 \]</span></p>
 <p>ただし<span class="math inline">\(C\)</span>は定数である。ランジュバン系では、分布関数とカノニカル分布のKL距離が単調に減少し、最終的に距離がゼロ、つまりカノニカル分布が実現した時が定常状態であることがわかる。</p>
-</article>
-</body>
-</html>
+                    </article>
+    </body>
+
+    </html>
